@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OMG Wallet</title>
+
+<style>
+body{margin:0;font-family:Arial;background:linear-gradient(135deg,#020617,#0f172a);color:white;}
+.center{display:flex;justify-content:center;align-items:center;height:100vh;}
+.card{background:#1e293b;padding:25px;border-radius:20px;width:320px;}
+.logo{text-align:center;color:#38bdf8;font-size:24px;font-weight:bold;margin-bottom:15px;}
+input{width:100%;padding:12px;margin:8px 0;border:none;border-radius:10px;background:#334155;color:white;}
+button{width:100%;padding:14px;border:none;border-radius:10px;margin-top:10px;cursor:pointer;font-weight:bold;font-size:16px;}
+.btn1{background:#38bdf8;color:#000;}
+.btn2{background:#22c55e;color:#000;}
+.link{text-align:center;margin-top:15px;color:#38bdf8;cursor:pointer;font-size:15px;}
+
+#dashboard,#buyPage,#sellPage,#payPage,#adminPanel{
+display:none;background:#f5f5f5;color:black;min-height:100vh;padding:15px;
+}
+
+.card2{background:#0f172a;color:white;padding:20px;border-radius:15px;}
+.btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btns button{flex:1; min-width:45%; padding:15px;border-radius:12px;font-weight:bold;margin:5px 0;}
+.buy{background:#facc15; color: #000; font-weight: bold;}
+.sell{background:#22c55e;color:white;}
+
+.historyBox{
+background:white;padding:10px;border-radius:10px;
+max-height:280px;overflow:auto;
+}
+
+.settings-btn, .help-btn, .admin-btn {
+    background: #334155;
+    color: white;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content, .pin-modal-content {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+    width: 320px;
+    text-align: center;
+}
+.pin-input {
+    font-size: 28px;
+    text-align: center;
+    letter-spacing: 10px;
+    background: #334155;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+/* Payment Method Buttons */
+.payment-btn {
+    background: #1e293b;
+    color: white;
+    border: 2px solid #64748b;
+    margin: 8px 0;
+}
+.payment-btn:active {
+    background: #38bdf8;
+    border-color: #38bdf8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="center">
+
+<!-- LOGIN PAGE -->
+<div id="login" class="card">
+    <div class="logo">💰 OMG WALLET</div>
+    <h3 style="text-align:center;">Login</h3>
+    <input id="luser" placeholder="Phone Number" type="tel">
+    <input id="lpass" type="password" placeholder="Password">
+    <button class="btn1" onclick="login()">Login</button>
+    <div class="link" onclick="showRegister()">Don't have an account? Create Account</div>
+</div>
+
+<!-- REGISTER PAGE -->
+<div id="register" class="card" style="display:none;">
+    <div class="logo">💰 OMG WALLET</div>
+    <h3 style="text-align:center;">Create Account</h3>
+    <input id="ruser" placeholder="Phone Number" type="tel">
+    <input id="rpass" type="password" placeholder="Password">
+    <input id="rpass2" type="password" placeholder="Confirm Password">
+    <button class="btn2" onclick="register()">Register</button>
+    <div class="link" onclick="showLogin()">Already have an account? Login</div>
+</div>
+
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+<h2 style="color:#facc15;text-align:center;">OMG Wallet</h2>
+
+<div class="card2">
+    <p>My total assets</p>
+    <h1 id="bal">1000 OMG</h1>
+    <p style="margin-top:8px; font-size:15px; color:#94a3b8;">
+        <strong>1 OMG Coin = ₹1</strong>
+    </p>
+</div>
+
+<div class="btns">
+    <button class="buy" onclick="showBuy()">Buy OMG</button>
+    <button class="sell" onclick="showSell()">Sell OMG</button>
+</div>
+
+<button class="help-btn" onclick="openHelp()">🆘 Help Center</button>
+<button class="settings-btn" onclick="openSettings()">⚙️ Settings</button>
+<button class="admin-btn" onclick="showAdminPanel()">🔑 Admin Panel</button>
+
+<h4>Transaction History</h4>
+<div id="history" class="historyBox"></div>
+
+<button onclick="logout()" style="background:#ef4444;color:white;margin-top:15px;">Logout</button>
+</div>
+
+<!-- BUY -->
+<div id="buyPage">
+<h2 style="color:#facc15;">Buy OMG <span style="color:#eab308;">(Live Offers • Bonus Applied)</span></h2>
+<div id="orders"></div>
+<button onclick="backDash()" style="margin-top:15px;">Back</button>
+</div>
+
+<!-- PAYMENT -->
+<div id="payPage">
+<h2>Complete Payment</h2>
+<h3 id="payAmount"></h3>
+<div id="paymentMethods"></div>
+<h2 id="timer">05:00</h2>
+<input id="payUtr" placeholder="Enter Transaction ID / UTR">
+<button onclick="confirmPayment()">Submit</button>
+<button onclick="cancelPay()">Cancel</button>
+</div>
+
+<!-- SELL -->
+<div id="sellPage">
+<h2>Sell OMG</h2>
+<h3 id="sellBal"></h3>
+
+<p><strong>Choose Withdrawal Method:</strong></p>
+<div class="btns">
+    <button onclick="selectSellMethod('PhonePe')" class="payment-btn">📱 PhonePe</button>
+    <button onclick="selectSellMethod('Paytm')" class="payment-btn">💰 Paytm</button>
+    <button onclick="selectSellMethod('Bank')" class="payment-btn">🏦 Bank Account</button>
+</div>
+
+<div id="sellMethodDetails" style="margin-top:20px; display:none;">
+    <p id="selectedMethod"></p>
+    <input id="sellInput" placeholder="Enter OMG Amount">
+    
+    <input id="sellPhone" placeholder="Enter Phone Number" style="display:none;">
+    <input id="bankName" placeholder="Bank Name" style="display:none;">
+    <input id="accNumber" placeholder="Account Number" style="display:none;">
+    <input id="ifscCode" placeholder="IFSC Code" style="display:none;">
+    
+    <button onclick="processSell()">Confirm Sell</button>
+</div>
+
+<button onclick="backDash2()" style="margin-top:15px;">Back</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+<h2 style="color:#facc15;text-align:center;">🔑 Admin Panel</h2>
+<div class="card2">
+    <p><strong>Current Balance:</strong> <span id="adminBalance">1000 OMG</span></p>
+    <input id="adminAmount" type="number" placeholder="Enter Amount">
+    <button onclick="adminAddBalance()" style="background:#22c55e;color:white;">Add Balance</button>
+    <button onclick="adminRemoveBalance()" style="background:#ef4444;color:white;">Remove Balance</button>
+    <button onclick="adminClearHistory()" style="background:#64748b;color:white;margin-top:10px;">Clear All History</button>
+</div>
+<button onclick="backFromAdmin()" style="margin-top:15px;background:#ef4444;color:white;">Back to Dashboard</button>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settingsModal" class="modal">
+<div class="modal-content">
+    <h3>⚙️ Settings</h3>
+    
+    <p style="margin:15px 0 8px 0; font-weight:bold;">Profile</p>
+    <p id="profilePhone" style="color:#38bdf8; background:#334155; padding:10px; border-radius:8px;">
+        Phone: Loading...
+    </p>
+
+    <button onclick="changePassword()" style="background:#334155;color:white;">Change Password</button>
+
+    <p style="margin:25px 0 8px 0; font-weight:bold;">Refer & Earn</p>
+    <p style="font-size:14px;color:#94a3b8; line-height:1.4;">
+        Invite your friends and earn <strong>1% bonus</strong> on every purchase they make.
+    </p>
+    <button onclick="copyReferral()" style="background:#eab308;color:#000;">Copy Referral Link</button>
+
+    <button onclick="logoutFromSettings()" style="background:#ef4444;color:white;margin-top:25px;">
+        Logout
+    </button>
+
+    <button onclick="closeSettings()" style="background:#64748b;color:white;margin-top:10px;">Close</button>
+</div>
+</div>
+
+<!-- PIN Modals -->
+<div id="setPinModal" class="modal">
+<div class="pin-modal-content">
+    <h3>🔐 Set Your 4-Digit PIN</h3>
+    <p style="font-size:14px;color:#94a3b8;">This PIN will be required for all future sells</p>
+    <input id="setPinInput" type="password" maxlength="4" class="pin-input" placeholder="••••" onkeypress="if(event.key === 'Enter') savePin()">
+    <p id="setPinError" style="color:#ef4444; margin:10px 0; display:none;">PIN must be exactly 4 digits</p>
+    <button onclick="savePin()" style="background:#22c55e;color:white;">Save PIN</button>
+</div>
+</div>
+
+<div id="verifyPinModal" class="modal">
+<div class="pin-modal-content">
+    <h3>🔐 Enter 4-Digit PIN</h3>
+    <input id="verifyPinInput" type="password" maxlength="4" class="pin-input" placeholder="••••" onkeypress="if(event.key === 'Enter') verifySellPin()">
+    <p id="verifyPinError" style="color:#ef4444; margin:10px 0; display:none;">Incorrect PIN</p>
+    <button onclick="verifySellPin()" style="background:#22c55e;color:white;">Verify</button>
+    <button onclick="cancelVerifyPin()" style="background:#ef4444;color:white;margin-top:8px;">Cancel</button>
+</div>
+</div>
+
+<!-- Help Modal -->
+<div id="helpModal" class="modal">
+<div class="modal-content">
+    <h3>🆘 Help Center</h3>
+    <p>If you have any issues or questions,</p>
+    <p>please contact us on Telegram:</p>
+    <a href="https://t.me/aaaaaadiiiiii" target="_blank" style="color:#38bdf8;font-size:18px;text-decoration:none;">
+        📱 t.me/aaaaaadiiiiii
+    </a>
+    <br><br>
+    <button onclick="closeHelp()" style="background:#22c55e;color:white;">Close</button>
+</div>
+</div>
+
+<script>
+
+// SAFETY
+if(!localStorage.getItem("orders")){
+    localStorage.setItem("orders","[]");
+}
+
+let balance = Number(localStorage.getItem("bal")) || 1000;
+const ADMIN_PASS = "adfar0029";   // ← Your requested admin password
+
+// LOGIN & REGISTER (unchanged)
+function showRegister(){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("register").style.display = "block";
+}
+
+function showLogin(){
+    document.getElementById("register").style.display = "none";
+    document.getElementById("login").style.display = "block";
+}
+
+function register(){
+    let phone = document.getElementById("ruser").value.trim();
+    let pass = document.getElementById("rpass").value.trim();
+    let pass2 = document.getElementById("rpass2").value.trim();
+
+    if(!phone || !pass){
+        alert("Please fill all fields");
+        return;
+    }
+    if(pass !== pass2){
+        alert("Passwords do not match!");
+        return;
+    }
+
+    localStorage.setItem("user", phone);
+    localStorage.setItem("pass", pass);
+    alert("✅ Account Created Successfully!");
+    showLogin();
+    
+    document.getElementById("ruser").value = "";
+    document.getElementById("rpass").value = "";
+    document.getElementById("rpass2").value = "";
+}
+
+function login(){
+    let phone = document.getElementById("luser").value.trim();
+    let pass = document.getElementById("lpass").value.trim();
+
+    let savedUser = localStorage.getItem("user");
+    let savedPass = localStorage.getItem("pass");
+
+    if(phone && pass && phone === savedUser && pass === savedPass){
+        document.querySelector(".center").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        
+        document.getElementById("profilePhone").innerText = "Phone: " + phone;
+        
+        if(!localStorage.getItem("userPin")){
+            setTimeout(() => {
+                document.getElementById("setPinModal").style.display = "flex";
+            }, 600);
+        }
+        
+        document.getElementById("bal").innerText = balance + " OMG";
+        loadHistory();
+    } else {
+        alert("❌ Wrong Phone Number or Password!");
+    }
+}
+
+function logout(){
+    document.getElementById("dashboard").style.display = "none";
+    document.querySelector(".center").style.display = "flex";
+    document.getElementById("login").style.display = "block";
+    document.getElementById("luser").value = "";
+    document.getElementById("lpass").value = "";
+}
+
+// BUY with Dynamic UPI ID (unchanged)
+let baseAmounts = [500, 700, 900, 1000, 1100, 2000, 3000, 4000, 5000, 6000, 10000, 20000, 55000, 100000, 200000];
+let currentA = 0, currentR = 0;
+
+function showBuy(){
+    document.getElementById("dashboard").style.display="none";
+    document.getElementById("buyPage").style.display="block";
+    randomOrders();
+}
+
+function backDash(){
+    document.getElementById("buyPage").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+}
+
+function randomOrders(){
+    let shuffled = [...baseAmounts].sort(() => Math.random() - 0.5);
+    let html = "";
+    shuffled.forEach(a => {
+        let rate = (a > 10000) ? 10 : 4;
+        let reward = (a * rate / 100).toFixed(0);
+        
+        let upiId = (a > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis";
+        
+        html += `<div class="buy-order">
+            <strong>₹${a.toLocaleString('en-IN')}</strong> 
+            → +${reward} OMG 
+            <span style="font-size:13px;color:#166534;">(${rate}% Bonus)</span>
+            
+            <div style="margin:10px 0; padding:10px; background:#334155; border-radius:8px; font-size:13px;">
+                <strong>UPI ID:</strong> ${upiId}
+            </div>
+            
+            <button onclick="openPay(${a},${reward})" 
+                    style="background:#000;color:#facc15;padding:12px;border-radius:8px;margin-top:10px;">
+                Buy Now
+            </button>
+        </div>`;
+    });
+    orders.innerHTML = html;
+}
+
+// PAYMENT (unchanged)
+let timerInt;
+
+function openPay(a, r){
+    currentA = a; currentR = r;
+    document.getElementById("buyPage").style.display="none";
+    document.getElementById("payPage").style.display="block";
+    document.getElementById("payAmount").innerText = "₹" + a.toLocaleString('en-IN');
+    
+    let methodsHTML = `
+        <p><strong>Pay using:</strong></p>
+        <button onclick="selectBuyMethod('PhonePe')" class="payment-btn">📱 PhonePe</button>
+        <button onclick="selectBuyMethod('Mobikwik')" class="payment-btn">💳 Mobikwik</button>
+        <button onclick="selectBuyMethod('FreeRecharge')" class="payment-btn">🔋 FreeRecharge</button>
+    `;
+    document.getElementById("paymentMethods").innerHTML = methodsHTML;
+    
+    startTimer(300);
+}
+
+function selectBuyMethod(method){
+    alert(`Redirecting to ${method}...\n\nPlease complete payment of ₹${currentA} and enter Transaction ID.`);
+}
+
+function startTimer(s){
+    clearInterval(timerInt);
+    timerInt = setInterval(() => {
+        let m = Math.floor(s/60);
+        let sec = s % 60;
+        document.getElementById("timer").innerText = (m<10?"0":"") + m + ":" + (sec<10?"0":"") + sec;
+        s--;
+        if(s < 0){ clearInterval(timerInt); cancelPay(); }
+    }, 1000);
+}
+
+function cancelPay(){
+    document.getElementById("payPage").style.display="none";
+    document.getElementById("buyPage").style.display="block";
+}
+
+function confirmPayment(){
+    let list = JSON.parse(localStorage.getItem("orders"));
+    list.push({type:"Buy", amount:currentA, reward:currentR, status:"Pending", time:new Date().toLocaleTimeString()});
+    localStorage.setItem("orders", JSON.stringify(list));
+    document.getElementById("payPage").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+    loadHistory();
+    alert("Payment submitted! Waiting for confirmation.");
+}
+
+// SELL functions (unchanged)
+let selectedSellMethod = "";
+let pendingSellAmount = 0;
+let pendingSellMethod = "";
+
+function showSell(){
+    document.getElementById("dashboard").style.display="none";
+    document.getElementById("sellPage").style.display="block";
+    document.getElementById("sellBal").innerText = balance + " OMG";
+    document.getElementById("sellMethodDetails").style.display = "none";
+    
+    document.getElementById("sellInput").value = "";
+    document.getElementById("sellPhone").style.display = "none";
+    document.getElementById("bankName").style.display = "none";
+    document.getElementById("accNumber").style.display = "none";
+    document.getElementById("ifscCode").style.display = "none";
+}
+
+function backDash2(){
+    document.getElementById("sellPage").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+}
+
+function selectSellMethod(method){
+    selectedSellMethod = method;
+    document.getElementById("sellMethodDetails").style.display = "block";
+    document.getElementById("selectedMethod").innerHTML = `<strong>Selected: ${method}</strong>`;
+
+    document.getElementById("sellPhone").style.display = (method === "PhonePe" || method === "Paytm") ? "block" : "none";
+    document.getElementById("bankName").style.display = (method === "Bank") ? "block" : "none";
+    document.getElementById("accNumber").style.display = (method === "Bank") ? "block" : "none";
+    document.getElementById("ifscCode").style.display = (method === "Bank") ? "block" : "none";
+}
+
+function processSell(){
+    let q = Number(document.getElementById("sellInput").value);
+    if(q > balance || q <= 0){
+        alert("Invalid amount!");
+        return;
+    }
+    if(!selectedSellMethod){
+        alert("Please select a withdrawal method");
+        return;
+    }
+
+    pendingSellAmount = q;
+    pendingSellMethod = selectedSellMethod;
+
+    document.getElementById("verifyPinModal").style.display = "flex";
+    document.getElementById("verifyPinInput").value = "";
+    document.getElementById("verifyPinError").style.display = "none";
+}
+
+function verifySellPin(){
+    let enteredPin = document.getElementById("verifyPinInput").value.trim();
+    let savedPin = localStorage.getItem("userPin");
+
+    if(enteredPin === savedPin){
+        document.getElementById("verifyPinModal").style.display = "none";
+        
+        let list = JSON.parse(localStorage.getItem("orders"));
+        list.push({
+            type: "Sell",
+            amount: pendingSellAmount,
+            method: pendingSellMethod,
+            status: "Processing",
+            time: new Date().toLocaleTimeString()
+        });
+
+        balance -= pendingSellAmount;
+        localStorage.setItem("orders", JSON.stringify(list));
+        localStorage.setItem("bal", balance);
+        document.getElementById("bal").innerText = balance + " OMG";
+
+        backDash2();
+        loadHistory();
+        alert(`✅ Sell order of ${pendingSellAmount} OMG via ${pendingSellMethod} is now Processing!`);
+    } else {
+        document.getElementById("verifyPinError").style.display = "block";
+        document.getElementById("verifyPinInput").value = "";
+    }
+}
+
+function cancelVerifyPin(){
+    document.getElementById("verifyPinModal").style.display = "none";
+}
+
+// PIN Setup
+function savePin(){
+    let newPin = document.getElementById("setPinInput").value.trim();
+    if(newPin.length === 4 && /^\d{4}$/.test(newPin)){
+        localStorage.setItem("userPin", newPin);
+        document.getElementById("setPinModal").style.display = "none";
+        alert("✅ 4-Digit PIN set successfully!\nYou will need this PIN for every sell.");
+    } else {
+        document.getElementById("setPinError").style.display = "block";
+        document.getElementById("setPinInput").value = "";
+    }
+}
+
+function loadHistory(){
+    let list = JSON.parse(localStorage.getItem("orders"));
+    let html = "";
+    list.slice().reverse().forEach(o => {
+        html += `<div style="padding:10px;background:white;margin:6px 0;border-radius:10px;">
+            ${o.type} ₹${o.amount} ${o.method ? `(${o.method})` : ''} - ${o.status}
+        </div>`;
+    });
+    document.getElementById("history").innerHTML = html;
+}
+
+// Settings
+function openSettings(){
+    document.getElementById("settingsModal").style.display = "flex";
+}
+
+function closeSettings(){
+    document.getElementById("settingsModal").style.display = "none";
+}
+
+function changePassword(){
+    let newPass = prompt("Enter your new password:");
+    if(newPass && newPass.length >= 4){
+        localStorage.setItem("pass", newPass);
+        alert("✅ Password changed successfully!");
+    } else if(newPass){
+        alert("Password must be at least 4 characters long.");
+    }
+}
+
+function copyReferral(){
+    alert("✅ Referral Link Copied!\n\nInvite your friends and earn 1% bonus on every purchase they make.");
+}
+
+function logoutFromSettings(){
+    closeSettings();
+    logout();
+}
+
+function openHelp(){
+    document.getElementById("helpModal").style.display = "flex";
+}
+
+function closeHelp(){
+    document.getElementById("helpModal").style.display = "none";
+}
+
+// ==================== ADMIN PANEL ====================
+function showAdminPanel(){
+    let enteredPass = prompt("Enter Admin Password:");
+    if(enteredPass === ADMIN_PASS){
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+        document.getElementById("adminBalance").innerText = balance + " OMG";
+    } else {
+        alert("❌ Wrong Admin Password!");
+    }
+}
+
+function backFromAdmin(){
+    document.getElementById("adminPanel").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+}
+
+function adminAddBalance(){
+    let amt = Number(document.getElementById("adminAmount").value);
+    if(amt > 0){
+        balance += amt;
+        localStorage.setItem("bal", balance);
+        document.getElementById("bal").innerText = balance + " OMG";
+        document.getElementById("adminBalance").innerText = balance + " OMG";
+        alert(`✅ Added ${amt} OMG to balance`);
+        document.getElementById("adminAmount").value = "";
+    }
+}
+
+function adminRemoveBalance(){
+    let amt = Number(document.getElementById("adminAmount").value);
+    if(amt > 0 && amt <= balance){
+        balance -= amt;
+        localStorage.setItem("bal", balance);
+        document.getElementById("bal").innerText = balance + " OMG";
+        document.getElementById("adminBalance").innerText = balance + " OMG";
+        alert(`✅ Removed ${amt} OMG from balance`);
+        document.getElementById("adminAmount").value = "";
+    }
+}
+
+function adminClearHistory(){
+    if(confirm("Clear ALL transaction history?")){
+        localStorage.setItem("orders", "[]");
+        loadHistory();
+        alert("✅ History cleared successfully!");
+    }
+}
+
+window.onload = function(){
+    loadHistory();
+}
+
+</script>
+
+</body>
+  </html>
