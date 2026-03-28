@@ -2,8 +2,18 @@
 <html>
 <head>
 <title>OMG Wallet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
+/* Zoom Fix */
+html, body {
+    zoom: 1 !important;
+    transform: scale(1);
+    transform-origin: 0 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body{margin:0;font-family:Arial;background:linear-gradient(135deg,#020617,#0f172a);color:white;}
 .center{display:flex;justify-content:center;align-items:center;height:100vh;}
 .card{background:#1e293b;padding:25px;border-radius:20px;width:320px;}
@@ -14,7 +24,7 @@ button{width:100%;padding:14px;border:none;border-radius:10px;margin-top:10px;cu
 .btn2{background:#22c55e;color:#000;}
 .link{text-align:center;margin-top:15px;color:#38bdf8;cursor:pointer;font-size:15px;}
 
-#dashboard,#buyPage,#sellPage,#payPage,#adminPanel{
+#dashboard,#buyPage,#sellPage,#utrPage,#adminPanel{
 display:none;background:#f5f5f5;color:black;min-height:100vh;padding:15px;
 }
 
@@ -46,12 +56,14 @@ max-height:280px;overflow:auto;
     z-index: 1000;
 }
 
-.modal-content, .pin-modal-content {
+.modal-content, .pin-modal-content, .rules-modal {
     background: #1e293b;
     padding: 25px;
     border-radius: 15px;
-    width: 320px;
-    text-align: center;
+    width: 340px;
+    text-align: left;
+    max-height: 85vh;
+    overflow-y: auto;
 }
 .pin-input {
     font-size: 28px;
@@ -64,7 +76,6 @@ max-height:280px;overflow:auto;
     padding: 12px;
 }
 
-/* Payment Method Buttons */
 .payment-btn {
     background: #1e293b;
     color: white;
@@ -75,14 +86,206 @@ max-height:280px;overflow:auto;
     background: #38bdf8;
     border-color: #38bdf8;
 }
+
+/* ARWallet Style */
+.balance-box { text-align:center; padding:15px 0; }
+.balance-box p { margin:5px 0; font-size:15px; color:#94a3b8; }
+.balance-box h1 { font-size:32px; margin:8px 0; color:#facc15; }
+
+.icon-row { 
+    display:flex; 
+    justify-content:space-around; 
+    margin:25px 0 20px 0; 
+    flex-wrap:wrap;
+}
+.icon-row div { 
+    text-align:center; 
+    font-size:13px; 
+    width:70px;
+    cursor: pointer;
+}
+
+.buy-sell-row { 
+    display:flex; 
+    gap:12px; 
+    margin:20px 0; 
+}
+.buy-card, .sell-card {
+    flex:1; 
+    padding:20px 15px; 
+    border-radius:15px; 
+    text-align:center; 
+    cursor:pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.buy-card { background:#fef08c; color:#000; }
+.sell-card { background:#86efac; color:#000; }
+
+.orders-info {
+    text-align:center; 
+    color:#64748b; 
+    margin:20px 0;
+    font-size:15px;
+}
+
+/* Professional History */
+.history-item {
+    background: white;
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    position: relative;
+}
+
+.status-tag {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status-timeout { background:#fef08c; color:#000; }
+.status-completed { background:#86efac; color:#000; }
+.status-canceled { background:#fca5a5; color:#000; }
+.status-processing { background:#facc15; color:#000; }
+
+.amount { 
+    font-size: 19px; 
+    font-weight: bold; 
+    text-align: right; 
+    color: #000;
+}
+
+.details-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 14px;
+    color: #334155;
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    color: #38bdf8;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+/* Auto Rotating Banners */
+.banner-container {
+    position: relative;
+    height: 160px;
+    margin: 15px 0;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.banner {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+}
+
+.banner.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.banner1 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.banner2 { background: linear-gradient(135deg, #eab308, #f59e0b); }
+.banner3 { background: linear-gradient(135deg, #22c55e, #15803d); }
+.banner4 { background: linear-gradient(135deg, #64748b, #334155); }
+
+/* AI Bot Styles */
+.chat-container {
+    height: 340px;
+    background: #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #0f172a;
+}
+
+.chat-message {
+    margin: 10px 0;
+    padding: 12px 16px;
+    border-radius: 18px;
+    max-width: 85%;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.bot-message {
+    background: #334155;
+    align-self: flex-start;
+    color: white;
+    border-bottom-left-radius: 4px;
+}
+
+.user-message {
+    background: #38bdf8;
+    color: #000;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-input-area {
+    padding: 12px;
+    background: #1e293b;
+    display: flex;
+    gap: 8px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 30px;
+    background: #334155;
+    color: white;
+    font-size: 15px;
+}
+
+.send-btn {
+    background: #22c55e;
+    color: white;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="center">
-
-<!-- LOGIN PAGE -->
+<!-- LOGIN -->
 <div id="login" class="card">
     <div class="logo">💰 OMG WALLET</div>
     <h3 style="text-align:center;">Login</h3>
@@ -92,7 +295,7 @@ max-height:280px;overflow:auto;
     <div class="link" onclick="showRegister()">Don't have an account? Create Account</div>
 </div>
 
-<!-- REGISTER PAGE -->
+<!-- REGISTER -->
 <div id="register" class="card" style="display:none;">
     <div class="logo">💰 OMG WALLET</div>
     <h3 style="text-align:center;">Create Account</h3>
@@ -102,78 +305,117 @@ max-height:280px;overflow:auto;
     <button class="btn2" onclick="register()">Register</button>
     <div class="link" onclick="showLogin()">Already have an account? Login</div>
 </div>
-
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard">
-<h2 style="color:#facc15;text-align:center;">OMG Wallet</h2>
+    <h2 style="color:#facc15;text-align:center;margin:15px 0 10px 0;">OMG Wallet</h2>
 
-<div class="card2">
-    <p>My total assets</p>
-    <h1 id="bal">1000 OMG</h1>
-    <p style="margin-top:8px; font-size:15px; color:#94a3b8;">
-        <strong>1 OMG Coin = ₹1</strong>
-    </p>
+    <div class="card2">
+        <div class="balance-box">
+            <p>My total assets</p>
+            <h1 id="bal">1000 OMG</h1>
+            <p style="margin-top:8px; font-size:15px; color:#94a3b8;">
+                <strong>1 OMG Coin = ₹1</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- Auto Swapping Banners -->
+    <div class="banner-container">
+        <div class="banner banner1 active" onclick="alert('Earn More Rewards - Coming Soon!')">
+            <strong>Earn More Rewards on Every Successful Buy!</strong><br>
+            <small>Buy BANK Order → Up to +6% Bonus<br>Buy OTP-UPI Order → Up to +4% Bonus</small>
+        </div>
+        <div class="banner banner2" onclick="alert('Invite Friends - Coming Soon!')">
+            <strong>Invite Friends & Earn Up To +7,000 OMG Rewards!</strong><br>
+            <small>Invite Your Friends Now And Maximize Your Rewards!</small>
+        </div>
+        <div class="banner banner3" onclick="alert('VIP Bonus - Coming Soon!')">
+            <strong>VIP BONUS ALERT!</strong><br>
+            <small>Invite your friends & earn rewards:<br>Lv1 → +1%   Lv2 → +0.5%</small>
+        </div>
+        <div class="banner banner4" onclick="alert('Risk Warning - Coming Soon!')">
+            <strong>Platform Notice</strong><br>
+            <strong>Risk Warning</strong><br>
+            <small>Invest wisely. Past performance is not indicative of future results.</small>
+        </div>
+    </div>
+
+    <div class="vip-banner">
+        <h3>🎉 VIP BONUS ALERT!</h3>
+        <p>Invite your friends & earn rewards:</p>
+        <div class="vip-level">Lv1 → +1%</div>
+        <div class="vip-level">Lv2 → +0.5%</div>
+        <p style="margin-top:12px; font-size:14px;">Start inviting now & boost your earnings today!</p>
+        <button onclick="copyReferral()" style="background:white;color:#15803d;width:auto;padding:10px 24px;border-radius:25px;margin-top:10px;border:none;font-weight:bold;">Invite Friends</button>
+    </div>
+
+    <div class="icon-row">
+        <div onclick="showBuyRules()">📥<br>Buy rules</div>
+        <div onclick="showSellRules()">📤<br>Sell rules</div>
+        <div onclick="openHelp()">🛟<br>Help Center</div>
+        <div onclick="openSettings()">👤<br>User</div>
+    </div>
+
+    <div class="buy-sell-row">
+        <div class="buy-card" onclick="showBuy()">
+            <strong style="font-size:19px;">Buy OMG</strong><br>
+            <small>Flexible purchasing</small>
+        </div>
+        <div class="sell-card" onclick="showSell()">
+            <strong style="font-size:19px;">Sell OMG</strong><br>
+            <small>Efficient and fast</small>
+        </div>
+    </div>
+
+    <div class="orders-info">
+        💰 You have <strong>0 orders in progress</strong>
+    </div>
+
+    <h4>Transaction History</h4>
+    <div id="history" class="historyBox"></div>
+
+    <button onclick="logout()" style="background:#ef4444;color:white;margin-top:20px;">Logout</button>
 </div>
 
-<div class="btns">
-    <button class="buy" onclick="showBuy()">Buy OMG</button>
-    <button class="sell" onclick="showSell()">Sell OMG</button>
-</div>
-
-<button class="help-btn" onclick="openHelp()">🆘 Help Center</button>
-<button class="settings-btn" onclick="openSettings()">⚙️ Settings</button>
-<button class="admin-btn" onclick="showAdminPanel()">🔑 Admin Panel</button>
-
-<h4>Transaction History</h4>
-<div id="history" class="historyBox"></div>
-
-<button onclick="logout()" style="background:#ef4444;color:white;margin-top:15px;">Logout</button>
-</div>
-
-<!-- BUY -->
+<!-- BUY PAGE -->
 <div id="buyPage">
 <h2 style="color:#facc15;">Buy OMG <span style="color:#eab308;">(Live Offers • Bonus Applied)</span></h2>
 <div id="orders"></div>
 <button onclick="backDash()" style="margin-top:15px;">Back</button>
 </div>
 
-<!-- PAYMENT -->
-<div id="payPage">
-<h2>Complete Payment</h2>
-<h3 id="payAmount"></h3>
-<div id="paymentMethods"></div>
-<h2 id="timer">05:00</h2>
-<input id="payUtr" placeholder="Enter Transaction ID / UTR">
-<button onclick="confirmPayment()">Submit</button>
-<button onclick="cancelPay()">Cancel</button>
+<!-- UTR PAYMENT PAGE -->
+<div id="utrPage" style="display:none; background:#f5f5f5; color:black; min-height:100vh; padding:15px;">
+    <h2 style="color:#facc15;">Complete Payment</h2>
+    <h3 id="utrAmount"></h3>
+    <p><strong>Enter Transaction ID / UTR</strong></p>
+    <input id="utrInput" placeholder="Enter UTR Number" style="margin:15px 0;">
+    <button onclick="submitUTR()" style="background:#22c55e;color:white;">Submit UTR</button>
+    <button onclick="cancelUTR()" style="background:#ef4444;color:white;margin-top:10px;">Cancel</button>
+    <p style="font-size:13px;color:#64748b;margin-top:20px;">Order will expire in 9 minutes if UTR not submitted.</p>
 </div>
 
-<!-- SELL -->
+<!-- SELL PAGE -->
 <div id="sellPage">
 <h2>Sell OMG</h2>
 <h3 id="sellBal"></h3>
-
 <p><strong>Choose Withdrawal Method:</strong></p>
 <div class="btns">
     <button onclick="selectSellMethod('PhonePe')" class="payment-btn">📱 PhonePe</button>
     <button onclick="selectSellMethod('Paytm')" class="payment-btn">💰 Paytm</button>
     <button onclick="selectSellMethod('Bank')" class="payment-btn">🏦 Bank Account</button>
 </div>
-
 <div id="sellMethodDetails" style="margin-top:20px; display:none;">
     <p id="selectedMethod"></p>
     <input id="sellInput" placeholder="Enter OMG Amount">
-    
     <input id="sellPhone" placeholder="Enter Phone Number" style="display:none;">
     <input id="bankName" placeholder="Bank Name" style="display:none;">
     <input id="accNumber" placeholder="Account Number" style="display:none;">
     <input id="ifscCode" placeholder="IFSC Code" style="display:none;">
-    
     <button onclick="processSell()">Confirm Sell</button>
 </div>
-
 <button onclick="backDash2()" style="margin-top:15px;">Back</button>
 </div>
 
@@ -194,24 +436,13 @@ max-height:280px;overflow:auto;
 <div id="settingsModal" class="modal">
 <div class="modal-content">
     <h3>⚙️ Settings</h3>
-    
     <p style="margin:15px 0 8px 0; font-weight:bold;">Profile</p>
-    <p id="profilePhone" style="color:#38bdf8; background:#334155; padding:10px; border-radius:8px;">
-        Phone: Loading...
-    </p>
-
+    <p id="profilePhone" style="color:#38bdf8; background:#334155; padding:10px; border-radius:8px;">Phone: Loading...</p>
     <button onclick="changePassword()" style="background:#334155;color:white;">Change Password</button>
-
     <p style="margin:25px 0 8px 0; font-weight:bold;">Refer & Earn</p>
-    <p style="font-size:14px;color:#94a3b8; line-height:1.4;">
-        Invite your friends and earn <strong>1% bonus</strong> on every purchase they make.
-    </p>
+    <p style="font-size:14px;color:#94a3b8; line-height:1.4;">Invite your friends and earn <strong>1% bonus</strong> on every purchase they make.</p>
     <button onclick="copyReferral()" style="background:#eab308;color:#000;">Copy Referral Link</button>
-
-    <button onclick="logoutFromSettings()" style="background:#ef4444;color:white;margin-top:25px;">
-        Logout
-    </button>
-
+    <button onclick="logoutFromSettings()" style="background:#ef4444;color:white;margin-top:25px;">Logout</button>
     <button onclick="closeSettings()" style="background:#64748b;color:white;margin-top:10px;">Close</button>
 </div>
 </div>
@@ -221,7 +452,7 @@ max-height:280px;overflow:auto;
 <div class="pin-modal-content">
     <h3>🔐 Set Your 4-Digit PIN</h3>
     <p style="font-size:14px;color:#94a3b8;">This PIN will be required for all future sells</p>
-    <input id="setPinInput" type="password" maxlength="4" class="pin-input" placeholder="••••" onkeypress="if(event.key === 'Enter') savePin()">
+    <input id="setPinInput" type="password" maxlength="4" class="pin-input" placeholder="••••">
     <p id="setPinError" style="color:#ef4444; margin:10px 0; display:none;">PIN must be exactly 4 digits</p>
     <button onclick="savePin()" style="background:#22c55e;color:white;">Save PIN</button>
 </div>
@@ -230,109 +461,173 @@ max-height:280px;overflow:auto;
 <div id="verifyPinModal" class="modal">
 <div class="pin-modal-content">
     <h3>🔐 Enter 4-Digit PIN</h3>
-    <input id="verifyPinInput" type="password" maxlength="4" class="pin-input" placeholder="••••" onkeypress="if(event.key === 'Enter') verifySellPin()">
+    <input id="verifyPinInput" type="password" maxlength="4" class="pin-input" placeholder="••••">
     <p id="verifyPinError" style="color:#ef4444; margin:10px 0; display:none;">Incorrect PIN</p>
     <button onclick="verifySellPin()" style="background:#22c55e;color:white;">Verify</button>
     <button onclick="cancelVerifyPin()" style="background:#ef4444;color:white;margin-top:8px;">Cancel</button>
 </div>
 </div>
 
-<!-- Help Modal -->
+<!-- Buy Rules Modal -->
+<div id="buyRulesModal" class="modal">
+<div class="modal-content">
+    <h3>📥 Buy Rules</h3>
+    <div style="background:#1e293b; padding:15px; border-radius:12px; margin:15px 0;">
+        <h4 style="color:#facc15;">How to Buy OMG Coins</h4>
+        <ul style="padding-left:20px; line-height:1.8;">
+            <li>Select any buy offer from the Buy section</li>
+            <li>Pay the exact amount to the displayed UPI ID</li>
+            <li>After successful payment, copy the UTR / Transaction ID</li>
+            <li>Paste the UTR in the payment confirmation screen</li>
+            <li>Order will expire in 9 minutes if UTR not submitted</li>
+            <li>Bonus coins (4% or 10%) will be added automatically after confirmation</li>
+            <li>Usually confirmed within 1-24 hours</li>
+        </ul>
+    </div>
+    <button onclick="closeBuyRules()" style="background:#22c55e;color:white;width:100%;">Close</button>
+</div>
+</div>
+
+<!-- Sell Rules Modal -->
+<div id="sellRulesModal" class="modal">
+<div class="modal-content">
+    <h3>📤 Sell Rules</h3>
+    <div style="background:#1e293b; padding:15px; border-radius:12px; margin:15px 0;">
+        <h4 style="color:#facc15;">How to Sell OMG Coins</h4>
+        <ul style="padding-left:20px; line-height:1.8;">
+            <li>Enter the amount you want to sell</li>
+            <li>Choose your withdrawal method (PhonePe, Paytm or Bank)</li>
+            <li>Fill correct details (Phone Number or Bank Account + IFSC)</li>
+            <li>Confirm the sell with your 4-digit PIN</li>
+            <li>Sell order status will show as "Processing"</li>
+            <li>Money is usually transferred within 30 minutes to 4 hours</li>
+            <li>Do not sell more than your available balance</li>
+        </ul>
+    </div>
+    <button onclick="closeSellRules()" style="background:#22c55e;color:white;width:100%;">Close</button>
+</div>
+</div>
+
+<!-- HELP MODAL WITH AI BOT -->
 <div id="helpModal" class="modal">
 <div class="modal-content">
     <h3>🆘 Help Center</h3>
-    <p>If you have any issues or questions,</p>
-    <p>please contact us on Telegram:</p>
-    <a href="https://t.me/aaaaaadiiiiii" target="_blank" style="color:#38bdf8;font-size:18px;text-decoration:none;">
-        📱 t.me/aaaaaadiiiiii
-    </a>
-    <br><br>
-    <button onclick="closeHelp()" style="background:#22c55e;color:white;">Close</button>
+    
+    <!-- AI Chat Bot -->
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message bot-message">
+                Namaste! 👋<br>
+                Main aapki madad karne ke liye yahan hoon.<br>
+                Aap apna order status, payment, ya koi bhi sawal pooch sakte hain.
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input id="chatInput" class="chat-input" placeholder="Type your message here..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button class="send-btn" onclick="sendChatMessage()">↑</button>
+        </div>
+    </div>
+
+    <p style="margin:15px 0 10px 0; text-align:center; font-size:14px;">
+        Ya direct Telegram par contact karein:<br>
+        <a href="https://t.me/aaaaaadiiiiii" target="_blank" style="color:#38bdf8;text-decoration:none;">📱 t.me/aaaaaadiiiiii</a>
+    </p>
+
+    <button onclick="closeHelp()" style="background:#64748b;color:white;margin-top:10px;">Close</button>
 </div>
 </div>
 
 <script>
-
 // SAFETY
-if(!localStorage.getItem("orders")){
-    localStorage.setItem("orders","[]");
-}
+if(!localStorage.getItem("orders")) localStorage.setItem("orders","[]");
 
 let balance = Number(localStorage.getItem("bal")) || 1000;
-const ADMIN_PASS = "adfar0029";   // ← Your requested admin password
+const ADMIN_PASS = "adfar0029";
 
-// LOGIN & REGISTER (unchanged)
-function showRegister(){
-    document.getElementById("login").style.display = "none";
-    document.getElementById("register").style.display = "block";
+// Auto Banner Rotation
+let currentBanner = 0;
+const banners = document.querySelectorAll('.banner');
+
+function rotateBanners() {
+    banners.forEach(b => b.classList.remove('active'));
+    currentBanner = (currentBanner + 1) % banners.length;
+    banners[currentBanner].classList.add('active');
 }
+setInterval(rotateBanners, 4000);
 
-function showLogin(){
-    document.getElementById("register").style.display = "none";
-    document.getElementById("login").style.display = "block";
-}
+// Buy functions (your original code)
+let buyTimers = {};
 
-function register(){
-    let phone = document.getElementById("ruser").value.trim();
-    let pass = document.getElementById("rpass").value.trim();
-    let pass2 = document.getElementById("rpass2").value.trim();
-
-    if(!phone || !pass){
-        alert("Please fill all fields");
-        return;
-    }
-    if(pass !== pass2){
-        alert("Passwords do not match!");
-        return;
-    }
-
-    localStorage.setItem("user", phone);
-    localStorage.setItem("pass", pass);
-    alert("✅ Account Created Successfully!");
-    showLogin();
-    
-    document.getElementById("ruser").value = "";
-    document.getElementById("rpass").value = "";
-    document.getElementById("rpass2").value = "";
-}
-
-function login(){
-    let phone = document.getElementById("luser").value.trim();
-    let pass = document.getElementById("lpass").value.trim();
-
-    let savedUser = localStorage.getItem("user");
-    let savedPass = localStorage.getItem("pass");
-
-    if(phone && pass && phone === savedUser && pass === savedPass){
-        document.querySelector(".center").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        
-        document.getElementById("profilePhone").innerText = "Phone: " + phone;
-        
-        if(!localStorage.getItem("userPin")){
-            setTimeout(() => {
-                document.getElementById("setPinModal").style.display = "flex";
-            }, 600);
+function startBuyTimer(orderId) {
+    if (buyTimers[orderId]) clearTimeout(buyTimers[orderId]);
+    buyTimers[orderId] = setTimeout(() => {
+        let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+        let idx = orders.findIndex(o => o.id === orderId);
+        if (idx !== -1 && orders[idx].status === "Pending") {
+            orders[idx].status = "Expired";
+            localStorage.setItem("orders", JSON.stringify(orders));
+            loadHistory();
         }
+    }, 9 * 60 * 1000);
+}
+
+function redirectToPhonePe(amount) {
+    const yourUPI = (amount > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis";
+    const orderId = "ORD" + Date.now();
+    
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    orders.push({
+        id: orderId,
+        type: "Buy",
+        amount: amount,
+        reward: Math.floor(amount * (amount > 10000 ? 0.10 : 0.04)),
+        status: "Pending",
+        time: new Date().toLocaleTimeString(),
+        utr: ""
+    });
+    localStorage.setItem("orders", JSON.stringify(orders));
+    
+    loadHistory();
+    startBuyTimer(orderId);
+    
+    window.currentOrderId = orderId;
+    document.getElementById("buyPage").style.display = "none";
+    document.getElementById("utrPage").style.display = "block";
+    document.getElementById("utrAmount").innerText = `₹${amount.toLocaleString('en-IN')}`;
+    
+    setTimeout(() => {
+        alert(`Please pay ₹${amount} to:\nUPI ID: ${yourUPI}\n\nAfter payment, enter UTR here.`);
+    }, 500);
+}
+
+function submitUTR() {
+    let utr = document.getElementById("utrInput").value.trim();
+    if (!utr) return alert("Please enter UTR");
+    
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    let idx = orders.findIndex(o => o.id === window.currentOrderId);
+    if (idx !== -1) {
+        orders[idx].status = "Confirmed";
+        orders[idx].utr = utr;
+        localStorage.setItem("orders", JSON.stringify(orders));
         
+        let total = orders[idx].amount + (orders[idx].reward || 0);
+        balance += total;
+        localStorage.setItem("bal", balance);
         document.getElementById("bal").innerText = balance + " OMG";
+        
         loadHistory();
-    } else {
-        alert("❌ Wrong Phone Number or Password!");
+        alert(`✅ Payment Confirmed!\nTotal Added: ₹${total}`);
+        
+        document.getElementById("utrPage").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
     }
 }
 
-function logout(){
-    document.getElementById("dashboard").style.display = "none";
-    document.querySelector(".center").style.display = "flex";
-    document.getElementById("login").style.display = "block";
-    document.getElementById("luser").value = "";
-    document.getElementById("lpass").value = "";
+function cancelUTR() {
+    document.getElementById("utrPage").style.display = "none";
+    document.getElementById("buyPage").style.display = "block";
 }
-
-// BUY with Dynamic UPI ID (unchanged)
-let baseAmounts = [500, 700, 900, 1000, 1100, 2000, 3000, 4000, 5000, 6000, 10000, 20000, 55000, 100000, 200000];
-let currentA = 0, currentR = 0;
 
 function showBuy(){
     document.getElementById("dashboard").style.display="none";
@@ -345,99 +640,125 @@ function backDash(){
     document.getElementById("dashboard").style.display="block";
 }
 
+let baseAmounts = [500, 700, 900, 1000, 1100, 2000, 3000, 4000, 5000, 6000, 10000, 20000, 55000, 100000, 200000];
+
 function randomOrders(){
     let shuffled = [...baseAmounts].sort(() => Math.random() - 0.5);
     let html = "";
     shuffled.forEach(a => {
         let rate = (a > 10000) ? 10 : 4;
-        let reward = (a * rate / 100).toFixed(0);
-        
+        let reward = Math.floor(a * rate / 100);
         let upiId = (a > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis";
         
-        html += `<div class="buy-order">
-            <strong>₹${a.toLocaleString('en-IN')}</strong> 
-            → +${reward} OMG 
-            <span style="font-size:13px;color:#166534;">(${rate}% Bonus)</span>
-            
-            <div style="margin:10px 0; padding:10px; background:#334155; border-radius:8px; font-size:13px;">
-                <strong>UPI ID:</strong> ${upiId}
+        html += `<div style="background:white;padding:15px;margin:10px 0;border-radius:12px;">
+            <strong>₹${a.toLocaleString('en-IN')}</strong> → +${reward} OMG 
+            <span style="color:#166534;">(${rate}% Bonus)</span>
+            <div style="margin:8px 0;padding:8px;background:#334155;color:white;border-radius:8px;font-size:13px;">
+                UPI: <strong>${upiId}</strong>
             </div>
-            
-            <button onclick="openPay(${a},${reward})" 
-                    style="background:#000;color:#facc15;padding:12px;border-radius:8px;margin-top:10px;">
-                Buy Now
-            </button>
+            <button onclick="redirectToPhonePe(${a})" style="background:#000;color:#facc15;padding:12px;border-radius:8px;width:100%;">Buy Now</button>
         </div>`;
     });
-    orders.innerHTML = html;
+    document.getElementById("orders").innerHTML = html;
 }
 
-// PAYMENT (unchanged)
-let timerInt;
+// Professional History
+function loadHistory(){
+    let list = JSON.parse(localStorage.getItem("orders") || "[]");
+    let html = "";
 
-function openPay(a, r){
-    currentA = a; currentR = r;
-    document.getElementById("buyPage").style.display="none";
-    document.getElementById("payPage").style.display="block";
-    document.getElementById("payAmount").innerText = "₹" + a.toLocaleString('en-IN');
-    
-    let methodsHTML = `
-        <p><strong>Pay using:</strong></p>
-        <button onclick="selectBuyMethod('PhonePe')" class="payment-btn">📱 PhonePe</button>
-        <button onclick="selectBuyMethod('Mobikwik')" class="payment-btn">💳 Mobikwik</button>
-        <button onclick="selectBuyMethod('FreeRecharge')" class="payment-btn">🔋 FreeRecharge</button>
-    `;
-    document.getElementById("paymentMethods").innerHTML = methodsHTML;
-    
-    startTimer(300);
+    list.slice().reverse().forEach(o => {
+        let statusClass = "status-processing";
+        let statusText = o.status || "Processing";
+
+        if(statusText === "Confirmed") {
+            statusClass = "status-completed";
+            statusText = "Completed";
+        } else if(statusText === "Canceled") {
+            statusClass = "status-canceled";
+        } else if(statusText === "Pending") {
+            statusClass = "status-timeout";
+            statusText = "Payment Timeout";
+        }
+
+        html += `
+        <div class="history-item">
+            <div class="status-tag ${statusClass}">${statusText}</div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <div style="background:#facc15; color:#000; padding:5px 14px; border-radius:8px; font-weight:bold;">Buy</div>
+                <div class="amount">₹${o.amount || 0}</div>
+            </div>
+
+            <div class="details-row">
+                <div>Amount</div>
+                <div>₹${o.amount || 0}</div>
+            </div>
+            <div class="details-row">
+                <div>Bank card number / UTR</div>
+                <div>${o.utr || o.method || "N/A"} <span class="copy-btn" onclick="copyToClipboard('${o.utr || o.method || ''}')">📋</span></div>
+            </div>
+            <div class="details-row">
+                <div>Time</div>
+                <div>${o.time || 'N/A'}</div>
+            </div>
+            <div class="details-row">
+                <div>Order Number</div>
+                <div>${o.id || 'MR' + Date.now()} <span class="copy-btn" onclick="copyToClipboard('${o.id || 'MR' + Date.now()}')">📋</span></div>
+            </div>
+        </div>`;
+    });
+
+    document.getElementById("history").innerHTML = html || "<p style='text-align:center; padding:30px; color:#64748b;'>No transactions yet</p>";
 }
 
-function selectBuyMethod(method){
-    alert(`Redirecting to ${method}...\n\nPlease complete payment of ₹${currentA} and enter Transaction ID.`);
+function copyToClipboard(text) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Copied: " + text);
+    });
 }
 
-function startTimer(s){
-    clearInterval(timerInt);
-    timerInt = setInterval(() => {
-        let m = Math.floor(s/60);
-        let sec = s % 60;
-        document.getElementById("timer").innerText = (m<10?"0":"") + m + ":" + (sec<10?"0":"") + sec;
-        s--;
-        if(s < 0){ clearInterval(timerInt); cancelPay(); }
-    }, 1000);
+// Login, Register, Sell, PIN, Admin functions
+function showRegister(){ document.getElementById("login").style.display="none"; document.getElementById("register").style.display="block"; }
+function showLogin(){ document.getElementById("register").style.display="none"; document.getElementById("login").style.display="block"; }
+
+function register(){
+    let phone = document.getElementById("ruser").value.trim();
+    let pass = document.getElementById("rpass").value.trim();
+    let pass2 = document.getElementById("rpass2").value.trim();
+    if(!phone || !pass || pass !== pass2) return alert("Invalid details");
+    localStorage.setItem("user", phone);
+    localStorage.setItem("pass", pass);
+    alert("Account Created!");
+    showLogin();
 }
 
-function cancelPay(){
-    document.getElementById("payPage").style.display="none";
-    document.getElementById("buyPage").style.display="block";
+function login(){
+    let phone = document.getElementById("luser").value.trim();
+    let pass = document.getElementById("lpass").value.trim();
+    if(phone === localStorage.getItem("user") && pass === localStorage.getItem("pass")){
+        document.querySelector(".center").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("bal").innerText = balance + " OMG";
+        loadHistory();
+        if(!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
+    } else alert("Wrong credentials!");
 }
 
-function confirmPayment(){
-    let list = JSON.parse(localStorage.getItem("orders"));
-    list.push({type:"Buy", amount:currentA, reward:currentR, status:"Pending", time:new Date().toLocaleTimeString()});
-    localStorage.setItem("orders", JSON.stringify(list));
-    document.getElementById("payPage").style.display="none";
-    document.getElementById("dashboard").style.display="block";
-    loadHistory();
-    alert("Payment submitted! Waiting for confirmation.");
+function logout(){
+    document.getElementById("dashboard").style.display = "none";
+    document.querySelector(".center").style.display = "flex";
+    document.getElementById("login").style.display = "block";
 }
 
-// SELL functions (unchanged)
-let selectedSellMethod = "";
-let pendingSellAmount = 0;
-let pendingSellMethod = "";
+// Sell functions
+let selectedSellMethod = "", pendingSellAmount = 0, pendingSellMethod = "";
 
 function showSell(){
     document.getElementById("dashboard").style.display="none";
     document.getElementById("sellPage").style.display="block";
     document.getElementById("sellBal").innerText = balance + " OMG";
-    document.getElementById("sellMethodDetails").style.display = "none";
-    
-    document.getElementById("sellInput").value = "";
-    document.getElementById("sellPhone").style.display = "none";
-    document.getElementById("bankName").style.display = "none";
-    document.getElementById("accNumber").style.display = "none";
-    document.getElementById("ifscCode").style.display = "none";
 }
 
 function backDash2(){
@@ -449,7 +770,6 @@ function selectSellMethod(method){
     selectedSellMethod = method;
     document.getElementById("sellMethodDetails").style.display = "block";
     document.getElementById("selectedMethod").innerHTML = `<strong>Selected: ${method}</strong>`;
-
     document.getElementById("sellPhone").style.display = (method === "PhonePe" || method === "Paytm") ? "block" : "none";
     document.getElementById("bankName").style.display = (method === "Bank") ? "block" : "none";
     document.getElementById("accNumber").style.display = (method === "Bank") ? "block" : "none";
@@ -458,171 +778,123 @@ function selectSellMethod(method){
 
 function processSell(){
     let q = Number(document.getElementById("sellInput").value);
-    if(q > balance || q <= 0){
-        alert("Invalid amount!");
-        return;
-    }
-    if(!selectedSellMethod){
-        alert("Please select a withdrawal method");
-        return;
-    }
-
+    if(q <= 0 || q > balance) return alert("Invalid amount!");
     pendingSellAmount = q;
     pendingSellMethod = selectedSellMethod;
-
     document.getElementById("verifyPinModal").style.display = "flex";
-    document.getElementById("verifyPinInput").value = "";
-    document.getElementById("verifyPinError").style.display = "none";
 }
 
 function verifySellPin(){
-    let enteredPin = document.getElementById("verifyPinInput").value.trim();
-    let savedPin = localStorage.getItem("userPin");
-
-    if(enteredPin === savedPin){
+    let entered = document.getElementById("verifyPinInput").value.trim();
+    let saved = localStorage.getItem("userPin");
+    if(entered === saved){
         document.getElementById("verifyPinModal").style.display = "none";
-        
-        let list = JSON.parse(localStorage.getItem("orders"));
-        list.push({
-            type: "Sell",
-            amount: pendingSellAmount,
-            method: pendingSellMethod,
-            status: "Processing",
-            time: new Date().toLocaleTimeString()
-        });
-
+        let list = JSON.parse(localStorage.getItem("orders") || "[]");
+        list.push({type:"Sell", amount:pendingSellAmount, method:pendingSellMethod, status:"Processing", time:new Date().toLocaleTimeString()});
         balance -= pendingSellAmount;
         localStorage.setItem("orders", JSON.stringify(list));
         localStorage.setItem("bal", balance);
         document.getElementById("bal").innerText = balance + " OMG";
-
         backDash2();
         loadHistory();
-        alert(`✅ Sell order of ${pendingSellAmount} OMG via ${pendingSellMethod} is now Processing!`);
+        alert(`Sell order of ${pendingSellAmount} OMG via ${pendingSellMethod} Processing!`);
     } else {
         document.getElementById("verifyPinError").style.display = "block";
-        document.getElementById("verifyPinInput").value = "";
     }
 }
 
-function cancelVerifyPin(){
-    document.getElementById("verifyPinModal").style.display = "none";
-}
+function cancelVerifyPin(){ document.getElementById("verifyPinModal").style.display = "none"; }
 
-// PIN Setup
 function savePin(){
-    let newPin = document.getElementById("setPinInput").value.trim();
-    if(newPin.length === 4 && /^\d{4}$/.test(newPin)){
-        localStorage.setItem("userPin", newPin);
+    let pin = document.getElementById("setPinInput").value.trim();
+    if(pin.length === 4 && /^\d{4}$/.test(pin)){
+        localStorage.setItem("userPin", pin);
         document.getElementById("setPinModal").style.display = "none";
-        alert("✅ 4-Digit PIN set successfully!\nYou will need this PIN for every sell.");
+        alert("4-Digit PIN set successfully!");
     } else {
         document.getElementById("setPinError").style.display = "block";
-        document.getElementById("setPinInput").value = "";
     }
 }
 
-function loadHistory(){
-    let list = JSON.parse(localStorage.getItem("orders"));
-    let html = "";
-    list.slice().reverse().forEach(o => {
-        html += `<div style="padding:10px;background:white;margin:6px 0;border-radius:10px;">
-            ${o.type} ₹${o.amount} ${o.method ? `(${o.method})` : ''} - ${o.status}
-        </div>`;
-    });
-    document.getElementById("history").innerHTML = html;
-}
+function openSettings(){ document.getElementById("settingsModal").style.display = "flex"; }
+function closeSettings(){ document.getElementById("settingsModal").style.display = "none"; }
+function changePassword(){ let p = prompt("New Password"); if(p && p.length>=4) {localStorage.setItem("pass",p); alert("Password changed!");} }
+function copyReferral(){ alert("Referral Link Copied!"); }
+function logoutFromSettings(){ closeSettings(); logout(); }
+function openHelp(){ document.getElementById("helpModal").style.display = "flex"; }
+function closeHelp(){ document.getElementById("helpModal").style.display = "none"; }
 
-// Settings
-function openSettings(){
-    document.getElementById("settingsModal").style.display = "flex";
-}
-
-function closeSettings(){
-    document.getElementById("settingsModal").style.display = "none";
-}
-
-function changePassword(){
-    let newPass = prompt("Enter your new password:");
-    if(newPass && newPass.length >= 4){
-        localStorage.setItem("pass", newPass);
-        alert("✅ Password changed successfully!");
-    } else if(newPass){
-        alert("Password must be at least 4 characters long.");
-    }
-}
-
-function copyReferral(){
-    alert("✅ Referral Link Copied!\n\nInvite your friends and earn 1% bonus on every purchase they make.");
-}
-
-function logoutFromSettings(){
-    closeSettings();
-    logout();
-}
-
-function openHelp(){
-    document.getElementById("helpModal").style.display = "flex";
-}
-
-function closeHelp(){
-    document.getElementById("helpModal").style.display = "none";
-}
-
-// ==================== ADMIN PANEL ====================
 function showAdminPanel(){
-    let enteredPass = prompt("Enter Admin Password:");
-    if(enteredPass === ADMIN_PASS){
+    let pass = prompt("Enter Admin Password:");
+    if(pass === ADMIN_PASS){
         document.getElementById("dashboard").style.display = "none";
         document.getElementById("adminPanel").style.display = "block";
         document.getElementById("adminBalance").innerText = balance + " OMG";
-    } else {
-        alert("❌ Wrong Admin Password!");
-    }
+    } else alert("Wrong Password!");
+}
+function backFromAdmin(){ document.getElementById("adminPanel").style.display = "none"; document.getElementById("dashboard").style.display = "block"; }
+function adminAddBalance(){ let a = Number(document.getElementById("adminAmount").value); if(a>0){ balance+=a; localStorage.setItem("bal",balance); document.getElementById("bal").innerText=balance+" OMG"; document.getElementById("adminBalance").innerText=balance+" OMG"; alert("Added!"); }}
+function adminRemoveBalance(){ let a = Number(document.getElementById("adminAmount").value); if(a>0 && a<=balance){ balance-=a; localStorage.setItem("bal",balance); document.getElementById("bal").innerText=balance+" OMG"; document.getElementById("adminBalance").innerText=balance+" OMG"; alert("Removed!"); }}
+function adminClearHistory(){ if(confirm("Clear history?")){ localStorage.setItem("orders","[]"); loadHistory(); alert("Cleared!"); } }
+
+// New Rules Functions
+function showBuyRules() {
+    document.getElementById("buyRulesModal").style.display = "flex";
+}
+function closeBuyRules() {
+    document.getElementById("buyRulesModal").style.display = "none";
 }
 
-function backFromAdmin(){
-    document.getElementById("adminPanel").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
+function showSellRules() {
+    document.getElementById("sellRulesModal").style.display = "flex";
+}
+function closeSellRules() {
+    document.getElementById("sellRulesModal").style.display = "none";
 }
 
-function adminAddBalance(){
-    let amt = Number(document.getElementById("adminAmount").value);
-    if(amt > 0){
-        balance += amt;
-        localStorage.setItem("bal", balance);
-        document.getElementById("bal").innerText = balance + " OMG";
-        document.getElementById("adminBalance").innerText = balance + " OMG";
-        alert(`✅ Added ${amt} OMG to balance`);
-        document.getElementById("adminAmount").value = "";
-    }
+// AI Bot Function
+function sendChatMessage() {
+    let input = document.getElementById("chatInput");
+    let msg = input.value.trim();
+    if (!msg) return;
+
+    let chatBox = document.getElementById("chatMessages");
+    chatBox.innerHTML += `<div class="chat-message user-message">${msg}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+    input.value = "";
+
+    setTimeout(() => {
+        let reply = getBotReply(msg.toLowerCase());
+        chatBox.innerHTML += `<div class="chat-message bot-message">${reply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 700);
 }
 
-function adminRemoveBalance(){
-    let amt = Number(document.getElementById("adminAmount").value);
-    if(amt > 0 && amt <= balance){
-        balance -= amt;
-        localStorage.setItem("bal", balance);
-        document.getElementById("bal").innerText = balance + " OMG";
-        document.getElementById("adminBalance").innerText = balance + " OMG";
-        alert(`✅ Removed ${amt} OMG from balance`);
-        document.getElementById("adminAmount").value = "";
+function getBotReply(msg) {
+    if (msg.includes("order") || msg.includes("pending") || msg.includes("status")) {
+        return "Aapka order <strong>Pending</strong> hai. Payment verify hone ke baad 24 ghante ke andar complete ho jayega.";
     }
-}
-
-function adminClearHistory(){
-    if(confirm("Clear ALL transaction history?")){
-        localStorage.setItem("orders", "[]");
-        loadHistory();
-        alert("✅ History cleared successfully!");
+    if (msg.includes("payment") || msg.includes("utr") || msg.includes("paid")) {
+        return "UTR submit karne ke baad humari team jaldi verify kar legi. Usually 1-24 hours mein balance add ho jata hai.";
     }
+    if (msg.includes("time") || msg.includes("kitna") || msg.includes("kab")) {
+        return "Normal processing time 1 se 24 hours tak hai. High volume mein thoda zyada lag sakta hai.";
+    }
+    if (msg.includes("sell") || msg.includes("withdrawal")) {
+        return "Sell order PIN verify karne ke baad 30 minutes se 4 hours mein process ho jata hai.";
+    }
+    if (msg.includes("hello") || msg.includes("hi") || msg.includes("namaste")) {
+        return "Namaste! 😊 Kaise madad kar sakta hoon?";
+    }
+    return "Dhanyawad! Aapka message note kar liya gaya hai. Jaldi se reply karenge. Ya Telegram par contact kar sakte hain: t.me/aaaaaadiiiiii";
 }
 
 window.onload = function(){
     loadHistory();
-}
+    rotateBanners();
+};
 
 </script>
 
 </body>
-  </html>
+</html>
