@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <title>OMG Wallet | Premium Withdrawal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -16,6 +16,7 @@ body {
     font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
     background: linear-gradient(135deg, #0f172a 0%, #1e1a3a 100%);
     min-height: 100vh;
+    overflow-y: auto;  /* prevents scrollbar width shift */
     overflow-x: hidden;
 }
 
@@ -37,7 +38,7 @@ body::before {
     100% { transform: rotate(360deg); }
 }
 
-/* Center container */
+/* Center container — full viewport flex centering */
 .center {
     display: flex;
     justify-content: center;
@@ -46,7 +47,7 @@ body::before {
     padding: 1rem;
 }
 
-/* Premium glass card */
+/* Premium glass card — no hover movement */
 .card {
     background: rgba(30, 41, 59, 0.75);
     backdrop-filter: blur(12px);
@@ -54,13 +55,14 @@ body::before {
     padding: 2rem 1.8rem;
     width: 100%;
     max-width: 420px;
+    min-height: 500px;               /* fixed minimum height prevents jumping */
     box-shadow: 0 25px 45px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease; /* only box-shadow transition, no transform */
     border: 1px solid rgba(255,255,255,0.2);
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    /* removed transform: translateY(-5px); keeps card stable */
     box-shadow: 0 30px 50px rgba(0,0,0,0.4);
 }
 
@@ -178,46 +180,51 @@ body::before {
     color: #facc15;
 }
 
-/* Transition between forms */
-#login, #register {
-    transition: opacity 0.3s ease;
+/* Dashboard container — full width with consistent spacing */
+#dashboard, #buyPage, #sellPage, #utrPage, #adminPanel, #adminOrdersPanel {
+    display: none;
+    background: #f5f5f5;
+    color: black;
+    min-height: 100vh;
+    padding: 15px;
 }
 
-/* ========== ORIGINAL STYLES (unchanged, from previous version) ========== */
-/* Zoom Fix */
-html, body {
-    zoom: 1 !important;
-    transform: scale(1);
-    transform-origin: 0 0;
-    width: 100%;
-    overflow-x: hidden;
+/* Additional styles keep all original functionality intact */
+.card2 {
+    background: #0f172a;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
 }
-
-body{margin:0;font-family:Arial;background:linear-gradient(135deg,#020617,#0f172a);color:white;}
-.center{display:flex;justify-content:center;align-items:center;height:100vh;}
-.card{background:#1e293b;padding:25px;border-radius:20px;width:320px;}
-.logo{text-align:center;color:#38bdf8;font-size:24px;font-weight:bold;margin-bottom:15px;}
-input{width:100%;padding:12px;margin:8px 0;border:none;border-radius:10px;background:#334155;color:white;}
-button{width:100%;padding:14px;border:none;border-radius:10px;margin-top:10px;cursor:pointer;font-weight:bold;font-size:16px;}
-.btn1{background:#38bdf8;color:#000;}
-.btn2{background:#22c55e;color:#000;}
-.link{text-align:center;margin-top:15px;color:#38bdf8;cursor:pointer;font-size:15px;}
-
-#dashboard,#buyPage,#sellPage,#utrPage,#adminPanel,#adminOrdersPanel{
-display:none;background:#f5f5f5;color:black;min-height:100vh;padding:15px;
+.btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
-
-.card2{background:#0f172a;color:white;padding:20px;border-radius:15px;}
-.btns{display:flex;gap:10px;flex-wrap:wrap;}
-.btns button{flex:1; min-width:45%; padding:15px;border-radius:12px;font-weight:bold;margin:5px 0;}
-.buy{background:#facc15; color: #000; font-weight: bold;}
-.sell{background:#22c55e;color:white;}
-
-.historyBox{
-background:white;padding:10px;border-radius:10px;
-max-height:280px;overflow:auto;
+.btns button {
+    flex: 1;
+    min-width: 45%;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin: 5px 0;
 }
-
+.buy {
+    background: #facc15;
+    color: #000;
+    font-weight: bold;
+}
+.sell {
+    background: #22c55e;
+    color: white;
+}
+.historyBox {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    max-height: 280px;
+    overflow: auto;
+}
 .modal {
     display: none;
     position: fixed;
@@ -227,7 +234,6 @@ max-height:280px;overflow:auto;
     align-items: center;
     z-index: 1000;
 }
-
 .modal-content, .pin-modal-content, .rules-modal {
     background: #1e293b;
     padding: 25px;
@@ -247,7 +253,6 @@ max-height:280px;overflow:auto;
     border-radius: 10px;
     padding: 12px;
 }
-
 .payment-btn {
     background: #1e293b;
     color: white;
@@ -258,49 +263,59 @@ max-height:280px;overflow:auto;
     background: #38bdf8;
     border-color: #38bdf8;
 }
-
-/* ARWallet Style */
-.balance-box { text-align:center; padding:15px 0; }
-.balance-box p { margin:5px 0; font-size:15px; color:#94a3b8; }
-.balance-box h1 { font-size:32px; margin:8px 0; color:#facc15; }
-
-.icon-row { 
-    display:flex; 
-    justify-content:space-around; 
-    margin:25px 0 20px 0; 
-    flex-wrap:wrap;
+.balance-box {
+    text-align: center;
+    padding: 15px 0;
 }
-.icon-row div { 
-    text-align:center; 
-    font-size:13px; 
-    width:70px;
+.balance-box p {
+    margin: 5px 0;
+    font-size: 15px;
+    color: #94a3b8;
+}
+.balance-box h1 {
+    font-size: 32px;
+    margin: 8px 0;
+    color: #facc15;
+}
+.icon-row {
+    display: flex;
+    justify-content: space-around;
+    margin: 25px 0 20px 0;
+    flex-wrap: wrap;
+}
+.icon-row div {
+    text-align: center;
+    font-size: 13px;
+    width: 70px;
     cursor: pointer;
 }
-
-.buy-sell-row { 
-    display:flex; 
-    gap:12px; 
-    margin:20px 0; 
+.buy-sell-row {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
 }
 .buy-card, .sell-card {
-    flex:1; 
-    padding:20px 15px; 
-    border-radius:15px; 
-    text-align:center; 
-    cursor:pointer;
+    flex: 1;
+    padding: 20px 15px;
+    border-radius: 15px;
+    text-align: center;
+    cursor: pointer;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-.buy-card { background:#fef08c; color:#000; }
-.sell-card { background:#86efac; color:#000; }
-
-.orders-info {
-    text-align:center; 
-    color:#64748b; 
-    margin:20px 0;
-    font-size:15px;
+.buy-card {
+    background: #fef08c;
+    color: #000;
 }
-
-/* Professional History */
+.sell-card {
+    background: #86efac;
+    color: #000;
+}
+.orders-info {
+    text-align: center;
+    color: #64748b;
+    margin: 20px 0;
+    font-size: 15px;
+}
 .history-item {
     background: white;
     padding: 16px;
@@ -309,7 +324,6 @@ max-height:280px;overflow:auto;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     position: relative;
 }
-
 .status-tag {
     position: absolute;
     top: 16px;
@@ -319,20 +333,17 @@ max-height:280px;overflow:auto;
     font-size: 13px;
     font-weight: bold;
 }
-
 .status-timeout { background:#fef08c; color:#000; }
 .status-completed { background:#86efac; color:#000; }
 .status-canceled { background:#fca5a5; color:#000; }
 .status-processing { background:#facc15; color:#000; }
 .status-expired { background:#ef4444; color:white; }
-
-.amount { 
-    font-size: 19px; 
-    font-weight: bold; 
-    text-align: right; 
+.amount {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: right;
     color: #000;
 }
-
 .details-row {
     display: flex;
     justify-content: space-between;
@@ -340,7 +351,6 @@ max-height:280px;overflow:auto;
     font-size: 14px;
     color: #334155;
 }
-
 .copy-btn {
     background: none;
     border: none;
@@ -349,8 +359,6 @@ max-height:280px;overflow:auto;
     cursor: pointer;
     margin-left: 6px;
 }
-
-/* Auto Rotating Banners */
 .banner-container {
     position: relative;
     height: 160px;
@@ -358,7 +366,6 @@ max-height:280px;overflow:auto;
     overflow: hidden;
     border-radius: 15px;
 }
-
 .banner {
     position: absolute;
     top: 0; left: 0;
@@ -373,18 +380,14 @@ max-height:280px;overflow:auto;
     text-align: center;
     font-size: 15px;
 }
-
 .banner.active {
     opacity: 1;
     z-index: 2;
 }
-
 .banner1 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
 .banner2 { background: linear-gradient(135deg, #eab308, #f59e0b); }
 .banner3 { background: linear-gradient(135deg, #22c55e, #15803d); }
 .banner4 { background: linear-gradient(135deg, #64748b, #334155); }
-
-/* VIP Banner */
 .vip-banner {
     background: #1e293b;
     color: white;
@@ -402,8 +405,6 @@ max-height:280px;overflow:auto;
     margin: 8px 4px;
     font-weight: bold;
 }
-
-/* PRO TIMER - UTR Page */
 .pro-timer-container {
     text-align: center;
     margin: 25px 0 15px;
@@ -438,8 +439,6 @@ max-height:280px;overflow:auto;
     width: 100%;
     transition: width 1s linear;
 }
-
-/* AI Bot Styles - Enhanced */
 .chat-container {
     height: 340px;
     background: #1e293b;
@@ -449,14 +448,12 @@ max-height:280px;overflow:auto;
     flex-direction: column;
     margin: 15px 0;
 }
-
 .chat-messages {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
     background: #0f172a;
 }
-
 .chat-message {
     margin: 10px 0;
     padding: 12px 16px;
@@ -465,28 +462,24 @@ max-height:280px;overflow:auto;
     font-size: 15px;
     line-height: 1.4;
 }
-
 .bot-message {
     background: #334155;
     align-self: flex-start;
     color: white;
     border-bottom-left-radius: 4px;
 }
-
 .user-message {
     background: #38bdf8;
     color: #000;
     align-self: flex-end;
     border-bottom-right-radius: 4px;
 }
-
 .chat-input-area {
     padding: 12px;
     background: #1e293b;
     display: flex;
     gap: 8px;
 }
-
 .chat-input {
     flex: 1;
     padding: 14px 18px;
@@ -496,7 +489,6 @@ max-height:280px;overflow:auto;
     color: white;
     font-size: 15px;
 }
-
 .send-btn {
     background: #22c55e;
     color: white;
@@ -507,8 +499,6 @@ max-height:280px;overflow:auto;
     cursor: pointer;
     font-size: 20px;
 }
-
-/* New Professional Buy Offer Card Styles */
 .buy-offer {
     background: white;
     border-radius: 24px;
@@ -609,8 +599,6 @@ max-height:280px;overflow:auto;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(239,68,68,0.4);
 }
-
-/* Level Up Progress Bar (Compact version for Settings) */
 .level-container-compact {
     background: #1e293b;
     border-radius: 16px;
@@ -645,8 +633,6 @@ max-height:280px;overflow:auto;
     font-size: 12px;
     color: #94a3b8;
 }
-
-/* Back button */
 .back-btn-fixed {
     background:#64748b !important;
     color:white !important;
@@ -659,8 +645,6 @@ max-height:280px;overflow:auto;
     border:none;
     cursor:pointer;
 }
-
-/* ========== NEW WITHDRAWAL PAGE STYLES ========== */
 .withdraw-card {
     background: white;
     border-radius: 24px;
@@ -793,8 +777,6 @@ max-height:280px;overflow:auto;
 .request-btn:active {
     transform: scale(0.98);
 }
-
-/* Admin Orders Panel Styles */
 .admin-orders-container {
     background: white;
     border-radius: 20px;
@@ -847,7 +829,6 @@ max-height:280px;overflow:auto;
 .complete-btn { background: #3b82f6; color: white; }
 </style>
 </head>
-
 <body>
 
 <div class="center">
@@ -867,7 +848,7 @@ max-height:280px;overflow:auto;
     <div class="link" onclick="showRegister()">Don't have an account? Create Account</div>
 </div>
 
-<!-- REGISTER (SIMPLIFIED - NO OTP) -->
+<!-- REGISTER (NO OTP) -->
 <div id="register" class="card" style="display:none;">
     <div class="logo"><i class="fas fa-user-plus"></i> Join OMG</div>
     <h3>Create Account</h3>
@@ -888,7 +869,7 @@ max-height:280px;overflow:auto;
 </div>
 </div>
 
-<!-- DASHBOARD etc. (unchanged, same as original) -->
+<!-- DASHBOARD (stays exactly as original) -->
 <div id="dashboard" style="display:none;">
     <h2 style="color:#facc15;text-align:center;margin:15px 0 10px 0;">OMG Wallet</h2>
     <div class="card2">
@@ -1050,7 +1031,7 @@ function logout(){
     document.getElementById("adminOrdersPanel").style.display = "none";
 }
 // ========== ALL ORIGINAL FUNCTIONS (buy, sell, etc.) - kept same ==========
-function updateLevelAndReward() { /* same as original */ let newLevel = 1; for (let i = levelThresholds.length-1; i >= 0; i--) { if (totalBought >= levelThresholds[i]) { newLevel = i; break; } } if (newLevel < 1) newLevel = 1; let givenRewards = JSON.parse(localStorage.getItem("levelRewards") || "[]"); for (let lvl = userLevel+1; lvl <= newLevel; lvl++) { if (lvl >= 2 && lvl <= 4 && !givenRewards.includes(lvl)) { let reward = levelRewards[lvl]; balance += reward; localStorage.setItem("bal", balance); givenRewards.push(lvl); alert(`🎉 Congratulations! You reached Level ${lvl} and received ${reward} OMG bonus!`); } } if (newLevel !== userLevel) { userLevel = newLevel; localStorage.setItem("userLevel", userLevel); localStorage.setItem("levelRewards", JSON.stringify(givenRewards)); } let nextAmount = levelThresholds[userLevel] || levelThresholds[levelThresholds.length-1]; let nextLevel = userLevel+1; let progressPercent = 0; if (userLevel < levelThresholds.length-1) { let currentThreshold = levelThresholds[userLevel]; let nextThreshold = levelThresholds[userLevel+1]; let diff = nextThreshold - currentThreshold; let progress = totalBought - currentThreshold; progressPercent = Math.min(100, Math.floor((progress / diff) * 100)); document.getElementById("compactNextLevelInfo").innerHTML = `Next: Level ${nextLevel} at ₹${nextThreshold.toLocaleString()} • ${progressPercent}% completed`; } else { document.getElementById("compactNextLevelInfo").innerHTML = `🏆 Max Level Achieved! You're a VIP member.`; progressPercent = 100; } document.getElementById("compactLevelBadge").innerHTML = `Level ${userLevel}`; document.getElementById("compactLevelFill").style.width = `${progressPercent}%`; document.getElementById("bal").innerText = balance + " OMG"; }
+function updateLevelAndReward() { let newLevel = 1; for (let i = levelThresholds.length-1; i >= 0; i--) { if (totalBought >= levelThresholds[i]) { newLevel = i; break; } } if (newLevel < 1) newLevel = 1; let givenRewards = JSON.parse(localStorage.getItem("levelRewards") || "[]"); for (let lvl = userLevel+1; lvl <= newLevel; lvl++) { if (lvl >= 2 && lvl <= 4 && !givenRewards.includes(lvl)) { let reward = levelRewards[lvl]; balance += reward; localStorage.setItem("bal", balance); givenRewards.push(lvl); alert(`🎉 Congratulations! You reached Level ${lvl} and received ${reward} OMG bonus!`); } } if (newLevel !== userLevel) { userLevel = newLevel; localStorage.setItem("userLevel", userLevel); localStorage.setItem("levelRewards", JSON.stringify(givenRewards)); } let nextAmount = levelThresholds[userLevel] || levelThresholds[levelThresholds.length-1]; let nextLevel = userLevel+1; let progressPercent = 0; if (userLevel < levelThresholds.length-1) { let currentThreshold = levelThresholds[userLevel]; let nextThreshold = levelThresholds[userLevel+1]; let diff = nextThreshold - currentThreshold; let progress = totalBought - currentThreshold; progressPercent = Math.min(100, Math.floor((progress / diff) * 100)); document.getElementById("compactNextLevelInfo").innerHTML = `Next: Level ${nextLevel} at ₹${nextThreshold.toLocaleString()} • ${progressPercent}% completed`; } else { document.getElementById("compactNextLevelInfo").innerHTML = `🏆 Max Level Achieved! You're a VIP member.`; progressPercent = 100; } document.getElementById("compactLevelBadge").innerHTML = `Level ${userLevel}`; document.getElementById("compactLevelFill").style.width = `${progressPercent}%`; document.getElementById("bal").innerText = balance + " OMG"; }
 function startProBuyTimer(orderId) { if (buyTimers[orderId]) clearInterval(buyTimers[orderId]); let timeLeft = 540; const timerInterval = setInterval(() => { timeLeft--; const minutes = Math.floor(timeLeft / 60); const seconds = timeLeft % 60; const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`; const countdownEl = document.getElementById("countdown"); const progressEl = document.getElementById("progressBar"); if (countdownEl) countdownEl.textContent = display; if (progressEl) progressEl.style.width = `${(timeLeft / 540) * 100}%`; if (timeLeft <= 60 && countdownEl) countdownEl.style.color = "#ef4444"; if (timeLeft <= 0) { clearInterval(timerInterval); delete buyTimers[orderId]; autoExpireOrder(orderId); } }, 1000); buyTimers[orderId] = timerInterval; }
 function autoExpireOrder(orderId) { let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let idx = orders.findIndex(o => o.id === orderId); if (idx !== -1 && orders[idx].status === "Pending") { orders[idx].status = "Expired"; localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); if (document.getElementById("utrPage").style.display === "block") { alert("⏰ Order Expired! 9 minutes passed."); document.getElementById("utrPage").style.display = "none"; document.getElementById("buyPage").style.display = "block"; currentOrderId = null; } } }
 function redirectToPhonePe(amount) { const yourUPI = (amount > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis"; const orderId = "ORD" + Date.now(); let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let reward = Math.floor(amount * (amount >= 10000 ? 0.10 : 0.04)); orders.push({ id: orderId, type: "Buy", amount: amount, reward: reward, status: "Pending", time: new Date().toLocaleTimeString(), utr: "", upi: yourUPI }); localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); currentOrderId = orderId; document.getElementById("buyPage").style.display = "none"; const utrPage = document.getElementById("utrPage"); utrPage.style.display = "block"; document.getElementById("utrAmount").innerHTML = `Pay <strong>₹${amount.toLocaleString('en-IN')}</strong>`; document.getElementById("upiDisplay").innerHTML = `<div style="margin-bottom:8px;">💸 Pay to UPI ID</div><strong style="font-size:19px;color:#facc15;">${yourUPI}</strong>`; startProBuyTimer(orderId); setTimeout(() => { alert(`✅ Order Created!\nPay ₹${amount} to ${yourUPI}\n\nTimer started - 9 minutes only!`); }, 300); }
