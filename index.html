@@ -1273,11 +1273,39 @@ let bought100Offer = localStorage.getItem("bought100Offer") === "true";
 const levelThresholds = [0, 10000, 20000, 30000];
 const levelRewards = [0, 20, 30, 40];
 
-// ========== REGISTRATION WITH STARTING BALANCE 50 ==========
+// ========== INITIALIZE USERS ARRAY (PREVENT DUPLICATE REGISTRATION) ==========
+function initUsers() {
+    // Create users array if it doesn't exist
+    if (!localStorage.getItem("users")) {
+        localStorage.setItem("users", JSON.stringify([]));
+    }
+    let users = JSON.parse(localStorage.getItem("users"));
+
+    // Migrate old single user (if any) to the array
+    let oldUser = localStorage.getItem("user");
+    let oldPass = localStorage.getItem("pass");
+    if (oldUser && oldPass) {
+        let exists = users.some(u => u.phone === oldUser);
+        if (!exists) {
+            users.push({ phone: oldUser, password: oldPass });
+            localStorage.setItem("users", JSON.stringify(users));
+        }
+    }
+
+    // Ensure admin user is present
+    let adminExists = users.some(u => u.phone === "0000000000");
+    if (!adminExists) {
+        users.push({ phone: "0000000000", password: "0000" });
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+}
+
+// ========== REGISTRATION WITH DUPLICATE CHECK ==========
 function registerSimple() {
     let phone = document.getElementById("regPhoneSimple").value.trim();
     let pass = document.getElementById("regPassSimple").value.trim();
     let confirm = document.getElementById("regConfirmPass").value.trim();
+
     if (!phone || phone.length < 10) {
         alert("Please enter a valid phone number (10 digits)");
         return;
@@ -1290,15 +1318,20 @@ function registerSimple() {
         alert("Passwords do not match");
         return;
     }
-    let existingUser = localStorage.getItem("user");
-    if (existingUser === phone) {
+
+    // Check if phone already exists in the users array
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    let existingUser = users.find(u => u.phone === phone);
+    if (existingUser) {
         alert("Phone number already registered. Please login.");
         return;
     }
-    localStorage.setItem("user", phone);
-    localStorage.setItem("pass", pass);
-    
-    // Reset all user data for fresh start with 50 OMG
+
+    // Add new user to the array
+    users.push({ phone: phone, password: pass });
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Reset all user data for the new account
     localStorage.setItem("bal", "50");
     localStorage.setItem("orders", "[]");
     localStorage.setItem("totalBought", "0");
@@ -1309,7 +1342,12 @@ function registerSimple() {
     localStorage.setItem("cancelCount", "0");
     localStorage.setItem("banExpiry", "0");
     localStorage.setItem("bought100Offer", "false");
-    
+
+    // Set current logged‑in user
+    localStorage.setItem("user", phone);
+    localStorage.setItem("pass", pass);
+
+    // Update global variables
     balance = 50;
     totalBought = 0;
     userLevel = 1;
@@ -1318,12 +1356,68 @@ function registerSimple() {
     cancelCount = 0;
     banExpiry = 0;
     bought100Offer = false;
-    
+
     alert("✅ Account Created Successfully! Your balance is 50 OMG.");
     document.getElementById("regPhoneSimple").value = "";
     document.getElementById("regPassSimple").value = "";
     document.getElementById("regConfirmPass").value = "";
     showLogin();
+}
+
+// ========== LOGIN USING USERS ARRAY ==========
+function login() {
+    let phone = document.getElementById("luser").value.trim();
+    let pass = document.getElementById("lpass").value.trim();
+
+    // Admin special case
+    if (phone === "0000000000" && pass === "0000") {
+        isAdminUser = true;
+        document.querySelector(".center").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("bal").innerText = balance + " OMG";
+        loadHistory();
+        updateLevelAndReward();
+        if (!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
+        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong> (Admin)`;
+        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
+        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
+        renderWithdrawalAccounts();
+        document.getElementById("adminIcon").style.display = "block";
+        return;
+    }
+
+    // Normal user: check against users array
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    let user = users.find(u => u.phone === phone && u.password === pass);
+
+    if (user) {
+        isAdminUser = false;
+        // Load that user's data (global localStorage keys are shared, but we assume only one user per device)
+        localStorage.setItem("user", phone);
+        localStorage.setItem("pass", pass);
+
+        // Refresh global variables from localStorage (which now belong to this user)
+        balance = Number(localStorage.getItem("bal")) || 1000;
+        totalBought = Number(localStorage.getItem("totalBought")) || 0;
+        userLevel = Number(localStorage.getItem("userLevel")) || 1;
+        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
+        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
+        cancelCount = Number(localStorage.getItem("cancelCount")) || 0;
+        banExpiry = Number(localStorage.getItem("banExpiry")) || 0;
+        bought100Offer = localStorage.getItem("bought100Offer") === "true";
+
+        document.querySelector(".center").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("bal").innerText = balance + " OMG";
+        loadHistory();
+        updateLevelAndReward();
+        if (!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
+        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong>`;
+        renderWithdrawalAccounts();
+        document.getElementById("adminIcon").style.display = "none";
+    } else {
+        alert("Wrong credentials!");
+    }
 }
 
 function showRegister() {
@@ -1338,43 +1432,6 @@ function showLogin() {
     document.getElementById("login").style.display = "block";
     document.getElementById("luser").value = "";
     document.getElementById("lpass").value = "";
-}
-function login(){
-    let phone = document.getElementById("luser").value.trim();
-    let pass = document.getElementById("lpass").value.trim();
-    if(phone === "0000000000" && pass === "0000"){
-        isAdminUser = true;
-        document.querySelector(".center").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("bal").innerText = balance + " OMG";
-        loadHistory();
-        updateLevelAndReward();
-        if(!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
-        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong> (Admin)`;
-        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
-        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
-        renderWithdrawalAccounts();
-        document.getElementById("adminIcon").style.display = "block";
-        return;
-    }
-    if(phone === localStorage.getItem("user") && pass === localStorage.getItem("pass")){
-        isAdminUser = false;
-        document.querySelector(".center").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("bal").innerText = balance + " OMG";
-        loadHistory();
-        updateLevelAndReward();
-        if(!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
-        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong>`;
-        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
-        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
-        renderWithdrawalAccounts();
-        document.getElementById("adminIcon").style.display = "none";
-        // Load ban and offer status
-        cancelCount = Number(localStorage.getItem("cancelCount")) || 0;
-        banExpiry = Number(localStorage.getItem("banExpiry")) || 0;
-        bought100Offer = localStorage.getItem("bought100Offer") === "true";
-    } else alert("Wrong credentials!");
 }
 function logout(){
     isAdminUser = false;
@@ -1967,7 +2024,33 @@ let currentBanner = 0;
 const banners = document.querySelectorAll('.banner');
 function rotateBanners() { banners.forEach(b => b.classList.remove('active')); currentBanner = (currentBanner + 1) % banners.length; banners[currentBanner].classList.add('active'); }
 setInterval(rotateBanners, 3500);
-window.onload = function(){ loadHistory(); rotateBanners(); updateLevelAndReward(); initTicker(); };
+window.onload = function(){
+    initUsers();               // <-- Initialize users array
+    loadHistory();
+    rotateBanners();
+    updateLevelAndReward();
+    initTicker();
+};
+</script>
+
+<!-- Firebase SDK Integration -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAyOHwMDCy-PiBTNUOHmRaaj7WK1jWiIwM",
+    authDomain: "omgwallet01.firebaseapp.com",
+    projectId: "omgwallet01",
+    storageBucket: "omgwallet01.firebasestorage.app",
+    messagingSenderId: "210420930719",
+    appId: "1:210420930719:web:ad37ce45c4af5911172aaa",
+    measurementId: "G-RKTB9L7W57"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  console.log("Firebase initialized successfully");
 </script>
 </body>
 </html>
