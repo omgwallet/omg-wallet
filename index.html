@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<h<!DOCTYPE html>tml lang="en">
 <head>
+
 <title>OMG Wallet | Premium Withdrawal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -447,9 +447,8 @@ body::before {
 .banner2 { background: linear-gradient(135deg, #00c6fb, #005bea); }
 .banner3 { background: linear-gradient(135deg, #f7971e, #ffd200); }
 .banner4 { background: linear-gradient(135deg, #11998e, #38ef7d); }
-.banner5 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
 
-/* Live Activity Ticker */
+/* NEW: Live Activity Ticker (replaces VIP banner) */
 .live-ticker-container {
     background: #0a0c15;
     border-radius: 16px;
@@ -499,10 +498,12 @@ body::before {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
+/* Responsive: slower on small screens */
 @media (max-width: 640px) {
     .ticker-item { font-size: 12px; margin-right: 24px; }
     .ticker-content { animation-duration: 35s; }
 }
+/* Optional glow pulse effect */
 .live-ticker-container::before {
     content: '';
     position: absolute;
@@ -1041,17 +1042,14 @@ body::before {
             Buy OMG Now & Multiply Your Assets!<br>
             👉 Join the Winning Team
         </div>
-        <div class="banner banner5" onclick="window.location.href='javascript:showBuy()'">
-            🛡️ ANTI-BAN & NO FREEZE ACCOUNTS 🛡️<br>
-            100% REAL FUNDS – BUY & FEEL SECURE!<br>
-            Your assets are fully protected. Trade with confidence.
-        </div>
     </div>
 
-    <!-- Live Activity Ticker -->
+    <!-- NEW: Live Activity Ticker (replaces VIP banner) -->
     <div class="live-ticker-container">
         <div class="live-ticker">
-            <div class="ticker-content" id="tickerContent"></div>
+            <div class="ticker-content" id="tickerContent">
+                <!-- messages will be inserted by JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -1061,7 +1059,6 @@ body::before {
         <div onclick="openHelp()">🛟<br>Help Center</div>
         <div onclick="openSettings()">👤<br>User</div>
         <div id="adminIcon" style="display:none;" onclick="openAdminOrders()">👑<br>Admin</div>
-        <div onclick="showTerms()">📜<br>Terms</div>
     </div>
     <div class="buy-sell-row">
         <div class="buy-card" onclick="showBuy()"><strong style="font-size:19px;">Buy OMG</strong><br><small>Flexible purchasing</small></div>
@@ -1076,9 +1073,9 @@ body::before {
 <!-- BUY PAGE, UTR PAGE, SELL PAGE, ADMIN PANELS -->
 <div id="buyPage" style="display:none;"><h2 style="color:#facc15;text-align:center;margin-bottom:20px;">Buy OMG <span style="color:#eab308;">(Live Offers)</span></h2><div id="orders"></div><button onclick="backDash()" class="back-btn-fixed">← Back to Dashboard</button></div>
 <div id="utrPage" style="display:none; background:#f5f5f5; color:black; min-height:100vh; padding:15px;"><h2 style="color:#facc15;">Complete Payment</h2><h3 id="utrAmount" style="font-size:28px;margin:10px 0;"></h3><div id="upiDisplay" style="background:#1e293b;color:white;padding:18px;border-radius:15px;text-align:center;margin:15px 0;font-size:17px;font-weight:bold;"></div><div class="pro-timer-container"><div class="timer-label">⏳ Order expires in</div><div id="countdown" class="countdown">09:00</div><div class="progress-bar"><div id="progressBar" class="progress"></div></div><small style="color:#64748b;">9 minutes remaining • Auto-cancel if expired</small></div><p><strong>Enter Transaction ID / UTR</strong></p><input id="utrInput" placeholder="Enter UTR Number" style="margin:15px 0;"><button onclick="submitUTR()" style="background:#22c55e;color:white;">✅ Submit UTR & Confirm</button><button onclick="cancelUTR()" style="background:#ef4444;color:white;margin-top:10px;">Cancel Order</button><p style="font-size:13px;color:#64748b;margin-top:20px;text-align:center;">Payment must be made to the displayed UPI only</p></div>
-<div id="sellPage" style="display:none; background:#f5f5f5; min-height:100vh; padding:15px;"><div class="withdraw-card"><div class="balance-display"><p>AVAILABLE BALANCE</p><h2 id="withdrawBalance">0.00 INR</h2></div><div class="amount-input-group"><input type="number" id="withdrawAmount" placeholder="Enter amount" step="1" min="150"><button class="max-btn" onclick="setMaxAmount()">MAX</button><div class="min-hint">Min. ₹150</div></div><div class="account-selector"><h4 style="margin-bottom: 12px;">WITHDRAW TO</h4><div id="accountList"></div><div class="add-account-btn" onclick="showAddAccountModal()"><i class="fas fa-plus-circle"></i> + Add New</div></div><div class="withdraw-terms"><p><i class="fas fa-clock"></i> Withdrawals are processed within 24-48 hours.</p><p><i class="fas fa-rupee-sign"></i> Minimum withdrawal amount is ₹150.</p><p><i class="fas fa-check-circle"></i> Ensure your bound account details are correct.</p></div><button class="request-btn" onclick="requestWithdrawal()">Request Withdrawal</button><button onclick="backDash2()" style="margin-top:15px; background:#64748b; color:white;">← Back to Dashboard</button></div></div>
-<div id="adminPanel" style="display:none;"><h2 style="color:#facc15;text-align:center;">🔑 Admin Panel</h2><div class="card2"><p><strong>Current Balance:</strong> <span id="adminBalance">1000 OMG</span></p><input id="adminAmount" type="number" placeholder="Enter Amount"><button onclick="adminAddBalance()" style="background:#22c55e;color:white;">Add Balance</button><button onclick="adminRemoveBalance()" style="background:#ef4444;color:white;">Remove Balance</button><button onclick="adminClearHistory()" style="background:#64748b;color:white;margin-top:10px;">Clear All History</button></div><hr style="margin:15px 0; border-color:#334155;"><div style="background:#1e293b; padding:15px; border-radius:12px;"><h4>🔓 Unban User</h4><input type="tel" id="unbanPhone" placeholder="Enter Phone Number" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none;"><button onclick="adminUnbanUser()" style="background:#22c55e; color:white; width:100%;">Unban Now</button><p id="unbanMsg" style="font-size:12px; margin-top:8px; color:#94a3b8;"></p></div><button onclick="backFromAdmin()" style="margin-top:15px;background:#ef4444;color:white;">Back to Dashboard</button></div>
-<div id="adminOrdersPanel" style="display:none;"><h2 style="color:#facc15;text-align:center;">👑 Admin Order Management</h2><div class="admin-orders-container"><div style="display:flex; justify-content:space-between; margin-bottom:15px;"><h3>All Orders</h3><button onclick="refreshAdminOrders()" style="background:#facc15; color:#000; padding:8px 16px; border-radius:30px; border:none;">⟳ Refresh</button></div><div style="margin-bottom:15px;"><input type="text" id="orderSearchInput" placeholder="Search by Order ID or User Phone..." style="width:100%; padding:12px; border-radius:30px; border:1px solid #cbd5e1; background:#f8fafc;"><div style="display:flex; gap:8px; margin-top:8px;"><button onclick="searchOrders()" style="background:#38bdf8; color:#000; padding:8px 16px; border-radius:30px; border:none; font-weight:bold;">Search</button><button onclick="clearOrderSearch()" style="background:#64748b; color:white; padding:8px 16px; border-radius:30px; border:none; font-weight:bold;">Clear</button></div></div><div id="adminOrdersList"></div><button onclick="closeAdminOrders()" style="margin-top:20px; background:#64748b; color:white;">← Back to Dashboard</button></div></div>
+<div id="sellPage" style="display:none; background:#f5f5f5; min-height:100vh; padding:15px;"><div class="withdraw-card"><div class="balance-display"><p>AVAILABLE BALANCE</p><h2 id="withdrawBalance">0.00 INR</h2></div><div class="amount-input-group"><input type="number" id="withdrawAmount" placeholder="Enter amount" step="1" min="100"><button class="max-btn" onclick="setMaxAmount()">MAX</button><div class="min-hint">Min. ₹100</div></div><div class="account-selector"><h4 style="margin-bottom: 12px;">WITHDRAW TO</h4><div id="accountList"></div><div class="add-account-btn" onclick="showAddAccountModal()"><i class="fas fa-plus-circle"></i> + Add New</div></div><div class="withdraw-terms"><p><i class="fas fa-clock"></i> Withdrawals are processed within 24-48 hours.</p><p><i class="fas fa-rupee-sign"></i> Minimum withdrawal amount is ₹100.</p><p><i class="fas fa-check-circle"></i> Ensure your bound account details are correct.</p></div><button class="request-btn" onclick="requestWithdrawal()">Request Withdrawal</button><button onclick="backDash2()" style="margin-top:15px; background:#64748b; color:white;">← Back to Dashboard</button></div></div>
+<div id="adminPanel" style="display:none;"><h2 style="color:#facc15;text-align:center;">🔑 Admin Panel</h2><div class="card2"><p><strong>Current Balance:</strong> <span id="adminBalance">1000 OMG</span></p><input id="adminAmount" type="number" placeholder="Enter Amount"><button onclick="adminAddBalance()" style="background:#22c55e;color:white;">Add Balance</button><button onclick="adminRemoveBalance()" style="background:#ef4444;color:white;">Remove Balance</button><button onclick="adminClearHistory()" style="background:#64748b;color:white;margin-top:10px;">Clear All History</button></div><button onclick="backFromAdmin()" style="margin-top:15px;background:#ef4444;color:white;">Back to Dashboard</button></div>
+<div id="adminOrdersPanel" style="display:none;"><h2 style="color:#facc15;text-align:center;">👑 Admin Order Management</h2><div class="admin-orders-container"><div style="display:flex; justify-content:space-between; margin-bottom:15px;"><h3>All Orders</h3><button onclick="refreshAdminOrders()" style="background:#facc15; color:#000; padding:8px 16px; border-radius:30px; border:none;">⟳ Refresh</button></div><div id="adminOrdersList"></div><button onclick="closeAdminOrders()" style="margin-top:20px; background:#64748b; color:white;">← Back to Dashboard</button></div></div>
 
 <!-- SETTINGS MODAL (UPGRADED WITH PIN MANAGEMENT) -->
 <div id="settingsModal" class="modal">
@@ -1129,120 +1126,10 @@ body::before {
     </div>
 </div>
 
-<!-- UPGRADED BUY RULES MODAL -->
-<div id="buyRulesModal" class="modal">
-    <div class="modal-content">
-        <h3 style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-shopping-cart" style="color:#facc15;"></i> Buy Rules</h3>
-        <div style="background: #0f172a; padding: 18px; border-radius: 12px; margin: 15px 0;">
-            <h4 style="color:#facc15; margin-bottom: 12px;">📌 How to Buy OMG Coins</h4>
-            <ul style="padding-left: 20px; line-height: 1.8; color: #cbd5e1;">
-                <li>✅ Select any buy offer from the <strong>Buy section</strong></li>
-                <li>✅ Pay the exact amount to the displayed <strong>UPI ID</strong> (9‑minute timer starts)</li>
-                <li>✅ After successful payment, copy the <strong>UTR / Transaction ID</strong></li>
-                <li>✅ Paste the UTR in the payment confirmation screen</li>
-                <li>✅ Your order will change to <strong>"Awaiting Verification"</strong></li>
-                <li>✅ <strong>Admin verifies</strong> the payment within <strong>2‑3 hours</strong></li>
-                <li>✅ Once verified, <strong>bonus + OMG coins</strong> are credited instantly</li>
-                <li>✅ If UTR is not submitted within 9 minutes, the order auto‑cancels</li>
-                <li>⚠️ <strong>Double-check UTR before submitting. Incorrect UTR cannot be corrected.</strong></li>
-            </ul>
-        </div>
-        <div style="background: #0f172a; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-            <p><i class="fas fa-gift" style="color:#facc15;"></i> <strong>Bonus Structure:</strong></p>
-            <p>💰 Orders below ₹10,000 → <strong>4% bonus</strong><br>💰 Orders ₹10,000 & above → <strong>10% bonus</strong></p>
-            <p class="mt-2"><i class="fas fa-chart-line"></i> <strong>Level Rewards:</strong><br>Level 2 → +20 OMG &nbsp;|&nbsp; Level 3 → +30 OMG &nbsp;|&nbsp; Level 4 → +40 OMG</p>
-        </div>
-        <button onclick="closeBuyRules()" style="background:#22c55e; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">Got it</button>
-    </div>
-</div>
-
-<!-- UPGRADED SELL RULES MODAL -->
-<div id="sellRulesModal" class="modal">
-    <div class="modal-content">
-        <h3 style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-hand-holding-usd" style="color:#22c55e;"></i> Sell Rules</h3>
-        <div style="background: #0f172a; padding: 18px; border-radius: 12px; margin: 15px 0;">
-            <h4 style="color:#facc15; margin-bottom: 12px;">📌 How to Sell OMG Coins</h4>
-            <ul style="padding-left: 20px; line-height: 1.8; color: #cbd5e1;">
-                <li>✅ Go to <strong>Sell / Withdraw</strong> section</li>
-                <li>✅ Add your withdrawal account (<strong>PhonePe / Paytm / Bank</strong>)</li>
-                <li>✅ Enter the amount you wish to sell (minimum ₹150)</li>
-                <li>✅ Select your saved account</li>
-                <li>✅ Confirm the sell with your <strong>4‑digit PIN</strong></li>
-                <li>✅ Order status becomes <strong>"Processing"</strong></li>
-                <li>✅ Money is usually transferred within <strong>30 minutes to 4 hours</strong></li>
-                <li>✅ Do not sell more than your available balance</li>
-                <li>⚠️ <strong>Double-check account details. Incorrect details cannot be reversed.</strong></li>
-            </ul>
-        </div>
-        <div style="background: #0f172a; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-            <p><i class="fas fa-shield-alt" style="color:#22c55e;"></i> <strong>Important:</strong></p>
-            <p>🔒 Withdrawals are processed only to <strong>verified accounts</strong> you have added.<br>⏱️ Processing time may vary during high volume.</p>
-        </div>
-        <button onclick="closeSellRules()" style="background:#22c55e; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">Understood</button>
-    </div>
-</div>
-
-<!-- TERMS & CONDITIONS MODAL -->
-<div id="termsModal" class="modal">
-    <div class="modal-content">
-        <h3 style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-file-contract" style="color:#facc15;"></i> Terms & Conditions</h3>
-        <div style="background: #0f172a; padding: 18px; border-radius: 12px; margin: 15px 0; color: #cbd5e1; line-height: 1.6;">
-            <p><strong>📌 Buy Orders:</strong> While placing a Buy order, double-check the UTR before clicking the submit button. If the UTR is incorrect, we will not be responsible and cannot fix it.</p>
-            <p style="margin-top:12px;"><strong>📌 Sell Orders:</strong> While placing a Sell order, double-check your account details. Ensure that all filled details are correct. We are not liable for errors in user‑provided information.</p>
-            <p style="margin-top:12px;"><strong>📌 Account Ban:</strong> If your OMG Wallet account has been temporarily banned, please contact customer care immediately for assistance.</p>
-            <p style="margin-top:12px;"><strong>📌 Discretion:</strong> Users may choose to use OMG Wallet at their own discretion.</p>
-            <p style="margin-top:12px;"><strong>📌 Support:</strong> For any issues, contact us on Telegram: <a href="https://t.me/HelpcenterOMG" target="_blank" style="color:#38bdf8;">@HelpcenterOMG</a></p>
-        </div>
-        <button onclick="closeTerms()" style="background:#22c55e; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">I Understand</button>
-    </div>
-</div>
-
-<!-- PROFESSIONAL HELP CENTER MODAL (with Back to Dashboard button) -->
-<div id="helpModal" class="modal">
-    <div class="modal-content" style="padding: 0; overflow: hidden; max-width: 380px;">
-        <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 20px; border-bottom: 1px solid rgba(250,204,21,0.3);">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="background: #facc15; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-headset" style="color: #0f172a; font-size: 22px;"></i>
-                </div>
-                <div>
-                    <h3 style="color: white; margin: 0; font-size: 1.3rem;">Help Center</h3>
-                    <p style="color: #94a3b8; margin: 0; font-size: 12px;">AI Assistant • 24/7 Support</p>
-                </div>
-            </div>
-        </div>
-        <div style="padding: 20px;">
-            <div class="chat-container" style="height: 320px; margin: 0 0 15px 0;">
-                <div class="chat-messages" id="chatMessages">
-                    <div class="chat-message bot-message">👋 Namaste! I'm your AI assistant.<br>I can help with orders, payments, level-ups, and more. Ask me anything!</div>
-                </div>
-                <div class="chat-input-area">
-                    <input id="chatInput" class="chat-input" placeholder="Type your message here..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
-                    <button class="send-btn" onclick="sendChatMessage()">↑</button>
-                </div>
-            </div>
-            
-            <!-- Support Info Section -->
-            <div style="background: rgba(56,189,248,0.1); border-radius: 12px; padding: 12px; margin: 10px 0;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                    <i class="fab fa-telegram" style="color: #38bdf8; font-size: 18px;"></i>
-                    <span style="color: white; font-weight: 500;">Telegram Support</span>
-                </div>
-                <a href="https://t.me/HelpcenterOMG" target="_blank" style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 10px 14px; border-radius: 30px; text-decoration: none; color: #38bdf8; margin-top: 6px;">
-                    <span><i class="fab fa-telegram"></i> @HelpcenterOMG</span>
-                    <i class="fas fa-external-link-alt" style="font-size: 12px;"></i>
-                </a>
-                <p style="font-size: 11px; color: #64748b; margin-top: 8px; text-align: center;">Response within 2-3 hours • 9 AM - 9 PM IST</p>
-            </div>
-            
-            <div style="display: flex; gap: 10px;">
-                <button onclick="closeHelp()" style="background:#64748b; color:white; flex:1; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">Close</button>
-                <button onclick="goBackToDashboard()" style="background:#38bdf8; color:#000; flex:1; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- Other modals unchanged -->
+<div id="buyRulesModal" class="modal"><div class="modal-content"><h3>📥 Buy Rules</h3><div style="background:#1e293b; padding:15px; border-radius:12px; margin:15px 0;"><h4 style="color:#facc15;">How to Buy OMG Coins</h4><ul style="padding-left:20px; line-height:1.8;"><li>Select any buy offer from the Buy section</li><li>Pay the exact amount to the displayed UPI ID</li><li>After successful payment, copy the UTR / Transaction ID</li><li>Paste the UTR in the payment confirmation screen</li><li>Order expires in 9 minutes if UTR not submitted</li><li>After UTR submission, your order goes for admin verification</li><li>Coins will be credited within 2-3 hours after verification</li></ul></div><button onclick="closeBuyRules()" style="background:#22c55e;color:white;width:100%;">Close</button></div></div>
+<div id="sellRulesModal" class="modal"><div class="modal-content"><h3>📤 Sell Rules</h3><div style="background:#1e293b; padding:15px; border-radius:12px; margin:15px 0;"><h4 style="color:#facc15;">How to Sell OMG Coins</h4><ul style="padding-left:20px; line-height:1.8;"><li>Enter the amount you want to sell</li><li>Choose your withdrawal method (PhonePe, Paytm or Bank)</li><li>Fill correct details (Phone Number or Bank Account + IFSC)</li><li>Confirm the sell with your 4-digit PIN</li><li>Sell order status will show as "Processing"</li><li>Money is usually transferred within 30 minutes to 4 hours</li><li>Do not sell more than your available balance</li></ul></div><button onclick="closeSellRules()" style="background:#22c55e;color:white;width:100%;">Close</button></div></div>
+<div id="helpModal" class="modal"><div class="modal-content"><h3>🆘 Help Center (AI Assistant)</h3><div class="chat-container"><div class="chat-messages" id="chatMessages"><div class="chat-message bot-message">👋 Namaste! I'm your AI assistant.<br>I can help with orders, payments, level-ups, and more. Ask me anything!</div></div><div class="chat-input-area"><input id="chatInput" class="chat-input" placeholder="Type your message here..." onkeypress="if(event.key === 'Enter') sendChatMessage()"><button class="send-btn" onclick="sendChatMessage()">↑</button></div></div><p style="margin:15px 0 10px 0; text-align:center; font-size:14px;">📞 Telegram: <a href="https://t.me/aaaaaadiiiiii" target="_blank" style="color:#38bdf8;">t.me/aaaaaadiiiiii</a></p><button onclick="closeHelp()" style="background:#64748b;color:white;margin-top:10px;">Close</button></div></div>
 <div id="addAccountModal" class="modal"><div class="modal-content"><h3>Add Withdrawal Account</h3><select id="accountType" style="width:100%; padding:12px; border-radius:12px; background:#334155; color:white; margin:10px 0;"><option value="PhonePe">📱 PhonePe</option><option value="Paytm">💰 Paytm</option><option value="Bank">🏦 Bank Account</option></select><input id="accountName" placeholder="Account Holder Name" style="margin:8px 0;"><input id="accountDetail" placeholder="UPI ID / Phone Number / Account Number" style="margin:8px 0;"><div id="bankFields" style="display:none;"><input id="bankName" placeholder="Bank Name" style="margin:8px 0;"><input id="ifscCode" placeholder="IFSC Code" style="margin:8px 0;"></div><button onclick="saveWithdrawalAccount()" style="background:#22c55e;color:white;margin-top:10px;">Save Account</button><button onclick="closeAddAccountModal()" style="background:#64748b;color:white;margin-top:8px;">Cancel</button></div></div>
 
 <script>
@@ -1253,10 +1140,6 @@ if (!localStorage.getItem("totalBought")) localStorage.setItem("totalBought", "0
 if (!localStorage.getItem("userLevel")) localStorage.setItem("userLevel", "1");
 if (!localStorage.getItem("levelRewards")) localStorage.setItem("levelRewards", "[]");
 if (!localStorage.getItem("withdrawalAccounts")) localStorage.setItem("withdrawalAccounts", "[]");
-// Ban & 100-offer tracking
-if (!localStorage.getItem("cancelCount")) localStorage.setItem("cancelCount", "0");
-if (!localStorage.getItem("banExpiry")) localStorage.setItem("banExpiry", "0");
-if (!localStorage.getItem("bought100Offer")) localStorage.setItem("bought100Offer", "false");
 
 let balance = Number(localStorage.getItem("bal")) || 1000;
 let totalBought = Number(localStorage.getItem("totalBought")) || 0;
@@ -1266,46 +1149,15 @@ let selectedAccountId = null;
 let currentOrderId = null;
 let buyTimers = {};
 let isAdminUser = false;
-let cancelCount = Number(localStorage.getItem("cancelCount")) || 0;
-let banExpiry = Number(localStorage.getItem("banExpiry")) || 0;
-let bought100Offer = localStorage.getItem("bought100Offer") === "true";
 
 const levelThresholds = [0, 10000, 20000, 30000];
 const levelRewards = [0, 20, 30, 40];
 
-// ========== INITIALIZE USERS ARRAY (PREVENT DUPLICATE REGISTRATION) ==========
-function initUsers() {
-    // Create users array if it doesn't exist
-    if (!localStorage.getItem("users")) {
-        localStorage.setItem("users", JSON.stringify([]));
-    }
-    let users = JSON.parse(localStorage.getItem("users"));
-
-    // Migrate old single user (if any) to the array
-    let oldUser = localStorage.getItem("user");
-    let oldPass = localStorage.getItem("pass");
-    if (oldUser && oldPass) {
-        let exists = users.some(u => u.phone === oldUser);
-        if (!exists) {
-            users.push({ phone: oldUser, password: oldPass });
-            localStorage.setItem("users", JSON.stringify(users));
-        }
-    }
-
-    // Ensure admin user is present
-    let adminExists = users.some(u => u.phone === "0000000000");
-    if (!adminExists) {
-        users.push({ phone: "0000000000", password: "0000" });
-        localStorage.setItem("users", JSON.stringify(users));
-    }
-}
-
-// ========== REGISTRATION WITH DUPLICATE CHECK ==========
+// ========== REGISTRATION WITH STARTING BALANCE 50 ==========
 function registerSimple() {
     let phone = document.getElementById("regPhoneSimple").value.trim();
     let pass = document.getElementById("regPassSimple").value.trim();
     let confirm = document.getElementById("regConfirmPass").value.trim();
-
     if (!phone || phone.length < 10) {
         alert("Please enter a valid phone number (10 digits)");
         return;
@@ -1318,20 +1170,15 @@ function registerSimple() {
         alert("Passwords do not match");
         return;
     }
-
-    // Check if phone already exists in the users array
-    let users = JSON.parse(localStorage.getItem("users") || "[]");
-    let existingUser = users.find(u => u.phone === phone);
-    if (existingUser) {
+    let existingUser = localStorage.getItem("user");
+    if (existingUser === phone) {
         alert("Phone number already registered. Please login.");
         return;
     }
-
-    // Add new user to the array
-    users.push({ phone: phone, password: pass });
-    localStorage.setItem("users", JSON.stringify(users));
-
-    // Reset all user data for the new account
+    localStorage.setItem("user", phone);
+    localStorage.setItem("pass", pass);
+    
+    // Reset all user data for fresh start with 50 OMG
     localStorage.setItem("bal", "50");
     localStorage.setItem("orders", "[]");
     localStorage.setItem("totalBought", "0");
@@ -1339,85 +1186,18 @@ function registerSimple() {
     localStorage.setItem("levelRewards", "[]");
     localStorage.setItem("withdrawalAccounts", "[]");
     localStorage.removeItem("userPin");
-    localStorage.setItem("cancelCount", "0");
-    localStorage.setItem("banExpiry", "0");
-    localStorage.setItem("bought100Offer", "false");
-
-    // Set current logged‑in user
-    localStorage.setItem("user", phone);
-    localStorage.setItem("pass", pass);
-
-    // Update global variables
+    
     balance = 50;
     totalBought = 0;
     userLevel = 1;
     withdrawalAccounts = [];
     selectedAccountId = null;
-    cancelCount = 0;
-    banExpiry = 0;
-    bought100Offer = false;
-
+    
     alert("✅ Account Created Successfully! Your balance is 50 OMG.");
     document.getElementById("regPhoneSimple").value = "";
     document.getElementById("regPassSimple").value = "";
     document.getElementById("regConfirmPass").value = "";
     showLogin();
-}
-
-// ========== LOGIN USING USERS ARRAY ==========
-function login() {
-    let phone = document.getElementById("luser").value.trim();
-    let pass = document.getElementById("lpass").value.trim();
-
-    // Admin special case
-    if (phone === "0000000000" && pass === "0000") {
-        isAdminUser = true;
-        document.querySelector(".center").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("bal").innerText = balance + " OMG";
-        loadHistory();
-        updateLevelAndReward();
-        if (!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
-        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong> (Admin)`;
-        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
-        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
-        renderWithdrawalAccounts();
-        document.getElementById("adminIcon").style.display = "block";
-        return;
-    }
-
-    // Normal user: check against users array
-    let users = JSON.parse(localStorage.getItem("users") || "[]");
-    let user = users.find(u => u.phone === phone && u.password === pass);
-
-    if (user) {
-        isAdminUser = false;
-        // Load that user's data (global localStorage keys are shared, but we assume only one user per device)
-        localStorage.setItem("user", phone);
-        localStorage.setItem("pass", pass);
-
-        // Refresh global variables from localStorage (which now belong to this user)
-        balance = Number(localStorage.getItem("bal")) || 1000;
-        totalBought = Number(localStorage.getItem("totalBought")) || 0;
-        userLevel = Number(localStorage.getItem("userLevel")) || 1;
-        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
-        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
-        cancelCount = Number(localStorage.getItem("cancelCount")) || 0;
-        banExpiry = Number(localStorage.getItem("banExpiry")) || 0;
-        bought100Offer = localStorage.getItem("bought100Offer") === "true";
-
-        document.querySelector(".center").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("bal").innerText = balance + " OMG";
-        loadHistory();
-        updateLevelAndReward();
-        if (!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
-        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong>`;
-        renderWithdrawalAccounts();
-        document.getElementById("adminIcon").style.display = "none";
-    } else {
-        alert("Wrong credentials!");
-    }
 }
 
 function showRegister() {
@@ -1432,6 +1212,39 @@ function showLogin() {
     document.getElementById("login").style.display = "block";
     document.getElementById("luser").value = "";
     document.getElementById("lpass").value = "";
+}
+function login(){
+    let phone = document.getElementById("luser").value.trim();
+    let pass = document.getElementById("lpass").value.trim();
+    if(phone === "0000000000" && pass === "0000"){
+        isAdminUser = true;
+        document.querySelector(".center").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("bal").innerText = balance + " OMG";
+        loadHistory();
+        updateLevelAndReward();
+        if(!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
+        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong> (Admin)`;
+        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
+        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
+        renderWithdrawalAccounts();
+        document.getElementById("adminIcon").style.display = "block";
+        return;
+    }
+    if(phone === localStorage.getItem("user") && pass === localStorage.getItem("pass")){
+        isAdminUser = false;
+        document.querySelector(".center").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("bal").innerText = balance + " OMG";
+        loadHistory();
+        updateLevelAndReward();
+        if(!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
+        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong>`;
+        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
+        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
+        renderWithdrawalAccounts();
+        document.getElementById("adminIcon").style.display = "none";
+    } else alert("Wrong credentials!");
 }
 function logout(){
     isAdminUser = false;
@@ -1488,7 +1301,7 @@ function changePin() {
 }
 
 function forgotPin() {
-    alert("If you forgot your PIN, please contact support at @HelpcenterOMG on Telegram.");
+    alert("If you forgot your PIN, please contact support at support@omgwallet.com or Telegram @aaaaaadiiiiii for assistance.");
 }
 
 // ========== GENERATE LIVE ACTIVITY TICKER ==========
@@ -1525,9 +1338,8 @@ function initTicker() {
     container.innerHTML = html;
 }
 
-// ========== FULL FIXED OFFERS LIST (with ₹100 one-time offer) ==========
+// ========== FULL FIXED OFFERS LIST ==========
 const fixedOffers = [
-    { amount: 100, bonusPercent: 4, reward: 4, quota: 104, oncePerUser: true },
     { amount: 1240, bonusPercent: 4, reward: 49.6, quota: 1289.6 },
     { amount: 3560, bonusPercent: 4, reward: 142.4, quota: 3702.4 },
     { amount: 7890, bonusPercent: 4, reward: 315.6, quota: 8205.6 },
@@ -1576,8 +1388,7 @@ const fixedOffers = [
 ];
 
 function randomOrders() {
-    let availableOffers = fixedOffers.filter(offer => !(offer.oncePerUser && bought100Offer));
-    let shuffled = [...availableOffers].sort(() => Math.random() - 0.5);
+    let shuffled = [...fixedOffers].sort(() => Math.random() - 0.5);
     let html = "";
     shuffled.forEach(offer => {
         let rate = offer.bonusPercent;
@@ -1585,10 +1396,8 @@ function randomOrders() {
         let quota = offer.quota;
         let upiId = offer.amount > 2000 ? "aadimahi@ptyes" : "aadi0029@ptaxis";
         let isHot = offer.amount >= 10000;
-        let isSpecial = offer.amount === 100;
         html += `<div class="buy-offer">
             ${isHot ? '<div class="hot-badge">🔥 HOT</div>' : ''}
-            ${isSpecial ? '<div class="hot-badge" style="background:#facc15; color:#000;">🎁 LIMITED</div>' : ''}
             <div class="offer-header">
                 <span class="offer-amount">₹${offer.amount.toLocaleString()}</span>
                 <span class="offer-badge">${rate}% Bonus</span>
@@ -1613,54 +1422,125 @@ function randomOrders() {
     document.getElementById("orders").innerHTML = html;
 }
 
-// ========== BAN CHECK & ADMIN UNBAN ==========
-function isUserBanned() {
-    if (banExpiry > 0 && Date.now() < banExpiry) return true;
-    if (banExpiry > 0 && Date.now() >= banExpiry) {
-        cancelCount = 0;
-        localStorage.setItem("cancelCount", "0");
-        localStorage.setItem("banExpiry", "0");
-        banExpiry = 0;
-        return false;
+// ========== UPDATED BUY ORDER FLOW (Admin Confirmation Required) ==========
+function startProBuyTimer(orderId) {
+    if (buyTimers[orderId]) clearInterval(buyTimers[orderId]);
+    let timeLeft = 540;
+    const timerInterval = setInterval(() => {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        const countdownEl = document.getElementById("countdown");
+        const progressEl = document.getElementById("progressBar");
+        if (countdownEl) countdownEl.textContent = display;
+        if (progressEl) progressEl.style.width = `${(timeLeft / 540) * 100}%`;
+        if (timeLeft <= 60 && countdownEl) countdownEl.style.color = "#ef4444";
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            delete buyTimers[orderId];
+            autoExpireOrder(orderId);
+        }
+    }, 1000);
+    buyTimers[orderId] = timerInterval;
+}
+
+function autoExpireOrder(orderId) {
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    let idx = orders.findIndex(o => o.id === orderId);
+    if (idx !== -1 && (orders[idx].status === "Pending" || orders[idx].status === "Awaiting Verification")) {
+        orders[idx].status = "Expired";
+        localStorage.setItem("orders", JSON.stringify(orders));
+        loadHistory();
+        if (document.getElementById("utrPage").style.display === "block" && currentOrderId === orderId) {
+            alert("⏰ Order Expired! 9 minutes passed.");
+            document.getElementById("utrPage").style.display = "none";
+            document.getElementById("buyPage").style.display = "block";
+            currentOrderId = null;
+        }
     }
-    return false;
 }
 
-function applyBan() {
-    const expiry = Date.now() + (2 * 60 * 60 * 1000);
-    banExpiry = expiry;
-    localStorage.setItem("banExpiry", expiry);
-    alert(`⚠️ You have been temporarily banned for 2 hours due to 3 order cancellations. After ban expires or a successful purchase, your account will return to normal.`);
+function redirectToPhonePe(amount) {
+    const yourUPI = (amount > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis";
+    const orderId = "ORD" + Date.now();
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    let reward = Math.floor(amount * (amount >= 10000 ? 0.10 : 0.04));
+    orders.push({
+        id: orderId,
+        type: "Buy",
+        amount: amount,
+        reward: reward,
+        status: "Pending",
+        time: new Date().toLocaleTimeString(),
+        utr: "",
+        upi: yourUPI
+    });
+    localStorage.setItem("orders", JSON.stringify(orders));
+    loadHistory();
+    currentOrderId = orderId;
+    document.getElementById("buyPage").style.display = "none";
+    const utrPage = document.getElementById("utrPage");
+    utrPage.style.display = "block";
+    document.getElementById("utrAmount").innerHTML = `Pay <strong>₹${amount.toLocaleString('en-IN')}</strong>`;
+    document.getElementById("upiDisplay").innerHTML = `<div style="margin-bottom:8px;">💸 Pay to UPI ID</div><strong style="font-size:19px;color:#facc15;">${yourUPI}</strong>`;
+    startProBuyTimer(orderId);
+    setTimeout(() => {
+        alert(`✅ Order Created!\nPay ₹${amount} to ${yourUPI}\n\nTimer started - 9 minutes only!`);
+    }, 300);
 }
 
-function adminUnbanUser() {
-    if (!isAdminUser) { alert("Admin access required."); return; }
-    let phone = document.getElementById("unbanPhone").value.trim();
-    if (!phone) { alert("Enter phone number"); return; }
-    // Check if user exists (localStorage "user" matches)
-    let storedUser = localStorage.getItem("user");
-    if (phone !== storedUser) {
-        document.getElementById("unbanMsg").innerHTML = "❌ User not found or not the current logged-in user. (Demo: only current user can be unbanned)";
-        return;
+function submitUTR() {
+    if (!currentOrderId) return;
+    let utr = document.getElementById("utrInput").value.trim();
+    if (!utr) return alert("Please enter valid UTR");
+
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    let idx = orders.findIndex(o => o.id === currentOrderId);
+    if (idx !== -1 && orders[idx].status === "Pending") {
+        // Stop timer
+        if (buyTimers[currentOrderId]) {
+            clearInterval(buyTimers[currentOrderId]);
+            delete buyTimers[currentOrderId];
+        }
+        // Update order: status = "Awaiting Verification", save UTR
+        orders[idx].status = "Awaiting Verification";
+        orders[idx].utr = utr;
+        localStorage.setItem("orders", JSON.stringify(orders));
+        loadHistory();
+
+        alert("✅ UTR Submitted! Your order is now awaiting admin verification. Coins will be credited within 2-3 hours after verification.");
+        document.getElementById("utrPage").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        currentOrderId = null;
+    } else {
+        alert("Order not found or already processed.");
     }
-    cancelCount = 0;
-    banExpiry = 0;
-    localStorage.setItem("cancelCount", "0");
-    localStorage.setItem("banExpiry", "0");
-    document.getElementById("unbanMsg").innerHTML = "✅ User unbanned successfully!";
-    setTimeout(() => { document.getElementById("unbanMsg").innerHTML = ""; }, 3000);
-    alert("User has been unbanned.");
 }
 
-// ========== ORDER SEARCH ==========
-let allOrdersCache = [];
-function refreshAdminOrdersWithSearch() {
+function cancelUTR() {
+    if (!currentOrderId) return;
+    if (buyTimers[currentOrderId]) {
+        clearInterval(buyTimers[currentOrderId]);
+        delete buyTimers[currentOrderId];
+    }
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    let idx = orders.findIndex(o => o.id === currentOrderId);
+    if (idx !== -1 && orders[idx].status === "Pending") {
+        orders[idx].status = "Canceled";
+        localStorage.setItem("orders", JSON.stringify(orders));
+        loadHistory();
+    }
+    alert("❌ Order Cancelled");
+    document.getElementById("utrPage").style.display = "none";
+    document.getElementById("buyPage").style.display = "block";
+    currentOrderId = null;
+}
+
+// ========== ADMIN FUNCTIONS ==========
+function refreshAdminOrders() {
     if (!isAdminUser) return;
     let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    allOrdersCache = orders;
-    renderAdminOrders(orders);
-}
-function renderAdminOrders(orders) {
     let html = "";
     if (orders.length === 0) {
         html = "<p style='text-align:center;'>No orders found.</p>";
@@ -1702,7 +1582,6 @@ function renderAdminOrders(orders) {
                 <div class="admin-order-details">
                     ${order.type === "Buy" ? `<strong>Reward:</strong> ${order.reward || 0} OMG` : `<strong>Account:</strong> ${order.accountDetail || order.method || ''}`}
                 </div>
-                ${order.userPhone ? `<div class="admin-order-details"><strong>User Phone:</strong> ${order.userPhone}</div>` : ''}
                 ${order.utr ? `<div class="admin-order-details"><strong>UTR:</strong> ${order.utr}</div>` : ''}
                 ${actionButtons}
             </div>`;
@@ -1710,161 +1589,7 @@ function renderAdminOrders(orders) {
     }
     document.getElementById("adminOrdersList").innerHTML = html;
 }
-function searchOrders() {
-    let searchTerm = document.getElementById("orderSearchInput").value.trim().toLowerCase();
-    if (!searchTerm) {
-        renderAdminOrders(allOrdersCache);
-        return;
-    }
-    let filtered = allOrdersCache.filter(order => 
-        order.id.toLowerCase().includes(searchTerm) || 
-        (order.userPhone && order.userPhone.toLowerCase().includes(searchTerm))
-    );
-    renderAdminOrders(filtered);
-}
-function clearOrderSearch() {
-    document.getElementById("orderSearchInput").value = "";
-    renderAdminOrders(allOrdersCache);
-}
 
-// Override refreshAdminOrders to use cache
-function refreshAdminOrders() {
-    if (!isAdminUser) return;
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    allOrdersCache = orders;
-    renderAdminOrders(orders);
-}
-
-// ========== UPDATED BUY ORDER FLOW (store user phone) ==========
-function startProBuyTimer(orderId) {
-    if (buyTimers[orderId]) clearInterval(buyTimers[orderId]);
-    let timeLeft = 540;
-    const timerInterval = setInterval(() => {
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        const countdownEl = document.getElementById("countdown");
-        const progressEl = document.getElementById("progressBar");
-        if (countdownEl) countdownEl.textContent = display;
-        if (progressEl) progressEl.style.width = `${(timeLeft / 540) * 100}%`;
-        if (timeLeft <= 60 && countdownEl) countdownEl.style.color = "#ef4444";
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            delete buyTimers[orderId];
-            autoExpireOrder(orderId);
-        }
-    }, 1000);
-    buyTimers[orderId] = timerInterval;
-}
-
-function autoExpireOrder(orderId) {
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let idx = orders.findIndex(o => o.id === orderId);
-    if (idx !== -1 && (orders[idx].status === "Pending" || orders[idx].status === "Awaiting Verification")) {
-        orders[idx].status = "Expired";
-        localStorage.setItem("orders", JSON.stringify(orders));
-        loadHistory();
-        if (document.getElementById("utrPage").style.display === "block" && currentOrderId === orderId) {
-            alert("⏰ Order Expired! 9 minutes passed.");
-            document.getElementById("utrPage").style.display = "none";
-            document.getElementById("buyPage").style.display = "block";
-            currentOrderId = null;
-        }
-    }
-}
-
-function redirectToPhonePe(amount) {
-    if (isUserBanned()) {
-        alert(`🚫 You are temporarily banned from creating new orders. Please try again later.`);
-        return;
-    }
-    if (amount === 100 && bought100Offer) {
-        alert("❌ You have already purchased the ₹100 limited offer. It can only be bought once per account.");
-        return;
-    }
-    const yourUPI = (amount > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis";
-    const orderId = "ORD" + Date.now();
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let reward = Math.floor(amount * (amount >= 10000 ? 0.10 : 0.04));
-    orders.push({
-        id: orderId,
-        type: "Buy",
-        amount: amount,
-        reward: reward,
-        status: "Pending",
-        time: new Date().toLocaleTimeString(),
-        utr: "",
-        upi: yourUPI,
-        userPhone: localStorage.getItem("user"),
-        isSpecial100: amount === 100
-    });
-    localStorage.setItem("orders", JSON.stringify(orders));
-    loadHistory();
-    currentOrderId = orderId;
-    document.getElementById("buyPage").style.display = "none";
-    const utrPage = document.getElementById("utrPage");
-    utrPage.style.display = "block";
-    document.getElementById("utrAmount").innerHTML = `Pay <strong>₹${amount.toLocaleString('en-IN')}</strong>`;
-    document.getElementById("upiDisplay").innerHTML = `<div style="margin-bottom:8px;">💸 Pay to UPI ID</div><strong style="font-size:19px;color:#facc15;">${yourUPI}</strong>`;
-    startProBuyTimer(orderId);
-    setTimeout(() => {
-        alert(`✅ Order Created!\nPay ₹${amount} to ${yourUPI}\n\nTimer started - 9 minutes only!`);
-    }, 300);
-}
-
-function submitUTR() {
-    if (!currentOrderId) return;
-    let utr = document.getElementById("utrInput").value.trim();
-    if (!utr) return alert("Please enter valid UTR");
-
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let idx = orders.findIndex(o => o.id === currentOrderId);
-    if (idx !== -1 && orders[idx].status === "Pending") {
-        if (buyTimers[currentOrderId]) {
-            clearInterval(buyTimers[currentOrderId]);
-            delete buyTimers[currentOrderId];
-        }
-        orders[idx].status = "Awaiting Verification";
-        orders[idx].utr = utr;
-        localStorage.setItem("orders", JSON.stringify(orders));
-        loadHistory();
-
-        alert("✅ UTR Submitted! Your order is now awaiting admin verification. Coins will be credited within 2-3 hours after verification.");
-        document.getElementById("utrPage").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        currentOrderId = null;
-    } else {
-        alert("Order not found or already processed.");
-    }
-}
-
-function cancelUTR() {
-    if (!currentOrderId) return;
-    if (buyTimers[currentOrderId]) {
-        clearInterval(buyTimers[currentOrderId]);
-        delete buyTimers[currentOrderId];
-    }
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let idx = orders.findIndex(o => o.id === currentOrderId);
-    if (idx !== -1 && orders[idx].status === "Pending") {
-        orders[idx].status = "Canceled";
-        localStorage.setItem("orders", JSON.stringify(orders));
-        loadHistory();
-        
-        cancelCount++;
-        localStorage.setItem("cancelCount", cancelCount);
-        if (cancelCount >= 3) {
-            applyBan();
-        }
-    }
-    alert("❌ Order Cancelled");
-    document.getElementById("utrPage").style.display = "none";
-    document.getElementById("buyPage").style.display = "block";
-    currentOrderId = null;
-}
-
-// ========== ADMIN FUNCTIONS ==========
 function adminConfirmBuy(orderId) {
     let orders = JSON.parse(localStorage.getItem("orders") || "[]");
     let idx = orders.findIndex(o => o.id === orderId);
@@ -1876,18 +1601,6 @@ function adminConfirmBuy(orderId) {
         localStorage.setItem("totalBought", totalBought);
         updateLevelAndReward();
 
-        if (orders[idx].amount === 100 && !bought100Offer) {
-            bought100Offer = true;
-            localStorage.setItem("bought100Offer", "true");
-        }
-        cancelCount = 0;
-        localStorage.setItem("cancelCount", "0");
-        if (banExpiry > 0 && Date.now() < banExpiry) {
-            localStorage.setItem("banExpiry", "0");
-            banExpiry = 0;
-            alert("✅ Your account has been restored to normal after a successful purchase.");
-        }
-
         orders[idx].status = "Confirmed";
         localStorage.setItem("orders", JSON.stringify(orders));
         loadHistory();
@@ -1898,7 +1611,7 @@ function adminConfirmBuy(orderId) {
     }
 }
 
-// ========== OTHER FUNCTIONS ==========
+// ========== OTHER FUNCTIONS (unchanged but needed) ==========
 function updateLevelAndReward() {
     let newLevel = 1;
     for (let i = levelThresholds.length-1; i >= 0; i--) {
@@ -1975,7 +1688,7 @@ function loadHistory() {
 function copyToClipboard(text) { if(text) navigator.clipboard.writeText(text).then(() => alert("✅ Copied!")); }
 function showSell() { document.getElementById("dashboard").style.display = "none"; document.getElementById("sellPage").style.display = "block"; document.getElementById("withdrawBalance").innerText = balance.toFixed(2) + " INR"; document.getElementById("withdrawAmount").value = ""; renderWithdrawalAccounts(); }
 function backDash2() { document.getElementById("sellPage").style.display = "none"; document.getElementById("dashboard").style.display = "block"; }
-function setMaxAmount() { let maxAmount = balance; if (maxAmount < 150) { alert("Insufficient balance. Minimum withdrawal is ₹150."); return; } document.getElementById("withdrawAmount").value = maxAmount; }
+function setMaxAmount() { let maxAmount = balance; if (maxAmount < 100) { alert("Insufficient balance. Minimum withdrawal is ₹100."); return; } document.getElementById("withdrawAmount").value = maxAmount; }
 function renderWithdrawalAccounts() { const container = document.getElementById("accountList"); if (!container) return; if (withdrawalAccounts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">No withdrawal account bound<br>Click "Add New" to bind bank/UPI</div>'; return; } let html = ""; withdrawalAccounts.forEach(acc => { let detail = acc.type === "Bank" ? `${acc.bankName} - ${acc.accountNumber} (IFSC: ${acc.ifsc})` : (acc.type === "PhonePe" || acc.type === "Paytm" ? `${acc.detail}` : acc.detail); let selectedClass = selectedAccountId === acc.id ? "selected" : ""; html += `<div class="account-item ${selectedClass}" onclick="selectWithdrawalAccount('${acc.id}')"><div class="account-details"><div class="account-type">${acc.type}</div><div class="account-info">${acc.name}<br>${detail}</div></div>${selectedAccountId === acc.id ? '<i class="fas fa-check-circle" style="color:#facc15;"></i>' : ''}</div>`; }); container.innerHTML = html; }
 function selectWithdrawalAccount(id) { selectedAccountId = id; renderWithdrawalAccounts(); }
 function showAddAccountModal() { document.getElementById("addAccountModal").style.display = "flex"; document.getElementById("accountType").value = "PhonePe"; toggleBankFields(); }
@@ -1983,18 +1696,10 @@ function closeAddAccountModal() { document.getElementById("addAccountModal").sty
 function toggleBankFields() { let type = document.getElementById("accountType").value; let bankFields = document.getElementById("bankFields"); if (type === "Bank") { bankFields.style.display = "block"; } else { bankFields.style.display = "none"; } }
 document.getElementById("accountType")?.addEventListener("change", toggleBankFields);
 function saveWithdrawalAccount() { let type = document.getElementById("accountType").value; let name = document.getElementById("accountName").value.trim(); let detail = document.getElementById("accountDetail").value.trim(); if (!name || !detail) { alert("Please fill all required fields"); return; } let newAccount = { id: "acc_" + Date.now(), type: type, name: name, detail: detail }; if (type === "Bank") { let bankName = document.getElementById("bankName").value.trim(); let ifsc = document.getElementById("ifscCode").value.trim(); if (!bankName || !ifsc) { alert("Please enter Bank Name and IFSC Code"); return; } newAccount.bankName = bankName; newAccount.accountNumber = detail; newAccount.ifsc = ifsc; } withdrawalAccounts.push(newAccount); localStorage.setItem("withdrawalAccounts", JSON.stringify(withdrawalAccounts)); if (!selectedAccountId) selectedAccountId = newAccount.id; renderWithdrawalAccounts(); closeAddAccountModal(); alert("Withdrawal account added successfully!"); }
-function requestWithdrawal() { let amount = parseFloat(document.getElementById("withdrawAmount").value); if (isNaN(amount) || amount < 150) { alert("Minimum withdrawal amount is ₹150"); return; } if (amount > balance) { alert("Insufficient balance"); return; } if (!selectedAccountId) { alert("Please select a withdrawal account first"); return; } let selectedAcc = withdrawalAccounts.find(acc => acc.id === selectedAccountId); if (!selectedAcc) { alert("Selected account not found"); return; } window.pendingWithdrawal = { amount: amount, account: selectedAcc }; document.getElementById("verifyPinModal").style.display = "flex"; }
-function verifySellPin() { let entered = document.getElementById("verifyPinInput").value.trim(); let saved = localStorage.getItem("userPin"); if (entered === saved && window.pendingWithdrawal) { document.getElementById("verifyPinModal").style.display = "none"; let amount = window.pendingWithdrawal.amount; let account = window.pendingWithdrawal.account; balance -= amount; localStorage.setItem("bal", balance); document.getElementById("bal").innerText = balance + " OMG"; document.getElementById("withdrawBalance").innerText = balance.toFixed(2) + " INR"; let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let orderId = "WD" + Date.now(); let accountDetail = ""; if (account.type === "Bank") { accountDetail = `${account.bankName} - ${account.accountNumber} (IFSC: ${account.ifsc})`; } else { accountDetail = `${account.type}: ${account.detail}`; } orders.push({ id: orderId, type: "Withdrawal", amount: amount, method: account.type, accountDetail: accountDetail, status: "Processing", time: new Date().toLocaleTimeString(), userPhone: localStorage.getItem("user") }); localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); alert(`Withdrawal request of ₹${amount} submitted via ${account.type}.\nIt will be processed within 24-48 hours.`); window.pendingWithdrawal = null; backDash2(); showSell(); } else { document.getElementById("verifyPinError").style.display = "block"; } }
+function requestWithdrawal() { let amount = parseFloat(document.getElementById("withdrawAmount").value); if (isNaN(amount) || amount < 100) { alert("Minimum withdrawal amount is ₹100"); return; } if (amount > balance) { alert("Insufficient balance"); return; } if (!selectedAccountId) { alert("Please select a withdrawal account first"); return; } let selectedAcc = withdrawalAccounts.find(acc => acc.id === selectedAccountId); if (!selectedAcc) { alert("Selected account not found"); return; } window.pendingWithdrawal = { amount: amount, account: selectedAcc }; document.getElementById("verifyPinModal").style.display = "flex"; }
+function verifySellPin() { let entered = document.getElementById("verifyPinInput").value.trim(); let saved = localStorage.getItem("userPin"); if (entered === saved && window.pendingWithdrawal) { document.getElementById("verifyPinModal").style.display = "none"; let amount = window.pendingWithdrawal.amount; let account = window.pendingWithdrawal.account; balance -= amount; localStorage.setItem("bal", balance); document.getElementById("bal").innerText = balance + " OMG"; document.getElementById("withdrawBalance").innerText = balance.toFixed(2) + " INR"; let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let orderId = "WD" + Date.now(); let accountDetail = ""; if (account.type === "Bank") { accountDetail = `${account.bankName} - ${account.accountNumber} (IFSC: ${account.ifsc})`; } else { accountDetail = `${account.type}: ${account.detail}`; } orders.push({ id: orderId, type: "Withdrawal", amount: amount, method: account.type, accountDetail: accountDetail, status: "Processing", time: new Date().toLocaleTimeString() }); localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); alert(`Withdrawal request of ₹${amount} submitted via ${account.type}.\nIt will be processed within 24-48 hours.`); window.pendingWithdrawal = null; backDash2(); showSell(); } else { document.getElementById("verifyPinError").style.display = "block"; } }
 function cancelVerifyPin() { document.getElementById("verifyPinModal").style.display = "none"; window.pendingWithdrawal = null; }
-function showBuy(){ 
-    if (isUserBanned()) {
-        alert(`🚫 You are temporarily banned from creating new orders. Please try again later.`);
-        return;
-    }
-    document.getElementById("dashboard").style.display = "none"; 
-    document.getElementById("buyPage").style.display = "block"; 
-    randomOrders(); 
-}
+function showBuy(){ document.getElementById("dashboard").style.display = "none"; document.getElementById("buyPage").style.display = "block"; randomOrders(); }
 function backDash(){ document.getElementById("buyPage").style.display = "none"; document.getElementById("dashboard").style.display = "block"; }
 function openSettings(){ document.getElementById("settingsModal").style.display = "flex"; }
 function closeSettings(){ document.getElementById("settingsModal").style.display = "none"; }
@@ -2003,13 +1708,10 @@ function copyReferral(){ alert("Referral Link Copied!"); }
 function logoutFromSettings(){ closeSettings(); logout(); }
 function openHelp(){ document.getElementById("helpModal").style.display = "flex"; }
 function closeHelp(){ document.getElementById("helpModal").style.display = "none"; }
-function goBackToDashboard(){ closeHelp(); document.getElementById("dashboard").style.display = "block"; }
 function showBuyRules() { document.getElementById("buyRulesModal").style.display = "flex"; }
 function closeBuyRules() { document.getElementById("buyRulesModal").style.display = "none"; }
 function showSellRules() { document.getElementById("sellRulesModal").style.display = "flex"; }
 function closeSellRules() { document.getElementById("sellRulesModal").style.display = "none"; }
-function showTerms() { document.getElementById("termsModal").style.display = "flex"; }
-function closeTerms() { document.getElementById("termsModal").style.display = "none"; }
 function adminAddBalance(){ let a = Number(document.getElementById("adminAmount").value); if(a>0){ balance+=a; localStorage.setItem("bal",balance); document.getElementById("bal").innerText=balance+" OMG"; document.getElementById("adminBalance").innerText=balance+" OMG"; alert("Added!"); loadHistory(); }}
 function adminRemoveBalance(){ let a = Number(document.getElementById("adminAmount").value); if(a>0 && a<=balance){ balance-=a; localStorage.setItem("bal",balance); document.getElementById("bal").innerText=balance+" OMG"; document.getElementById("adminBalance").innerText=balance+" OMG"; alert("Removed!"); loadHistory(); }}
 function adminClearHistory(){ if(confirm("Clear history?")){ localStorage.setItem("orders","[]"); loadHistory(); alert("Cleared!"); } }
@@ -2018,39 +1720,13 @@ function closeAdminOrders() { document.getElementById("adminOrdersPanel").style.
 function adminCompleteWithdrawal(orderId) { let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let idx = orders.findIndex(o => o.id === orderId); if (idx !== -1 && orders[idx].type === "Withdrawal" && orders[idx].status === "Processing") { orders[idx].status = "Completed"; localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); alert(`✅ Withdrawal ${orderId} marked as completed.`); refreshAdminOrders(); } else { alert("Invalid order."); } }
 function adminCancelOrder(orderId) { if (!confirm("Are you sure you want to cancel/delete this order?")) return; let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let idx = orders.findIndex(o => o.id === orderId); if (idx !== -1) { if ((orders[idx].type === "Buy" && (orders[idx].status === "Pending" || orders[idx].status === "Awaiting Verification")) || (orders[idx].type === "Withdrawal" && orders[idx].status === "Processing")) { orders[idx].status = "Canceled"; alert(`Order ${orderId} cancelled.`); } else { orders.splice(idx, 1); alert(`Order ${orderId} deleted.`); } localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); refreshAdminOrders(); } else { alert("Order not found."); } }
 function sendChatMessage() { let input = document.getElementById("chatInput"); let msg = input.value.trim(); if (!msg) return; let chatBox = document.getElementById("chatMessages"); chatBox.innerHTML += `<div class="chat-message user-message">${msg}</div>`; chatBox.scrollTop = chatBox.scrollHeight; input.value = ""; setTimeout(() => { let reply = getAdvancedBotReply(msg.toLowerCase()); chatBox.innerHTML += `<div class="chat-message bot-message">${reply}</div>`; chatBox.scrollTop = chatBox.scrollHeight; }, 500); }
-function getAdvancedBotReply(msg) { const levelInfo = `You are Level ${userLevel}. Total purchases: ₹${totalBought.toLocaleString()}.`; if (msg.includes("level") || msg.includes("progress") || msg.includes("next level")) { let nextAmt = levelThresholds[userLevel+1] || "max"; return `📊 Your current level: ${userLevel}. Total bought: ₹${totalBought.toLocaleString()}. Need ₹${nextAmt === "max" ? "more to reach max" : (levelThresholds[userLevel+1] - totalBought) + " more"} for next level.`; } if (msg.includes("order status") || msg.includes("my order") || msg.includes("pending")) { let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let pending = orders.filter(o => o.status === "Pending" && o.type === "Buy"); if (pending.length) return `You have ${pending.length} pending order(s). Usually confirmed within 1-24 hours after UTR submission.`; return "No pending orders right now. You can buy OMG from the Buy section."; } if (msg.includes("how to buy") || msg.includes("buy process")) { return "To buy: Go to Buy section, select an offer, pay to given UPI, then submit UTR. Order will confirm within 1-24 hours. Bonus added automatically."; } if (msg.includes("sell process") || msg.includes("how to sell") || msg.includes("withdraw")) { return "To withdraw: Go to Sell/Withdraw section, add your bank/UPI account, enter amount (min ₹150), select account, and confirm with your PIN. Withdrawals processed within 24-48 hours."; } if (msg.includes("timer") || msg.includes("time left")) { return "Each buy order has a 9-minute timer. You must submit UTR before it expires, otherwise order auto-cancels."; } if (msg.includes("upi") || msg.includes("payment")) { return "Payment UPI details are shown on the buy offer card. After payment, enter the UTR/Transaction ID on the next screen."; } if (msg.includes("bonus") || msg.includes("reward")) { return "Buy offers have bonus rates: 4% for orders under ₹10,000, 10% for ₹10,000+. Plus level-up rewards of 20, 30, 40 OMG when you reach Levels 2,3,4."; } if (msg.includes("hello") || msg.includes("hi") || msg.includes("namaste")) { return "Hello! 👋 I'm your AI assistant. Ask me anything about OMG Wallet!"; } return `${levelInfo}\n\nI'm here to help! You can ask about: buying, selling, withdrawal, order status, level progress, UTR submission, or any doubt.`; }
+function getAdvancedBotReply(msg) { const levelInfo = `You are Level ${userLevel}. Total purchases: ₹${totalBought.toLocaleString()}.`; if (msg.includes("level") || msg.includes("progress") || msg.includes("next level")) { let nextAmt = levelThresholds[userLevel+1] || "max"; return `📊 Your current level: ${userLevel}. Total bought: ₹${totalBought.toLocaleString()}. Need ₹${nextAmt === "max" ? "more to reach max" : (levelThresholds[userLevel+1] - totalBought) + " more"} for next level.`; } if (msg.includes("order status") || msg.includes("my order") || msg.includes("pending")) { let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let pending = orders.filter(o => o.status === "Pending" && o.type === "Buy"); if (pending.length) return `You have ${pending.length} pending order(s). Usually confirmed within 1-24 hours after UTR submission.`; return "No pending orders right now. You can buy OMG from the Buy section."; } if (msg.includes("how to buy") || msg.includes("buy process")) { return "To buy: Go to Buy section, select an offer, pay to given UPI, then submit UTR. Order will confirm within 1-24 hours. Bonus added automatically."; } if (msg.includes("sell process") || msg.includes("how to sell") || msg.includes("withdraw")) { return "To withdraw: Go to Sell/Withdraw section, add your bank/UPI account, enter amount (min ₹100), select account, and confirm with your PIN. Withdrawals processed within 24-48 hours."; } if (msg.includes("timer") || msg.includes("time left")) { return "Each buy order has a 9-minute timer. You must submit UTR before it expires, otherwise order auto-cancels."; } if (msg.includes("upi") || msg.includes("payment")) { return "Payment UPI details are shown on the buy offer card. After payment, enter the UTR/Transaction ID on the next screen."; } if (msg.includes("bonus") || msg.includes("reward")) { return "Buy offers have bonus rates: 4% for orders under ₹10,000, 10% for ₹10,000+. Plus level-up rewards of 20, 30, 40 OMG when you reach Levels 2,3,4."; } if (msg.includes("hello") || msg.includes("hi") || msg.includes("namaste")) { return "Hello! 👋 I'm your AI assistant. Ask me anything about OMG Wallet!"; } return `${levelInfo}\n\nI'm here to help! You can ask about: buying, selling, withdrawal, order status, level progress, UTR submission, or any doubt.`; }
 
 let currentBanner = 0;
 const banners = document.querySelectorAll('.banner');
 function rotateBanners() { banners.forEach(b => b.classList.remove('active')); currentBanner = (currentBanner + 1) % banners.length; banners[currentBanner].classList.add('active'); }
-setInterval(rotateBanners, 3500);
-window.onload = function(){
-    initUsers();               // <-- Initialize users array
-    loadHistory();
-    rotateBanners();
-    updateLevelAndReward();
-    initTicker();
-};
-</script>
-
-<!-- Firebase SDK Integration -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAyOHwMDCy-PiBTNUOHmRaaj7WK1jWiIwM",
-    authDomain: "omgwallet01.firebaseapp.com",
-    projectId: "omgwallet01",
-    storageBucket: "omgwallet01.firebasestorage.app",
-    messagingSenderId: "210420930719",
-    appId: "1:210420930719:web:ad37ce45c4af5911172aaa",
-    measurementId: "G-RKTB9L7W57"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  console.log("Firebase initialized successfully");
+setInterval(rotateBanners, 4000);
+window.onload = function(){ loadHistory(); rotateBanners(); updateLevelAndReward(); initTicker(); };
 </script>
 </body>
 </html>
