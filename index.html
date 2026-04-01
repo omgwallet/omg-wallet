@@ -1,1002 +1,1013 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>OMG Wallet | Premium Withdrawal</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<style>
-/* Global & Background */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    <title>OMG Wallet | Premium Withdrawal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* All existing CSS kept as is, plus minor additions for new elements */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1a3a 100%);
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, rgba(15,23,42,0) 70%);
+            animation: rotate 30s linear infinite;
+            z-index: -1;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem 1.8rem;
+            width: 100%;
+            max-width: 420px;
+            min-height: 500px;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            transition: box-shadow 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .card:hover {
+            box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .logo-icon {
+            display: inline-block;
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            box-shadow: 0 0 20px rgba(250,204,21,0.5);
+            transition: transform 0.3s ease;
+        }
+        .logo-icon i {
+            font-size: 38px;
+            color: #0f172a;
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #facc15, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 10px rgba(56,189,248,0.3);
+        }
+        .logo-sub {
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+        .dashboard-logo {
+            text-align: center;
+            margin: 10px 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(15,23,42,0.5);
+            padding: 8px 20px;
+            border-radius: 60px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(250,204,21,0.3);
+        }
+        .dashboard-logo .logo-icon-sm {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px rgba(250,204,21,0.4);
+        }
+        .dashboard-logo .logo-icon-sm i {
+            font-size: 24px;
+            color: #0f172a;
+        }
+        .dashboard-logo .logo-text-lg {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #facc15, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .dashboard-logo .logo-sub-sm {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-left: 5px;
+        }
+        .card h3 {
+            text-align: center;
+            color: #f1f5f9;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.8rem;
+            border: none;
+            border-radius: 1.5rem;
+            background: rgba(51, 65, 85, 0.7);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .input-group input:focus {
+            background: rgba(51, 65, 85, 0.9);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250,204,21,0.2);
+        }
+        .input-group input:focus + i {
+            color: #facc15;
+        }
+        .input-group input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        .btn1, .btn2 {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 1.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: linear-gradient(135deg, #38bdf8, #0f172a);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .btn2 {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+        }
+        .btn1:hover, .btn2:hover {
+            transform: scale(1.02);
+            filter: brightness(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .link:hover {
+            color: #facc15;
+        }
+        #dashboard, #buyPage, #sellPage, #utrPage, #adminPanel, #adminOrdersPanel {
+            display: none;
+            background: #f5f5f5;
+            color: black;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .card2 {
+            background: #0f172a;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btns button {
+            flex: 1;
+            min-width: 45%;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .buy {
+            background: #facc15;
+            color: #000;
+            font-weight: bold;
+        }
+        .sell {
+            background: #22c55e;
+            color: white;
+        }
+        .historyBox {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            max-height: 280px;
+            overflow: auto;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content, .pin-modal-content, .rules-modal {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 15px;
+            width: 340px;
+            text-align: left;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .pin-input {
+            font-size: 28px;
+            text-align: center;
+            letter-spacing: 10px;
+            background: #334155;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .payment-btn {
+            background: #1e293b;
+            color: white;
+            border: 2px solid #64748b;
+            margin: 8px 0;
+        }
+        .payment-btn:active {
+            background: #38bdf8;
+            border-color: #38bdf8;
+        }
+        .balance-box {
+            text-align: center;
+            padding: 15px 0;
+        }
+        .balance-box p {
+            margin: 5px 0;
+            font-size: 15px;
+            color: #94a3b8;
+        }
+        .balance-box h1 {
+            font-size: 32px;
+            margin: 8px 0;
+            color: #facc15;
+        }
+        .icon-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0 20px 0;
+            flex-wrap: wrap;
+        }
+        .icon-row div {
+            text-align: center;
+            font-size: 13px;
+            width: 70px;
+            cursor: pointer;
+        }
+        .buy-sell-row {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .buy-card, .sell-card {
+            flex: 1;
+            padding: 20px 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .buy-card {
+            background: #fef08c;
+            color: #000;
+        }
+        .sell-card {
+            background: #86efac;
+            color: #000;
+        }
+        .orders-info {
+            text-align: center;
+            color: #64748b;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+        .history-item {
+            background: white;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        .status-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .status-timeout { background:#fef08c; color:#000; }
+        .status-completed { background:#86efac; color:#000; }
+        .status-canceled { background:#fca5a5; color:#000; }
+        .status-processing { background:#facc15; color:#000; }
+        .status-expired { background:#ef4444; color:white; }
+        .status-awaiting { background:#facc15; color:#000; }
 
-body {
-    font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1a3a 100%);
-    min-height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+        .amount {
+            font-size: 19px;
+            font-weight: bold;
+            text-align: right;
+            color: #000;
+        }
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+            color: #334155;
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #38bdf8;
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: 6px;
+        }
+        .banner-container {
+            position: relative;
+            height: 160px;
+            margin: 15px 0;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        .banner {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .banner.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        .banner1 { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .banner2 { background: linear-gradient(135deg, #00c6fb, #005bea); }
+        .banner3 { background: linear-gradient(135deg, #f7971e, #ffd200); }
+        .banner4 { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .banner5 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
 
-body::before {
-    content: '';
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
-    background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, rgba(15,23,42,0) 70%);
-    animation: rotate 30s linear infinite;
-    z-index: -1;
-}
+        .live-ticker-container {
+            background: #0a0c15;
+            border-radius: 16px;
+            margin: 20px 0;
+            padding: 12px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            border: 1px solid rgba(56,189,248,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .live-ticker {
+            width: 100%;
+            overflow-x: hidden;
+            white-space: nowrap;
+            font-family: 'Segoe UI', 'Poppins', monospace;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: transparent;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: scrollTicker 45s linear infinite;
+            white-space: nowrap;
+            padding-left: 20px;
+        }
+        .live-ticker:hover .ticker-content {
+            animation-play-state: paused;
+        }
+        .ticker-item {
+            display: inline-block;
+            margin-right: 40px;
+            color: #2ecc71;
+            text-shadow: 0 0 5px #2ecc71, 0 0 2px #00ffaa;
+            font-size: 14px;
+            font-weight: 500;
+            background: rgba(0,0,0,0.4);
+            padding: 4px 12px;
+            border-radius: 30px;
+            backdrop-filter: blur(2px);
+        }
+        .ticker-item i {
+            margin-right: 6px;
+            color: #2ecc71;
+            font-size: 12px;
+        }
+        @keyframes scrollTicker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @media (max-width: 640px) {
+            .ticker-item { font-size: 12px; margin-right: 24px; }
+            .ticker-content { animation-duration: 35s; }
+        }
+        .live-ticker-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #2ecc71, #38bdf8, transparent);
+            animation: glowLine 2s linear infinite;
+        }
+        @keyframes glowLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
-@keyframes rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 1rem;
-}
-
-.card {
-    background: rgba(30, 41, 59, 0.75);
-    backdrop-filter: blur(12px);
-    border-radius: 2rem;
-    padding: 2rem 1.8rem;
-    width: 100%;
-    max-width: 420px;
-    min-height: 500px;
-    box-shadow: 0 25px 45px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
-    transition: box-shadow 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.card:hover {
-    box-shadow: 0 30px 50px rgba(0,0,0,0.4);
-}
-
-/* BEAUTIFUL LOGO on login card */
-.logo {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    position: relative;
-}
-.logo-icon {
-    display: inline-block;
-    background: linear-gradient(135deg, #facc15, #f59e0b);
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-    box-shadow: 0 0 20px rgba(250,204,21,0.5);
-    transition: transform 0.3s ease;
-}
-.logo-icon i {
-    font-size: 38px;
-    color: #0f172a;
-}
-.logo-text {
-    font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #facc15, #38bdf8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    letter-spacing: -0.5px;
-    text-shadow: 0 0 10px rgba(56,189,248,0.3);
-}
-.logo-sub {
-    font-size: 12px;
-    color: #94a3b8;
-    letter-spacing: 1px;
-    margin-top: 4px;
-}
-
-/* Dashboard Logo */
-.dashboard-logo {
-    text-align: center;
-    margin: 10px 0 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: rgba(15,23,42,0.5);
-    padding: 8px 20px;
-    border-radius: 60px;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(250,204,21,0.3);
-}
-.dashboard-logo .logo-icon-sm {
-    background: linear-gradient(135deg, #facc15, #f59e0b);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 12px rgba(250,204,21,0.4);
-}
-.dashboard-logo .logo-icon-sm i {
-    font-size: 24px;
-    color: #0f172a;
-}
-.dashboard-logo .logo-text-lg {
-    font-size: 24px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #facc15, #38bdf8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-.dashboard-logo .logo-sub-sm {
-    font-size: 10px;
-    color: #94a3b8;
-    margin-left: 5px;
-}
-
-.card h3 {
-    text-align: center;
-    color: #f1f5f9;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    font-size: 1.6rem;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 1.8rem;
-}
-
-.input-group i {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 1.1rem;
-    transition: color 0.3s;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 1rem 1rem 1rem 2.8rem;
-    border: none;
-    border-radius: 1.5rem;
-    background: rgba(51, 65, 85, 0.7);
-    color: white;
-    font-size: 1rem;
-    outline: none;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.input-group input:focus {
-    background: rgba(51, 65, 85, 0.9);
-    border-color: #facc15;
-    box-shadow: 0 0 0 3px rgba(250,204,21,0.2);
-}
-
-.input-group input:focus + i {
-    color: #facc15;
-}
-
-.input-group input::placeholder {
-    color: #94a3b8;
-    font-weight: 400;
-}
-
-.btn1, .btn2 {
-    width: 100%;
-    padding: 0.9rem;
-    border: none;
-    border-radius: 1.5rem;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: linear-gradient(135deg, #38bdf8, #0f172a);
-    color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.btn2 {
-    background: linear-gradient(135deg, #22c55e, #15803d);
-}
-
-.btn1:hover, .btn2:hover {
-    transform: scale(1.02);
-    filter: brightness(1.05);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-.link {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #94a3b8;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.link:hover {
-    color: #facc15;
-}
-
-#dashboard, #buyPage, #sellPage, #utrPage, #adminPanel, #adminOrdersPanel {
-    display: none;
-    background: #f5f5f5;
-    color: black;
-    min-height: 100vh;
-    padding: 15px;
-}
-
-.card2 {
-    background: #0f172a;
-    color: white;
-    padding: 20px;
-    border-radius: 15px;
-}
-.btns {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-.btns button {
-    flex: 1;
-    min-width: 45%;
-    padding: 15px;
-    border-radius: 12px;
-    font-weight: bold;
-    margin: 5px 0;
-}
-.buy {
-    background: #facc15;
-    color: #000;
-    font-weight: bold;
-}
-.sell {
-    background: #22c55e;
-    color: white;
-}
-.historyBox {
-    background: white;
-    padding: 10px;
-    border-radius: 10px;
-    max-height: 280px;
-    overflow: auto;
-}
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.85);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-.modal-content, .pin-modal-content, .rules-modal {
-    background: #1e293b;
-    padding: 25px;
-    border-radius: 15px;
-    width: 340px;
-    text-align: left;
-    max-height: 85vh;
-    overflow-y: auto;
-}
-.pin-input {
-    font-size: 28px;
-    text-align: center;
-    letter-spacing: 10px;
-    background: #334155;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
-    width: 100%;
-    margin: 10px 0;
-}
-.payment-btn {
-    background: #1e293b;
-    color: white;
-    border: 2px solid #64748b;
-    margin: 8px 0;
-}
-.payment-btn:active {
-    background: #38bdf8;
-    border-color: #38bdf8;
-}
-.balance-box {
-    text-align: center;
-    padding: 15px 0;
-}
-.balance-box p {
-    margin: 5px 0;
-    font-size: 15px;
-    color: #94a3b8;
-}
-.balance-box h1 {
-    font-size: 32px;
-    margin: 8px 0;
-    color: #facc15;
-}
-.icon-row {
-    display: flex;
-    justify-content: space-around;
-    margin: 25px 0 20px 0;
-    flex-wrap: wrap;
-}
-.icon-row div {
-    text-align: center;
-    font-size: 13px;
-    width: 70px;
-    cursor: pointer;
-}
-.buy-sell-row {
-    display: flex;
-    gap: 12px;
-    margin: 20px 0;
-}
-.buy-card, .sell-card {
-    flex: 1;
-    padding: 20px 15px;
-    border-radius: 15px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-.buy-card {
-    background: #fef08c;
-    color: #000;
-}
-.sell-card {
-    background: #86efac;
-    color: #000;
-}
-.orders-info {
-    text-align: center;
-    color: #64748b;
-    margin: 20px 0;
-    font-size: 15px;
-}
-.history-item {
-    background: white;
-    padding: 16px;
-    margin: 12px 0;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    position: relative;
-}
-.status-tag {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: bold;
-}
-.status-timeout { background:#fef08c; color:#000; }
-.status-completed { background:#86efac; color:#000; }
-.status-canceled { background:#fca5a5; color:#000; }
-.status-processing { background:#facc15; color:#000; }
-.status-expired { background:#ef4444; color:white; }
-.status-awaiting { background:#facc15; color:#000; }
-
-.amount {
-    font-size: 19px;
-    font-weight: bold;
-    text-align: right;
-    color: #000;
-}
-.details-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 8px 0;
-    font-size: 14px;
-    color: #334155;
-}
-.copy-btn {
-    background: none;
-    border: none;
-    color: #38bdf8;
-    font-size: 18px;
-    cursor: pointer;
-    margin-left: 6px;
-}
-.banner-container {
-    position: relative;
-    height: 160px;
-    margin: 15px 0;
-    overflow: hidden;
-    border-radius: 15px;
-}
-.banner {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 15px;
-    color: white;
-    text-align: center;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.4;
-}
-.banner.active {
-    opacity: 1;
-    z-index: 2;
-}
-.banner1 { background: linear-gradient(135deg, #ff6a00, #ee0979); }
-.banner2 { background: linear-gradient(135deg, #00c6fb, #005bea); }
-.banner3 { background: linear-gradient(135deg, #f7971e, #ffd200); }
-.banner4 { background: linear-gradient(135deg, #11998e, #38ef7d); }
-.banner5 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
-
-/* Live Activity Ticker */
-.live-ticker-container {
-    background: #0a0c15;
-    border-radius: 16px;
-    margin: 20px 0;
-    padding: 12px 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-    border: 1px solid rgba(56,189,248,0.3);
-    position: relative;
-    overflow: hidden;
-}
-.live-ticker {
-    width: 100%;
-    overflow-x: hidden;
-    white-space: nowrap;
-    font-family: 'Segoe UI', 'Poppins', monospace;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    background: transparent;
-}
-.ticker-content {
-    display: inline-block;
-    animation: scrollTicker 45s linear infinite;
-    white-space: nowrap;
-    padding-left: 20px;
-}
-.live-ticker:hover .ticker-content {
-    animation-play-state: paused;
-}
-.ticker-item {
-    display: inline-block;
-    margin-right: 40px;
-    color: #2ecc71;
-    text-shadow: 0 0 5px #2ecc71, 0 0 2px #00ffaa;
-    font-size: 14px;
-    font-weight: 500;
-    background: rgba(0,0,0,0.4);
-    padding: 4px 12px;
-    border-radius: 30px;
-    backdrop-filter: blur(2px);
-}
-.ticker-item i {
-    margin-right: 6px;
-    color: #2ecc71;
-    font-size: 12px;
-}
-@keyframes scrollTicker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-@media (max-width: 640px) {
-    .ticker-item { font-size: 12px; margin-right: 24px; }
-    .ticker-content { animation-duration: 35s; }
-}
-.live-ticker-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #2ecc71, #38bdf8, transparent);
-    animation: glowLine 2s linear infinite;
-}
-@keyframes glowLine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.pro-timer-container {
-    text-align: center;
-    margin: 25px 0 15px;
-    background: #1e293b;
-    padding: 18px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-.countdown {
-    font-size: 42px;
-    font-weight: bold;
-    color: #facc15;
-    letter-spacing: 6px;
-    margin-bottom: 8px;
-}
-.timer-label {
-    font-size: 14px;
-    color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-.progress-bar {
-    height: 10px;
-    background: #334155;
-    border-radius: 9999px;
-    overflow: hidden;
-    margin-top: 12px;
-}
-.progress {
-    height: 100%;
-    background: linear-gradient(90deg, #facc15, #22c55e);
-    width: 100%;
-    transition: width 1s linear;
-}
-.chat-container {
-    height: 340px;
-    background: #1e293b;
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    margin: 15px 0;
-}
-.chat-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #0f172a;
-}
-.chat-message {
-    margin: 10px 0;
-    padding: 12px 16px;
-    border-radius: 18px;
-    max-width: 85%;
-    font-size: 15px;
-    line-height: 1.4;
-}
-.bot-message {
-    background: #334155;
-    align-self: flex-start;
-    color: white;
-    border-bottom-left-radius: 4px;
-}
-.user-message {
-    background: #38bdf8;
-    color: #000;
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-}
-.chat-input-area {
-    padding: 12px;
-    background: #1e293b;
-    display: flex;
-    gap: 8px;
-}
-.chat-input {
-    flex: 1;
-    padding: 14px 18px;
-    border: none;
-    border-radius: 30px;
-    background: #334155;
-    color: white;
-    font-size: 15px;
-}
-.send-btn {
-    background: #22c55e;
-    color: white;
-    border: none;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-}
-.buy-offer {
-    background: white;
-    border-radius: 24px;
-    padding: 18px;
-    margin: 12px 0;
-    position: relative;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.buy-offer:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-}
-.offer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 12px;
-}
-.offer-amount {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1e293b;
-}
-.offer-badge {
-    background: #facc15;
-    padding: 4px 12px;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: bold;
-    color: #000;
-}
-.offer-details {
-    display: flex;
-    justify-content: space-between;
-    margin: 12px 0;
-    padding: 12px 0;
-    border-top: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
-}
-.detail-item {
-    text-align: center;
-    flex: 1;
-}
-.detail-label {
-    font-size: 12px;
-    color: #64748b;
-}
-.detail-value {
-    font-size: 16px;
-    font-weight: bold;
-    color: #1e293b;
-}
-.upi-box {
-    background: #f1f5f9;
-    border-radius: 16px;
-    padding: 12px;
-    margin: 12px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: #1e293b;
-}
-.upi-copy {
-    cursor: pointer;
-    color: #38bdf8;
-    transition: color 0.2s;
-}
-.upi-copy:active {
-    color: #facc15;
-}
-.buy-now-btn {
-    background: linear-gradient(135deg, #1e293b, #0f172a);
-    color: #facc15;
-    border: none;
-    width: 100%;
-    padding: 14px;
-    border-radius: 40px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
-}
-.buy-now-btn:active {
-    transform: scale(0.98);
-}
-.hot-badge {
-    position: absolute;
-    top: -10px;
-    right: 16px;
-    background: #ef4444;
-    color: white;
-    font-size: 11px;
-    padding: 4px 12px;
-    border-radius: 30px;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(239,68,68,0.4);
-}
-.level-container-compact {
-    background: #1e293b;
-    border-radius: 16px;
-    padding: 12px 15px;
-    margin: 15px 0 5px;
-    text-align: center;
-}
-.level-badge-compact {
-    display: inline-block;
-    background: #facc15;
-    color: #000;
-    padding: 4px 12px;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 13px;
-    margin-bottom: 6px;
-}
-.level-progress-compact {
-    background: #334155;
-    border-radius: 8px;
-    height: 8px;
-    overflow: hidden;
-    margin: 8px 0;
-}
-.level-fill-compact {
-    background: linear-gradient(90deg, #facc15, #22c55e);
-    width: 0%;
-    height: 100%;
-    transition: width 0.5s;
-}
-.next-level-info-compact {
-    font-size: 12px;
-    color: #94a3b8;
-}
-.back-btn-fixed {
-    background:#64748b !important;
-    color:white !important;
-    width:100% !important;
-    padding:14px !important;
-    border-radius:12px !important;
-    margin-top:15px !important;
-    font-size:16px !important;
-    font-weight:bold;
-    border:none;
-    cursor:pointer;
-}
-.withdraw-card {
-    background: white;
-    border-radius: 24px;
-    padding: 24px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-}
-.balance-display {
-    background: linear-gradient(135deg, #facc15, #f59e0b);
-    border-radius: 20px;
-    padding: 20px;
-    color: #000;
-    text-align: center;
-    margin-bottom: 24px;
-}
-.balance-display p {
-    font-size: 14px;
-    opacity: 0.8;
-    margin-bottom: 8px;
-}
-.balance-display h2 {
-    font-size: 32px;
-    font-weight: bold;
-    margin: 0;
-}
-.amount-input-group {
-    margin: 20px 0;
-    position: relative;
-}
-.amount-input-group input {
-    width: 100%;
-    padding: 16px;
-    font-size: 18px;
-    border: 2px solid #e2e8f0;
-    border-radius: 16px;
-    background: white;
-    color: #000;
-    text-align: center;
-    font-weight: bold;
-}
-.max-btn {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #facc15;
-    color: #000;
-    border: none;
-    border-radius: 30px;
-    padding: 6px 16px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
-    width: auto;
-}
-.min-hint {
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
-    margin-top: 8px;
-}
-.account-selector {
-    margin: 24px 0;
-}
-.account-item {
-    background: #f8fafc;
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-}
-.account-item.selected {
-    border-color: #facc15;
-    background: #fef9e3;
-}
-.account-details {
-    flex: 1;
-}
-.account-type {
-    font-weight: bold;
-    color: #1e293b;
-    margin-bottom: 4px;
-}
-.account-info {
-    font-size: 13px;
-    color: #475569;
-}
-.add-account-btn {
-    background: none;
-    border: 2px dashed #cbd5e1;
-    border-radius: 16px;
-    padding: 14px;
-    text-align: center;
-    color: #38bdf8;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.add-account-btn:hover {
-    background: #f1f5f9;
-}
-.withdraw-terms {
-    background: #f1f5f9;
-    border-radius: 16px;
-    padding: 16px;
-    margin: 20px 0;
-    font-size: 13px;
-    color: #334155;
-}
-.withdraw-terms p {
-    margin: 6px 0;
-}
-.request-btn {
-    background: linear-gradient(135deg, #22c55e, #15803d);
-    color: white;
-    border: none;
-    border-radius: 40px;
-    padding: 16px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    transition: 0.2s;
-}
-.request-btn:active {
-    transform: scale(0.98);
-}
-.admin-orders-container {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    margin-top: 20px;
-}
-.admin-order-item {
-    background: #f8fafc;
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 16px;
-    border-left: 4px solid #facc15;
-}
-.admin-order-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-}
-.admin-order-id {
-    font-weight: bold;
-    color: #1e293b;
-}
-.admin-order-status {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-}
-.admin-order-details {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #334155;
-}
-.admin-order-actions {
-    margin-top: 12px;
-    display: flex;
-    gap: 10px;
-}
-.admin-action-btn {
-    padding: 8px 16px;
-    border-radius: 30px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 13px;
-}
-.confirm-btn { background: #22c55e; color: white; }
-.cancel-btn { background: #ef4444; color: white; }
-.complete-btn { background: #3b82f6; color: white; }
-</style>
+        .pro-timer-container {
+            text-align: center;
+            margin: 25px 0 15px;
+            background: #1e293b;
+            padding: 18px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .countdown {
+            font-size: 42px;
+            font-weight: bold;
+            color: #facc15;
+            letter-spacing: 6px;
+            margin-bottom: 8px;
+        }
+        .timer-label {
+            font-size: 14px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .progress-bar {
+            height: 10px;
+            background: #334155;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #facc15, #22c55e);
+            width: 100%;
+            transition: width 1s linear;
+        }
+        .chat-container {
+            height: 340px;
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin: 15px 0;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #0f172a;
+        }
+        .chat-message {
+            margin: 10px 0;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 85%;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        .bot-message {
+            background: #334155;
+            align-self: flex-start;
+            color: white;
+            border-bottom-left-radius: 4px;
+        }
+        .user-message {
+            background: #38bdf8;
+            color: #000;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-input-area {
+            padding: 12px;
+            background: #1e293b;
+            display: flex;
+            gap: 8px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 30px;
+            background: #334155;
+            color: white;
+            font-size: 15px;
+        }
+        .send-btn {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .buy-offer {
+            background: white;
+            border-radius: 24px;
+            padding: 18px;
+            margin: 12px 0;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .buy-offer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        .offer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+        .offer-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+        .offer-badge {
+            background: #facc15;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+        }
+        .offer-details {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            padding: 12px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .detail-item {
+            text-align: center;
+            flex: 1;
+        }
+        .detail-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .detail-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .upi-box {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 12px;
+            margin: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .upi-copy {
+            cursor: pointer;
+            color: #38bdf8;
+            transition: color 0.2s;
+        }
+        .upi-copy:active {
+            color: #facc15;
+        }
+        .buy-now-btn {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #facc15;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .buy-now-btn:active {
+            transform: scale(0.98);
+        }
+        .hot-badge {
+            position: absolute;
+            top: -10px;
+            right: 16px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(239,68,68,0.4);
+        }
+        .level-container-compact {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 12px 15px;
+            margin: 15px 0 5px;
+            text-align: center;
+        }
+        .level-badge-compact {
+            display: inline-block;
+            background: #facc15;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .level-progress-compact {
+            background: #334155;
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .level-fill-compact {
+            background: linear-gradient(90deg, #facc15, #22c55e);
+            width: 0%;
+            height: 100%;
+            transition: width 0.5s;
+        }
+        .next-level-info-compact {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .back-btn-fixed {
+            background:#64748b !important;
+            color:white !important;
+            width:100% !important;
+            padding:14px !important;
+            border-radius:12px !important;
+            margin-top:15px !important;
+            font-size:16px !important;
+            font-weight:bold;
+            border:none;
+            cursor:pointer;
+        }
+        .withdraw-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .balance-display {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            border-radius: 20px;
+            padding: 20px;
+            color: #000;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .balance-display p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        .balance-display h2 {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .amount-input-group {
+            margin: 20px 0;
+            position: relative;
+        }
+        .amount-input-group input {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            background: white;
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+        }
+        .max-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #facc15;
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+        }
+        .min-hint {
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 8px;
+        }
+        .account-selector {
+            margin: 24px 0;
+        }
+        .account-item {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .account-item.selected {
+            border-color: #facc15;
+            background: #fef9e3;
+        }
+        .account-details {
+            flex: 1;
+        }
+        .account-type {
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .account-info {
+            font-size: 13px;
+            color: #475569;
+        }
+        .add-account-btn {
+            background: none;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 14px;
+            text-align: center;
+            color: #38bdf8;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .add-account-btn:hover {
+            background: #f1f5f9;
+        }
+        .withdraw-terms {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 20px 0;
+            font-size: 13px;
+            color: #334155;
+        }
+        .withdraw-terms p {
+            margin: 6px 0;
+        }
+        .request-btn {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .request-btn:active {
+            transform: scale(0.98);
+        }
+        .admin-orders-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .admin-order-item {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #facc15;
+        }
+        .admin-order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .admin-order-id {
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .admin-order-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .admin-order-details {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #334155;
+        }
+        .admin-order-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+        .admin-action-btn {
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .confirm-btn { background: #22c55e; color: white; }
+        .cancel-btn { background: #ef4444; color: white; }
+        .complete-btn { background: #3b82f6; color: white; }
+        .admin-user-item {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            color: white;
+        }
+        .admin-user-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .admin-user-actions button {
+            margin: 4px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .referral-info {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .referral-code {
+            font-weight: bold;
+            color: #facc15;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
 <div class="center">
-<!-- LOGIN -->
-<div id="login" class="card">
-    <div class="logo">
-        <div class="logo-icon">
-            <i class="fas fa-coins"></i>
+    <!-- LOGIN -->
+    <div id="login" class="card">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div class="logo-text">OMG WALLET</div>
+            <div class="logo-sub">Secure • Fast • Rewarding</div>
         </div>
-        <div class="logo-text">OMG WALLET</div>
-        <div class="logo-sub">Secure • Fast • Rewarding</div>
+        <h3>Welcome Back</h3>
+        <div class="input-group">
+            <i class="fas fa-phone-alt"></i>
+            <input id="luser" placeholder="Phone Number" type="tel">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input id="lpass" type="password" placeholder="Password">
+        </div>
+        <button class="btn1" onclick="login()">Login</button>
+        <div class="link" onclick="showRegister()">Don't have an account? Create Account</div>
     </div>
-    <h3>Welcome Back</h3>
-    <div class="input-group">
-        <i class="fas fa-phone-alt"></i>
-        <input id="luser" placeholder="Phone Number" type="tel">
-    </div>
-    <div class="input-group">
-        <i class="fas fa-lock"></i>
-        <input id="lpass" type="password" placeholder="Password">
-    </div>
-    <button class="btn1" onclick="login()">Login</button>
-    <div class="link" onclick="showRegister()">Don't have an account? Create Account</div>
-</div>
 
-<!-- REGISTER (NO OTP) -->
-<div id="register" class="card" style="display:none;">
-    <div class="logo">
-        <div class="logo-icon">
-            <i class="fas fa-user-plus"></i>
+    <!-- REGISTER -->
+    <div id="register" class="card" style="display:none;">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="logo-text">Join OMG</div>
+            <div class="logo-sub">Create your account</div>
         </div>
-        <div class="logo-text">Join OMG</div>
-        <div class="logo-sub">Create your account</div>
+        <h3>Create Account</h3>
+        <div class="input-group">
+            <i class="fas fa-phone-alt"></i>
+            <input id="regPhone" placeholder="Phone Number" type="tel">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input id="regPass" type="password" placeholder="Password">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-check-circle"></i>
+            <input id="regConfirmPass" type="password" placeholder="Confirm Password">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-gift"></i>
+            <input id="regReferral" placeholder="Referral Code (optional)" type="text">
+        </div>
+        <button class="btn2" onclick="registerSimple()">Register</button>
+        <div class="link" onclick="showLogin()">Already have an account? Login</div>
     </div>
-    <h3>Create Account</h3>
-    <div class="input-group">
-        <i class="fas fa-phone-alt"></i>
-        <input id="regPhoneSimple" placeholder="Phone Number" type="tel">
-    </div>
-    <div class="input-group">
-        <i class="fas fa-lock"></i>
-        <input id="regPassSimple" type="password" placeholder="Password">
-    </div>
-    <div class="input-group">
-        <i class="fas fa-check-circle"></i>
-        <input id="regConfirmPass" type="password" placeholder="Confirm Password">
-    </div>
-    <button class="btn2" onclick="registerSimple()">Register</button>
-    <div class="link" onclick="showLogin()">Already have an account? Login</div>
-</div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none;">
-    <!-- Beautiful Dashboard Logo -->
     <div class="dashboard-logo">
         <div class="logo-icon-sm">
             <i class="fas fa-coins"></i>
@@ -1009,12 +1020,15 @@ body::before {
     <div class="card2">
         <div class="balance-box">
             <p>My total assets</p>
-            <h1 id="bal">1000 OMG</h1>
+            <h1 id="bal">0 OMG</h1>
             <p style="margin-top:8px; font-size:15px; color:#94a3b8;"><strong>1 OMG Coin = ₹1</strong></p>
+        </div>
+        <div class="referral-info">
+            <i class="fas fa-link"></i> Your Referral Code: <strong id="referralCodeDisplay" class="referral-code" onclick="copyReferralCode()"></strong>
+            <br><small>Share this code with friends! You earn 1% of their purchases.</small>
         </div>
     </div>
 
-    <!-- ATTRACTIVE ROTATING BANNERS - MOTIVATING TO BUY -->
     <div class="banner-container">
         <div class="banner banner1 active" onclick="window.location.href='javascript:showBuy()'">
             ⚡ LIMITED TIME OFFER ⚡<br>
@@ -1048,7 +1062,6 @@ body::before {
         </div>
     </div>
 
-    <!-- Live Activity Ticker -->
     <div class="live-ticker-container">
         <div class="live-ticker">
             <div class="ticker-content" id="tickerContent"></div>
@@ -1060,7 +1073,7 @@ body::before {
         <div onclick="showSellRules()">📤<br>Sell rules</div>
         <div onclick="openHelp()">🛟<br>Help Center</div>
         <div onclick="openSettings()">👤<br>User</div>
-        <div id="adminIcon" style="display:none;" onclick="openAdminOrders()">👑<br>Admin</div>
+        <div id="adminIcon" style="display:none;" onclick="openAdminDashboard()">👑<br>Admin</div>
         <div onclick="showTerms()">📜<br>Terms</div>
     </div>
     <div class="buy-sell-row">
@@ -1073,26 +1086,33 @@ body::before {
     <button onclick="logout()" style="background:#ef4444;color:white;margin-top:20px;">Logout</button>
 </div>
 
-<!-- BUY PAGE, UTR PAGE, SELL PAGE, ADMIN PANELS -->
+<!-- BUY PAGE, UTR PAGE, SELL PAGE, ADMIN DASHBOARD -->
 <div id="buyPage" style="display:none;"><h2 style="color:#facc15;text-align:center;margin-bottom:20px;">Buy OMG <span style="color:#eab308;">(Live Offers)</span></h2><div id="orders"></div><button onclick="backDash()" class="back-btn-fixed">← Back to Dashboard</button></div>
 <div id="utrPage" style="display:none; background:#f5f5f5; color:black; min-height:100vh; padding:15px;"><h2 style="color:#facc15;">Complete Payment</h2><h3 id="utrAmount" style="font-size:28px;margin:10px 0;"></h3><div id="upiDisplay" style="background:#1e293b;color:white;padding:18px;border-radius:15px;text-align:center;margin:15px 0;font-size:17px;font-weight:bold;"></div><div class="pro-timer-container"><div class="timer-label">⏳ Order expires in</div><div id="countdown" class="countdown">09:00</div><div class="progress-bar"><div id="progressBar" class="progress"></div></div><small style="color:#64748b;">9 minutes remaining • Auto-cancel if expired</small></div><p><strong>Enter Transaction ID / UTR</strong></p><input id="utrInput" placeholder="Enter UTR Number" style="margin:15px 0;"><button onclick="submitUTR()" style="background:#22c55e;color:white;">✅ Submit UTR & Confirm</button><button onclick="cancelUTR()" style="background:#ef4444;color:white;margin-top:10px;">Cancel Order</button><p style="font-size:13px;color:#64748b;margin-top:20px;text-align:center;">Payment must be made to the displayed UPI only</p></div>
-<div id="sellPage" style="display:none; background:#f5f5f5; min-height:100vh; padding:15px;"><div class="withdraw-card"><div class="balance-display"><p>AVAILABLE BALANCE</p><h2 id="withdrawBalance">0.00 INR</h2></div><div class="amount-input-group"><input type="number" id="withdrawAmount" placeholder="Enter amount" step="1" min="150"><button class="max-btn" onclick="setMaxAmount()">MAX</button><div class="min-hint">Min. ₹150</div></div><div class="account-selector"><h4 style="margin-bottom: 12px;">WITHDRAW TO</h4><div id="accountList"></div><div class="add-account-btn" onclick="showAddAccountModal()"><i class="fas fa-plus-circle"></i> + Add New</div></div><div class="withdraw-terms"><p><i class="fas fa-clock"></i> Withdrawals are processed within 24-48 hours.</p><p><i class="fas fa-rupee-sign"></i> Minimum withdrawal amount is ₹150.</p><p><i class="fas fa-check-circle"></i> Ensure your bound account details are correct.</p></div><button class="request-btn" onclick="requestWithdrawal()">Request Withdrawal</button><button onclick="backDash2()" style="margin-top:15px; background:#64748b; color:white;">← Back to Dashboard</button></div></div>
-<div id="adminPanel" style="display:none;"><h2 style="color:#facc15;text-align:center;">🔑 Admin Panel</h2><div class="card2"><p><strong>Current Balance:</strong> <span id="adminBalance">1000 OMG</span></p><input id="adminAmount" type="number" placeholder="Enter Amount"><button onclick="adminAddBalance()" style="background:#22c55e;color:white;">Add Balance</button><button onclick="adminRemoveBalance()" style="background:#ef4444;color:white;">Remove Balance</button><button onclick="adminClearHistory()" style="background:#64748b;color:white;margin-top:10px;">Clear All History</button></div><hr style="margin:15px 0; border-color:#334155;"><div style="background:#1e293b; padding:15px; border-radius:12px;"><h4>🔓 Unban User</h4><input type="tel" id="unbanPhone" placeholder="Enter Phone Number" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none;"><button onclick="adminUnbanUser()" style="background:#22c55e; color:white; width:100%;">Unban Now</button><p id="unbanMsg" style="font-size:12px; margin-top:8px; color:#94a3b8;"></p></div><button onclick="backFromAdmin()" style="margin-top:15px;background:#ef4444;color:white;">Back to Dashboard</button></div>
-<div id="adminOrdersPanel" style="display:none;"><h2 style="color:#facc15;text-align:center;">👑 Admin Order Management</h2><div class="admin-orders-container"><div style="display:flex; justify-content:space-between; margin-bottom:15px;"><h3>All Orders</h3><button onclick="refreshAdminOrders()" style="background:#facc15; color:#000; padding:8px 16px; border-radius:30px; border:none;">⟳ Refresh</button></div><div style="margin-bottom:15px;"><input type="text" id="orderSearchInput" placeholder="Search by Order ID or User Phone..." style="width:100%; padding:12px; border-radius:30px; border:1px solid #cbd5e1; background:#f8fafc;"><div style="display:flex; gap:8px; margin-top:8px;"><button onclick="searchOrders()" style="background:#38bdf8; color:#000; padding:8px 16px; border-radius:30px; border:none; font-weight:bold;">Search</button><button onclick="clearOrderSearch()" style="background:#64748b; color:white; padding:8px 16px; border-radius:30px; border:none; font-weight:bold;">Clear</button></div></div><div id="adminOrdersList"></div><button onclick="closeAdminOrders()" style="margin-top:20px; background:#64748b; color:white;">← Back to Dashboard</button></div></div>
+<div id="sellPage" style="display:none; background:#f5f5f5; min-height:100vh; padding:15px;"><div class="withdraw-card"><div class="balance-display"><p>AVAILABLE BALANCE</p><h2 id="withdrawBalance">0.00 INR</h2></div><div class="amount-input-group"><input type="number" id="withdrawAmount" placeholder="Enter amount" step="1" min="150"><button class="max-btn" onclick="setMaxAmount()">MAX</button><div class="min-hint">Min. ₹150 (1% fee applied)</div></div><div class="account-selector"><h4 style="margin-bottom: 12px;">WITHDRAW TO</h4><div id="accountList"></div><div class="add-account-btn" onclick="showAddAccountModal()"><i class="fas fa-plus-circle"></i> + Add New</div></div><div class="withdraw-terms"><p><i class="fas fa-clock"></i> Withdrawals processed within 24-48 hours.</p><p><i class="fas fa-rupee-sign"></i> Minimum withdrawal ₹150. 1% fee deducted.</p><p><i class="fas fa-check-circle"></i> Ensure your bound account details are correct.</p></div><button class="request-btn" onclick="requestWithdrawal()">Request Withdrawal</button><button onclick="backDash2()" style="margin-top:15px; background:#64748b; color:white;">← Back to Dashboard</button></div></div>
 
-<!-- SETTINGS MODAL (UPGRADED WITH PIN MANAGEMENT) -->
+<!-- ADMIN DASHBOARD (Centralized) -->
+<div id="adminDashboard" style="display:none; background:#0f172a; min-height:100vh; padding:20px;">
+    <h2 style="color:#facc15; text-align:center;">👑 Admin Dashboard</h2>
+    <div style="display:flex; justify-content:space-between; margin:15px 0;">
+        <button onclick="showAdminUsers()" class="btn1" style="width:48%;">Manage Users</button>
+        <button onclick="showAdminOrders()" class="btn1" style="width:48%;">Manage Orders</button>
+    </div>
+    <div id="adminUsersList" style="margin-top:20px;"></div>
+    <div id="adminOrdersList" style="margin-top:20px;"></div>
+    <button onclick="closeAdminDashboard()" style="background:#ef4444; color:white; margin-top:20px; width:100%; padding:12px; border-radius:40px;">Back to Dashboard</button>
+</div>
+
+<!-- Other modals (unchanged) -->
 <div id="settingsModal" class="modal">
     <div class="modal-content">
         <h3>⚙️ Settings & Profile</h3>
         <p style="margin:15px 0 8px 0; font-weight:bold;">Profile</p>
         <p id="profilePhone" style="color:#38bdf8; background:#334155; padding:10px; border-radius:8px;">Phone: Loading...</p>
         <button onclick="changePassword()" style="background:#334155;color:white;">Change Password</button>
-        
-        <!-- PIN Management Section -->
         <p style="margin:25px 0 8px 0; font-weight:bold;">🔐 Sell PIN</p>
         <button onclick="changePin()" style="background:#facc15; color:#000; width:100%; margin:5px 0;">Change PIN</button>
         <button onclick="forgotPin()" style="background:#64748b; color:white; width:100%; margin:5px 0;">Forgot PIN?</button>
-        
         <div class="level-container-compact" id="compactLevelContainer">
             <div class="level-badge-compact" id="compactLevelBadge">Level 1</div>
             <div class="level-progress-compact"><div id="compactLevelFill" class="level-fill-compact" style="width:0%"></div></div>
@@ -1100,13 +1120,12 @@ body::before {
         </div>
         <p style="margin:25px 0 8px 0; font-weight:bold;">Refer & Earn</p>
         <p style="font-size:14px;color:#94a3b8; line-height:1.4;">Invite your friends and earn <strong>1% bonus</strong> on every purchase they make.</p>
-        <button onclick="copyReferral()" style="background:#eab308;color:#000;">Copy Referral Link</button>
+        <button onclick="copyReferralCode()" style="background:#eab308;color:#000;">Copy Referral Link</button>
         <button onclick="logoutFromSettings()" style="background:#ef4444;color:white;margin-top:25px;">Logout</button>
         <button onclick="closeSettings()" style="background:#64748b;color:white;margin-top:10px;">Close</button>
     </div>
 </div>
 
-<!-- PIN SET MODAL (UPGRADED WITH CONFIRMATION) -->
 <div id="setPinModal" class="modal">
     <div class="pin-modal-content">
         <h3>🔐 Set Your 4-Digit PIN</h3>
@@ -1118,7 +1137,6 @@ body::before {
     </div>
 </div>
 
-<!-- VERIFY PIN MODAL (unchanged) -->
 <div id="verifyPinModal" class="modal">
     <div class="pin-modal-content">
         <h3>🔐 Enter 4-Digit PIN</h3>
@@ -1129,7 +1147,6 @@ body::before {
     </div>
 </div>
 
-<!-- UPGRADED BUY RULES MODAL -->
 <div id="buyRulesModal" class="modal">
     <div class="modal-content">
         <h3 style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-shopping-cart" style="color:#facc15;"></i> Buy Rules</h3>
@@ -1147,16 +1164,10 @@ body::before {
                 <li>⚠️ <strong>Double-check UTR before submitting. Incorrect UTR cannot be corrected.</strong></li>
             </ul>
         </div>
-        <div style="background: #0f172a; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-            <p><i class="fas fa-gift" style="color:#facc15;"></i> <strong>Bonus Structure:</strong></p>
-            <p>💰 Orders below ₹10,000 → <strong>4% bonus</strong><br>💰 Orders ₹10,000 & above → <strong>10% bonus</strong></p>
-            <p class="mt-2"><i class="fas fa-chart-line"></i> <strong>Level Rewards:</strong><br>Level 2 → +20 OMG &nbsp;|&nbsp; Level 3 → +30 OMG &nbsp;|&nbsp; Level 4 → +40 OMG</p>
-        </div>
         <button onclick="closeBuyRules()" style="background:#22c55e; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">Got it</button>
     </div>
 </div>
 
-<!-- UPGRADED SELL RULES MODAL -->
 <div id="sellRulesModal" class="modal">
     <div class="modal-content">
         <h3 style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-hand-holding-usd" style="color:#22c55e;"></i> Sell Rules</h3>
@@ -1174,30 +1185,24 @@ body::before {
                 <li>⚠️ <strong>Double-check account details. Incorrect details cannot be reversed.</strong></li>
             </ul>
         </div>
-        <div style="background: #0f172a; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-            <p><i class="fas fa-shield-alt" style="color:#22c55e;"></i> <strong>Important:</strong></p>
-            <p>🔒 Withdrawals are processed only to <strong>verified accounts</strong> you have added.<br>⏱️ Processing time may vary during high volume.</p>
-        </div>
         <button onclick="closeSellRules()" style="background:#22c55e; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">Understood</button>
     </div>
 </div>
 
-<!-- TERMS & CONDITIONS MODAL -->
 <div id="termsModal" class="modal">
     <div class="modal-content">
         <h3 style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-file-contract" style="color:#facc15;"></i> Terms & Conditions</h3>
         <div style="background: #0f172a; padding: 18px; border-radius: 12px; margin: 15px 0; color: #cbd5e1; line-height: 1.6;">
-            <p><strong>📌 Buy Orders:</strong> While placing a Buy order, double-check the UTR before clicking the submit button. If the UTR is incorrect, we will not be responsible and cannot fix it.</p>
-            <p style="margin-top:12px;"><strong>📌 Sell Orders:</strong> While placing a Sell order, double-check your account details. Ensure that all filled details are correct. We are not liable for errors in user‑provided information.</p>
-            <p style="margin-top:12px;"><strong>📌 Account Ban:</strong> If your OMG Wallet account has been temporarily banned, please contact customer care immediately for assistance.</p>
-            <p style="margin-top:12px;"><strong>📌 Discretion:</strong> Users may choose to use OMG Wallet at their own discretion.</p>
-            <p style="margin-top:12px;"><strong>📌 Support:</strong> For any issues, contact us on Telegram: <a href="https://t.me/HelpcenterOMG" target="_blank" style="color:#38bdf8;">@HelpcenterOMG</a></p>
+            <p><strong>📌 Buy Orders:</strong> Double-check the UTR before submitting. Incorrect UTR cannot be fixed.</p>
+            <p><strong>📌 Sell Orders:</strong> Double-check account details. We are not liable for errors.</p>
+            <p><strong>📌 Account Ban:</strong> If your account is banned, contact support.</p>
+            <p><strong>📌 Referral Bonus:</strong> 1% of referred user's purchases credited to your balance after admin confirmation.</p>
+            <p><strong>📌 Support:</strong> Telegram: <a href="https://t.me/HelpcenterOMG" target="_blank" style="color:#38bdf8;">@HelpcenterOMG</a></p>
         </div>
         <button onclick="closeTerms()" style="background:#22c55e; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">I Understand</button>
     </div>
 </div>
 
-<!-- PROFESSIONAL HELP CENTER MODAL (with Back to Dashboard button) -->
 <div id="helpModal" class="modal">
     <div class="modal-content" style="padding: 0; overflow: hidden; max-width: 380px;">
         <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 20px; border-bottom: 1px solid rgba(250,204,21,0.3);">
@@ -1221,8 +1226,6 @@ body::before {
                     <button class="send-btn" onclick="sendChatMessage()">↑</button>
                 </div>
             </div>
-            
-            <!-- Support Info Section -->
             <div style="background: rgba(56,189,248,0.1); border-radius: 12px; padding: 12px; margin: 10px 0;">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                     <i class="fab fa-telegram" style="color: #38bdf8; font-size: 18px;"></i>
@@ -1234,7 +1237,6 @@ body::before {
                 </a>
                 <p style="font-size: 11px; color: #64748b; margin-top: 8px; text-align: center;">Response within 2-3 hours • 9 AM - 9 PM IST</p>
             </div>
-            
             <div style="display: flex; gap: 10px;">
                 <button onclick="closeHelp()" style="background:#64748b; color:white; flex:1; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">Close</button>
                 <button onclick="goBackToDashboard()" style="background:#38bdf8; color:#000; flex:1; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
@@ -1246,426 +1248,564 @@ body::before {
 <div id="addAccountModal" class="modal"><div class="modal-content"><h3>Add Withdrawal Account</h3><select id="accountType" style="width:100%; padding:12px; border-radius:12px; background:#334155; color:white; margin:10px 0;"><option value="PhonePe">📱 PhonePe</option><option value="Paytm">💰 Paytm</option><option value="Bank">🏦 Bank Account</option></select><input id="accountName" placeholder="Account Holder Name" style="margin:8px 0;"><input id="accountDetail" placeholder="UPI ID / Phone Number / Account Number" style="margin:8px 0;"><div id="bankFields" style="display:none;"><input id="bankName" placeholder="Bank Name" style="margin:8px 0;"><input id="ifscCode" placeholder="IFSC Code" style="margin:8px 0;"></div><button onclick="saveWithdrawalAccount()" style="background:#22c55e;color:white;margin-top:10px;">Save Account</button><button onclick="closeAddAccountModal()" style="background:#64748b;color:white;margin-top:8px;">Cancel</button></div></div>
 
 <script>
-// ==================== DATA INIT ====================
-if (!localStorage.getItem("orders")) localStorage.setItem("orders", "[]");
-if (!localStorage.getItem("bal")) localStorage.setItem("bal", "1000");
-if (!localStorage.getItem("totalBought")) localStorage.setItem("totalBought", "0");
-if (!localStorage.getItem("userLevel")) localStorage.setItem("userLevel", "1");
-if (!localStorage.getItem("levelRewards")) localStorage.setItem("levelRewards", "[]");
-if (!localStorage.getItem("withdrawalAccounts")) localStorage.setItem("withdrawalAccounts", "[]");
-// Ban & 100-offer tracking
-if (!localStorage.getItem("cancelCount")) localStorage.setItem("cancelCount", "0");
-if (!localStorage.getItem("banExpiry")) localStorage.setItem("banExpiry", "0");
-if (!localStorage.getItem("bought100Offer")) localStorage.setItem("bought100Offer", "false");
+    // ==================== DATA STRUCTURES ====================
+    let users = [];
+    let orders = [];
+    let currentUser = null;
+    let isAdmin = false;
+    let currentOrderId = null;
+    let buyTimers = {};
 
-let balance = Number(localStorage.getItem("bal")) || 1000;
-let totalBought = Number(localStorage.getItem("totalBought")) || 0;
-let userLevel = Number(localStorage.getItem("userLevel")) || 1;
-let withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
-let selectedAccountId = null;
-let currentOrderId = null;
-let buyTimers = {};
-let isAdminUser = false;
-let cancelCount = Number(localStorage.getItem("cancelCount")) || 0;
-let banExpiry = Number(localStorage.getItem("banExpiry")) || 0;
-let bought100Offer = localStorage.getItem("bought100Offer") === "true";
-
-const levelThresholds = [0, 10000, 20000, 30000];
-const levelRewards = [0, 20, 30, 40];
-
-// ========== INITIALIZE USERS ARRAY (PREVENT DUPLICATE REGISTRATION) ==========
-function initUsers() {
-    // Create users array if it doesn't exist
-    if (!localStorage.getItem("users")) {
-        localStorage.setItem("users", JSON.stringify([]));
-    }
-    let users = JSON.parse(localStorage.getItem("users"));
-
-    // Migrate old single user (if any) to the array
-    let oldUser = localStorage.getItem("user");
-    let oldPass = localStorage.getItem("pass");
-    if (oldUser && oldPass) {
-        let exists = users.some(u => u.phone === oldUser);
-        if (!exists) {
-            users.push({ phone: oldUser, password: oldPass });
+    // Load all data from localStorage
+    function loadData() {
+        const storedUsers = localStorage.getItem("users");
+        if (storedUsers) {
+            users = JSON.parse(storedUsers);
+        } else {
+            // create default admin user
+            const adminId = generateUUID();
+            users = [{
+                id: adminId,
+                phone: "0000000000",
+                passwordHash: "0000",
+                referralCode: "ADMIN",
+                referredBy: null,
+                balance: 100000,
+                totalBought: 0,
+                level: 1,
+                levelRewardsGiven: [],
+                cancelCount: 0,
+                banExpiry: 0,
+                pinHash: null,
+                createdAt: Date.now(),
+                withdrawalAccounts: []
+            }];
             localStorage.setItem("users", JSON.stringify(users));
+        }
+        const storedOrders = localStorage.getItem("orders");
+        if (storedOrders) {
+            orders = JSON.parse(storedOrders);
+        } else {
+            orders = [];
+            localStorage.setItem("orders", JSON.stringify(orders));
+        }
+        // Ensure each user has necessary fields (migration)
+        users = users.map(u => {
+            if (!u.referralCode) u.referralCode = generateReferralCode();
+            if (!u.balance) u.balance = 50;
+            if (!u.totalBought) u.totalBought = 0;
+            if (!u.level) u.level = 1;
+            if (!u.levelRewardsGiven) u.levelRewardsGiven = [];
+            if (!u.cancelCount) u.cancelCount = 0;
+            if (!u.banExpiry) u.banExpiry = 0;
+            if (!u.pinHash) u.pinHash = null;
+            if (!u.withdrawalAccounts) u.withdrawalAccounts = [];
+            return u;
+        });
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    function generateReferralCode() {
+        return Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+
+    function saveUsers() {
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    function saveOrders() {
+        localStorage.setItem("orders", JSON.stringify(orders));
+    }
+
+    // ==================== AUTH (Plain Text) ====================
+    function showRegister() {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("register").style.display = "block";
+    }
+
+    function showLogin() {
+        document.getElementById("login").style.display = "block";
+        document.getElementById("register").style.display = "none";
+    }
+
+    function registerSimple() {
+        const phone = document.getElementById("regPhone").value.trim();
+        const pass = document.getElementById("regPass").value.trim();
+        const confirm = document.getElementById("regConfirmPass").value.trim();
+        const referralCode = document.getElementById("regReferral").value.trim();
+
+        if (!phone || phone.length < 10 || isNaN(phone)) {
+            alert("Please enter a valid 10-digit phone number");
+            return;
+        }
+        if (!pass || pass.length < 4) {
+            alert("Password must be at least 4 characters");
+            return;
+        }
+        if (pass !== confirm) {
+            alert("Passwords do not match");
+            return;
+        }
+        const existing = users.find(u => u.phone === phone);
+        if (existing) {
+            alert("Phone number already registered. Please login.");
+            return;
+        }
+
+        let referrerId = null;
+        if (referralCode) {
+            const referrer = users.find(u => u.referralCode === referralCode);
+            if (referrer) {
+                referrerId = referrer.id;
+            } else {
+                alert("Referral code not found. Continuing without referral.");
+            }
+        }
+
+        const newUserId = generateUUID();
+        const newReferralCode = generateReferralCode();
+        const newUser = {
+            id: newUserId,
+            phone: phone,
+            passwordHash: pass,
+            referralCode: newReferralCode,
+            referredBy: referrerId,
+            balance: 50,
+            totalBought: 0,
+            level: 1,
+            levelRewardsGiven: [],
+            cancelCount: 0,
+            banExpiry: 0,
+            pinHash: null,
+            withdrawalAccounts: [],
+            createdAt: Date.now()
+        };
+        users.push(newUser);
+        saveUsers();
+
+        alert("✅ Account Created Successfully! Your balance is 50 OMG.");
+        document.getElementById("regPhone").value = "";
+        document.getElementById("regPass").value = "";
+        document.getElementById("regConfirmPass").value = "";
+        document.getElementById("regReferral").value = "";
+        showLogin();
+    }
+
+    function login() {
+        const phone = document.getElementById("luser").value.trim();
+        const pass = document.getElementById("lpass").value.trim();
+
+        // Admin login (special case)
+        if (phone === "0000000000" && pass === "0000") {
+            isAdmin = true;
+            currentUser = users.find(u => u.phone === "0000000000");
+            if (!currentUser) {
+                const adminId = generateUUID();
+                currentUser = {
+                    id: adminId,
+                    phone: "0000000000",
+                    passwordHash: "0000",
+                    referralCode: "ADMIN",
+                    referredBy: null,
+                    balance: 100000,
+                    totalBought: 0,
+                    level: 1,
+                    levelRewardsGiven: [],
+                    cancelCount: 0,
+                    banExpiry: 0,
+                    pinHash: null,
+                    withdrawalAccounts: [],
+                    createdAt: Date.now()
+                };
+                users.push(currentUser);
+                saveUsers();
+            }
+            document.querySelector(".center").style.display = "none";
+            document.getElementById("dashboard").style.display = "block";
+            updateDashboard();
+            document.getElementById("adminIcon").style.display = "block";
+            return;
+        }
+
+        const user = users.find(u => u.phone === phone);
+        if (!user) {
+            alert("User not found");
+            return;
+        }
+        if (pass !== user.passwordHash) {
+            alert("Wrong password!");
+            return;
+        }
+        if (user.banExpiry > Date.now()) {
+            alert("Your account is temporarily banned. Please try again later.");
+            return;
+        }
+        currentUser = user;
+        isAdmin = false;
+        document.querySelector(".center").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        updateDashboard();
+        document.getElementById("adminIcon").style.display = "none";
+        if (!user.pinHash) {
+            setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
         }
     }
 
-    // Ensure admin user is present
-    let adminExists = users.some(u => u.phone === "0000000000");
-    if (!adminExists) {
-        users.push({ phone: "0000000000", password: "0000" });
-        localStorage.setItem("users", JSON.stringify(users));
-    }
-}
-
-// ========== REGISTRATION WITH DUPLICATE CHECK ==========
-function registerSimple() {
-    let phone = document.getElementById("regPhoneSimple").value.trim();
-    let pass = document.getElementById("regPassSimple").value.trim();
-    let confirm = document.getElementById("regConfirmPass").value.trim();
-
-    if (!phone || phone.length < 10) {
-        alert("Please enter a valid phone number (10 digits)");
-        return;
-    }
-    if (!pass || pass.length < 4) {
-        alert("Password must be at least 4 characters");
-        return;
-    }
-    if (pass !== confirm) {
-        alert("Passwords do not match");
-        return;
-    }
-
-    // Check if phone already exists in the users array
-    let users = JSON.parse(localStorage.getItem("users") || "[]");
-    let existingUser = users.find(u => u.phone === phone);
-    if (existingUser) {
-        alert("Phone number already registered. Please login.");
-        return;
-    }
-
-    // Add new user to the array
-    users.push({ phone: phone, password: pass });
-    localStorage.setItem("users", JSON.stringify(users));
-
-    // Reset all user data for the new account
-    localStorage.setItem("bal", "50");
-    localStorage.setItem("orders", "[]");
-    localStorage.setItem("totalBought", "0");
-    localStorage.setItem("userLevel", "1");
-    localStorage.setItem("levelRewards", "[]");
-    localStorage.setItem("withdrawalAccounts", "[]");
-    localStorage.removeItem("userPin");
-    localStorage.setItem("cancelCount", "0");
-    localStorage.setItem("banExpiry", "0");
-    localStorage.setItem("bought100Offer", "false");
-
-    // Set current logged‑in user
-    localStorage.setItem("user", phone);
-    localStorage.setItem("pass", pass);
-
-    // Update global variables
-    balance = 50;
-    totalBought = 0;
-    userLevel = 1;
-    withdrawalAccounts = [];
-    selectedAccountId = null;
-    cancelCount = 0;
-    banExpiry = 0;
-    bought100Offer = false;
-
-    alert("✅ Account Created Successfully! Your balance is 50 OMG.");
-    document.getElementById("regPhoneSimple").value = "";
-    document.getElementById("regPassSimple").value = "";
-    document.getElementById("regConfirmPass").value = "";
-    showLogin();
-}
-
-// ========== LOGIN USING USERS ARRAY ==========
-function login() {
-    let phone = document.getElementById("luser").value.trim();
-    let pass = document.getElementById("lpass").value.trim();
-
-    // Admin special case
-    if (phone === "0000000000" && pass === "0000") {
-        isAdminUser = true;
-        document.querySelector(".center").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("bal").innerText = balance + " OMG";
-        loadHistory();
+    function updateDashboard() {
+        if (!currentUser) return;
+        document.getElementById("bal").innerText = currentUser.balance + " OMG";
+        document.getElementById("withdrawBalance").innerText = currentUser.balance.toFixed(2) + " INR";
+        document.getElementById("referralCodeDisplay").innerText = currentUser.referralCode;
+        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${currentUser.phone}</strong>`;
         updateLevelAndReward();
-        if (!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
-        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong> (Admin)`;
-        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
-        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
-        renderWithdrawalAccounts();
-        document.getElementById("adminIcon").style.display = "block";
-        return;
-    }
-
-    // Normal user: check against users array
-    let users = JSON.parse(localStorage.getItem("users") || "[]");
-    let user = users.find(u => u.phone === phone && u.password === pass);
-
-    if (user) {
-        isAdminUser = false;
-        // Load that user's data (global localStorage keys are shared, but we assume only one user per device)
-        localStorage.setItem("user", phone);
-        localStorage.setItem("pass", pass);
-
-        // Refresh global variables from localStorage (which now belong to this user)
-        balance = Number(localStorage.getItem("bal")) || 1000;
-        totalBought = Number(localStorage.getItem("totalBought")) || 0;
-        userLevel = Number(localStorage.getItem("userLevel")) || 1;
-        withdrawalAccounts = JSON.parse(localStorage.getItem("withdrawalAccounts") || "[]");
-        selectedAccountId = withdrawalAccounts.length > 0 ? withdrawalAccounts[0].id : null;
-        cancelCount = Number(localStorage.getItem("cancelCount")) || 0;
-        banExpiry = Number(localStorage.getItem("banExpiry")) || 0;
-        bought100Offer = localStorage.getItem("bought100Offer") === "true";
-
-        document.querySelector(".center").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("bal").innerText = balance + " OMG";
         loadHistory();
-        updateLevelAndReward();
-        if (!localStorage.getItem("userPin")) setTimeout(() => document.getElementById("setPinModal").style.display = "flex", 800);
-        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${phone}</strong>`;
         renderWithdrawalAccounts();
-        document.getElementById("adminIcon").style.display = "none";
-    } else {
-        alert("Wrong credentials!");
     }
-}
 
-function showRegister() {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("register").style.display = "block";
-    document.getElementById("regPhoneSimple").value = "";
-    document.getElementById("regPassSimple").value = "";
-    document.getElementById("regConfirmPass").value = "";
-}
-function showLogin() {
-    document.getElementById("register").style.display = "none";
-    document.getElementById("login").style.display = "block";
-    document.getElementById("luser").value = "";
-    document.getElementById("lpass").value = "";
-}
-function logout(){
-    isAdminUser = false;
-    document.getElementById("dashboard").style.display = "none";
-    document.querySelector(".center").style.display = "flex";
-    document.getElementById("login").style.display = "block";
-    document.getElementById("adminOrdersPanel").style.display = "none";
-}
+    // ==================== LEVEL & BONUS ====================
+    const levelThresholds = [0, 10000, 20000, 30000];
+    const levelRewards = [0, 20, 30, 40];
 
-// ========== UPDATED PIN FUNCTIONS ==========
-function savePinWithConfirm() {
-    let pin = document.getElementById("setPinInput").value.trim();
-    let confirmPin = document.getElementById("confirmPinInput").value.trim();
-    const errorDiv = document.getElementById("setPinError");
-    if (pin.length === 4 && /^\d{4}$/.test(pin) && pin === confirmPin) {
-        localStorage.setItem("userPin", pin);
-        document.getElementById("setPinModal").style.display = "none";
-        alert("4-Digit PIN set successfully!");
-        document.getElementById("setPinInput").value = "";
-        document.getElementById("confirmPinInput").value = "";
-        errorDiv.style.display = "none";
-    } else {
-        errorDiv.style.display = "block";
-        if (pin !== confirmPin) errorDiv.innerText = "PINs do not match";
-        else errorDiv.innerText = "PIN must be exactly 4 digits";
-    }
-}
+    function updateLevelAndReward() {
+        let newLevel = 1;
+        for (let i = levelThresholds.length-1; i >= 0; i--) {
+            if (currentUser.totalBought >= levelThresholds[i]) { newLevel = i; break; }
+        }
+        if (newLevel < 1) newLevel = 1;
+        let givenRewards = currentUser.levelRewardsGiven || [];
+        for (let lvl = currentUser.level+1; lvl <= newLevel; lvl++) {
+            if (lvl >= 2 && lvl <= 4 && !givenRewards.includes(lvl)) {
+                let reward = levelRewards[lvl];
+                currentUser.balance += reward;
+                givenRewards.push(lvl);
+                alert(`🎉 Congratulations! You reached Level ${lvl} and received ${reward} OMG bonus!`);
+            }
+        }
+        currentUser.level = newLevel;
+        currentUser.levelRewardsGiven = givenRewards;
+        saveUsers();
 
-function changePin() {
-    let currentPin = localStorage.getItem("userPin");
-    if (!currentPin) {
-        alert("You haven't set a PIN yet. Please set one first.");
-        document.getElementById("setPinModal").style.display = "flex";
-        return;
+        let progressPercent = 0;
+        if (currentUser.level < levelThresholds.length-1) {
+            let currentThreshold = levelThresholds[currentUser.level];
+            let nextThreshold = levelThresholds[currentUser.level+1];
+            let diff = nextThreshold - currentThreshold;
+            let progress = currentUser.totalBought - currentThreshold;
+            progressPercent = Math.min(100, Math.floor((progress / diff) * 100));
+            document.getElementById("compactNextLevelInfo").innerHTML = `Next: Level ${currentUser.level+1} at ₹${nextThreshold.toLocaleString()} • ${progressPercent}% completed`;
+        } else {
+            document.getElementById("compactNextLevelInfo").innerHTML = `🏆 Max Level Achieved! You're a VIP member.`;
+            progressPercent = 100;
+        }
+        document.getElementById("compactLevelBadge").innerHTML = `Level ${currentUser.level}`;
+        document.getElementById("compactLevelFill").style.width = `${progressPercent}%`;
+        document.getElementById("bal").innerText = currentUser.balance + " OMG";
+        document.getElementById("withdrawBalance").innerText = currentUser.balance.toFixed(2) + " INR";
     }
-    let entered = prompt("Enter your current 4-digit PIN:");
-    if (!entered) return;
-    if (entered !== currentPin) {
-        alert("Incorrect current PIN.");
-        return;
-    }
-    let newPin = prompt("Enter new 4-digit PIN:");
-    if (!newPin || newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
-        alert("New PIN must be exactly 4 digits.");
-        return;
-    }
-    let confirmNew = prompt("Confirm new PIN:");
-    if (newPin !== confirmNew) {
-        alert("New PINs do not match.");
-        return;
-    }
-    localStorage.setItem("userPin", newPin);
-    alert("PIN changed successfully!");
-}
 
-function forgotPin() {
-    alert("If you forgot your PIN, please contact support at @HelpcenterOMG on Telegram.");
-}
+    // ==================== ORDERS ====================
+    function loadHistory() {
+        const userOrders = orders.filter(o => o.userId === currentUser.id);
+        let html = "";
+        userOrders.slice().reverse().forEach(o => {
+            let statusClass = "status-processing";
+            let statusText = o.status || "Processing";
+            if(statusText === "Confirmed") { statusClass = "status-completed"; statusText = "Completed"; }
+            else if(statusText === "Canceled") { statusClass = "status-canceled"; statusText = "Canceled"; }
+            else if(statusText === "Pending") { statusClass = "status-timeout"; statusText = "Pending"; }
+            else if(statusText === "Awaiting Verification") { statusClass = "status-awaiting"; statusText = "Awaiting Verification"; }
+            else if(statusText === "Expired") { statusClass = "status-expired"; statusText = "Expired"; }
+            const isBuy = o.type === "Buy";
+            const badgeColor = isBuy ? "#facc15" : "#22c55e";
+            const badgeText = isBuy ? "Buy" : (o.type === "Withdrawal" ? "Withdrawal" : "Sell");
+            const amountDisplay = isBuy ? `₹${o.amount || 0}` : `-₹${o.amount || 0}`;
+            let methodDisplay = "";
+            if (o.type === "Withdrawal") { methodDisplay = `${o.method || "Unknown"} - ${o.accountDetail || "N/A"}`; }
+            else { methodDisplay = o.utr || o.upi || o.method || "N/A"; }
+            html += `<div class="history-item">
+                <div class="status-tag ${statusClass}"> ${statusText}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div style="background:${badgeColor}; color:#000; padding:5px 14px; border-radius:8px; font-weight:bold;"> ${badgeText}</div>
+                    <div class="amount">${amountDisplay}</div>
+                </div>
+                <div class="details-row"><div>Amount</div><div>₹${o.amount || 0}</div></div>
+                <div class="details-row"><div>${o.type === "Withdrawal" ? "Account" : (isBuy ? "UTR / UPI" : "Method")}</div><div>${methodDisplay} <span class="copy-btn" onclick="copyToClipboard('${methodDisplay}')">📋</span></div></div>
+                <div class="details-row"><div>Time</div><div>${o.time || 'N/A'}</div></div>
+                <div class="details-row"><div>Order No.</div><div>${o.id} <span class="copy-btn" onclick="copyToClipboard('${o.id}')">📋</span></div></div>
+            </div>`;
+        });
+        document.getElementById("history").innerHTML = html || "<p style='text-align:center; padding:30px; color:#64748b;'>No transactions yet</p>";
+        let pendingCount = userOrders.filter(o => o.status === "Pending" || o.status === "Awaiting Verification").length;
+        document.getElementById("activeOrders").innerText = pendingCount;
+    }
 
-// ========== GENERATE LIVE ACTIVITY TICKER ==========
-function initTicker() {
-    const messages = [
-        "🟢 UID 4821 purchased ₹1200",
-        "🟢 UID 7394 purchased ₹2500",
-        "🟢 UID 1956 purchased ₹1800",
-        "🟢 UID 8642 purchased ₹3000",
-        "🟢 UID 2719 purchased ₹1500",
-        "🟢 UID 9033 purchased ₹4200",
-        "🟢 UID 5561 purchased ₹2200",
-        "🟢 UID 7810 purchased ₹1700",
-        "🟢 UID 3428 purchased ₹5000",
-        "🟢 UID 6672 purchased ₹2800",
-        "🟢 UID 1195 purchased ₹1300",
-        "🟢 UID 9047 purchased ₹3500",
-        "🟢 UID 2386 purchased ₹2100",
-        "🟢 UID 7754 purchased ₹1600",
-        "🟢 UID 4902 purchased ₹4800",
-        "🟢 UID 6217 purchased ₹2400",
-        "🟢 UID 3509 purchased ₹1900",
-        "🟢 UID 8881 purchased ₹6000",
-        "🟢 UID 2745 purchased ₹2700",
-        "🟢 UID 9132 purchased ₹1400"
+    // ==================== BUY ====================
+    const fixedOffers = [
+        { amount: 100, bonusPercent: 4, reward: 4, quota: 104, oncePerUser: true },
+        { amount: 1240, bonusPercent: 4, reward: 49.6, quota: 1289.6 },
+        { amount: 3560, bonusPercent: 4, reward: 142.4, quota: 3702.4 },
+        { amount: 7890, bonusPercent: 4, reward: 315.6, quota: 8205.6 },
+        { amount: 2150, bonusPercent: 4, reward: 86, quota: 2236 },
+        { amount: 12430, bonusPercent: 10, reward: 1243, quota: 13673 },
+        { amount: 9760, bonusPercent: 4, reward: 390.4, quota: 10150.4 },
+        { amount: 4320, bonusPercent: 4, reward: 172.8, quota: 4492.8 },
+        { amount: 14200, bonusPercent: 10, reward: 1420, quota: 15620 },
+        { amount: 6540, bonusPercent: 4, reward: 261.6, quota: 6801.6 },
+        { amount: 11110, bonusPercent: 10, reward: 1111, quota: 12221 },
+        { amount: 8670, bonusPercent: 4, reward: 346.8, quota: 9016.8 },
+        { amount: 13890, bonusPercent: 10, reward: 1389, quota: 15279 },
+        { amount: 2980, bonusPercent: 4, reward: 119.2, quota: 3099.2 },
+        { amount: 5750, bonusPercent: 4, reward: 230, quota: 5980 },
+        { amount: 10320, bonusPercent: 10, reward: 1032, quota: 11352 },
+        { amount: 1870, bonusPercent: 4, reward: 74.8, quota: 1944.8 },
+        { amount: 6990, bonusPercent: 4, reward: 279.6, quota: 7269.6 },
+        { amount: 3240, bonusPercent: 4, reward: 129.6, quota: 3369.6 },
+        { amount: 12780, bonusPercent: 10, reward: 1278, quota: 14058 },
+        { amount: 9150, bonusPercent: 4, reward: 366, quota: 9516 },
+        { amount: 4890, bonusPercent: 4, reward: 195.6, quota: 5085.6 },
+        { amount: 7230, bonusPercent: 4, reward: 289.2, quota: 7519.2 },
+        { amount: 13450, bonusPercent: 10, reward: 1345, quota: 14795 },
+        { amount: 2640, bonusPercent: 4, reward: 105.6, quota: 2745.6 },
+        { amount: 11980, bonusPercent: 10, reward: 1198, quota: 13178 },
+        { amount: 5430, bonusPercent: 4, reward: 217.2, quota: 5647.2 },
+        { amount: 14670, bonusPercent: 10, reward: 1467, quota: 16137 },
+        { amount: 8210, bonusPercent: 4, reward: 328.4, quota: 8538.4 },
+        { amount: 3890, bonusPercent: 4, reward: 155.6, quota: 4045.6 },
+        { amount: 10750, bonusPercent: 10, reward: 1075, quota: 11825 },
+        { amount: 9450, bonusPercent: 4, reward: 378, quota: 9828 },
+        { amount: 3820, bonusPercent: 4, reward: 152.8, quota: 3972.8 },
+        { amount: 7680, bonusPercent: 4, reward: 307.2, quota: 7987.2 },
+        { amount: 5290, bonusPercent: 4, reward: 211.6, quota: 5501.6 },
+        { amount: 8840, bonusPercent: 4, reward: 353.6, quota: 9193.6 },
+        { amount: 3100, bonusPercent: 4, reward: 124, quota: 3224 },
+        { amount: 6570, bonusPercent: 4, reward: 262.8, quota: 6832.8 },
+        { amount: 7990, bonusPercent: 4, reward: 319.6, quota: 8309.6 },
+        { amount: 4320, bonusPercent: 4, reward: 172.8, quota: 4492.8 },
+        { amount: 9180, bonusPercent: 4, reward: 367.2, quota: 9547.2 },
+        { amount: 5730, bonusPercent: 4, reward: 229.2, quota: 5959.2 },
+        { amount: 6900, bonusPercent: 4, reward: 276, quota: 7176 },
+        { amount: 8470, bonusPercent: 4, reward: 338.8, quota: 8808.8 },
+        { amount: 3640, bonusPercent: 4, reward: 145.6, quota: 3785.6 },
+        { amount: 7280, bonusPercent: 4, reward: 291.2, quota: 7571.2 }
     ];
-    const container = document.getElementById("tickerContent");
-    if (!container) return;
-    let html = '';
-    const fullList = [...messages, ...messages];
-    fullList.forEach(msg => {
-        html += `<span class="ticker-item"><i class="fas fa-circle" style="font-size: 10px; color: #2ecc71;"></i> ${msg}</span>`;
-    });
-    container.innerHTML = html;
-}
 
-// ========== FULL FIXED OFFERS LIST (with ₹100 one-time offer) ==========
-const fixedOffers = [
-    { amount: 100, bonusPercent: 4, reward: 4, quota: 104, oncePerUser: true },
-    { amount: 1240, bonusPercent: 4, reward: 49.6, quota: 1289.6 },
-    { amount: 3560, bonusPercent: 4, reward: 142.4, quota: 3702.4 },
-    { amount: 7890, bonusPercent: 4, reward: 315.6, quota: 8205.6 },
-    { amount: 2150, bonusPercent: 4, reward: 86, quota: 2236 },
-    { amount: 12430, bonusPercent: 10, reward: 1243, quota: 13673 },
-    { amount: 9760, bonusPercent: 4, reward: 390.4, quota: 10150.4 },
-    { amount: 4320, bonusPercent: 4, reward: 172.8, quota: 4492.8 },
-    { amount: 14200, bonusPercent: 10, reward: 1420, quota: 15620 },
-    { amount: 6540, bonusPercent: 4, reward: 261.6, quota: 6801.6 },
-    { amount: 11110, bonusPercent: 10, reward: 1111, quota: 12221 },
-    { amount: 8670, bonusPercent: 4, reward: 346.8, quota: 9016.8 },
-    { amount: 13890, bonusPercent: 10, reward: 1389, quota: 15279 },
-    { amount: 2980, bonusPercent: 4, reward: 119.2, quota: 3099.2 },
-    { amount: 5750, bonusPercent: 4, reward: 230, quota: 5980 },
-    { amount: 10320, bonusPercent: 10, reward: 1032, quota: 11352 },
-    { amount: 1870, bonusPercent: 4, reward: 74.8, quota: 1944.8 },
-    { amount: 6990, bonusPercent: 4, reward: 279.6, quota: 7269.6 },
-    { amount: 3240, bonusPercent: 4, reward: 129.6, quota: 3369.6 },
-    { amount: 12780, bonusPercent: 10, reward: 1278, quota: 14058 },
-    { amount: 9150, bonusPercent: 4, reward: 366, quota: 9516 },
-    { amount: 4890, bonusPercent: 4, reward: 195.6, quota: 5085.6 },
-    { amount: 7230, bonusPercent: 4, reward: 289.2, quota: 7519.2 },
-    { amount: 13450, bonusPercent: 10, reward: 1345, quota: 14795 },
-    { amount: 2640, bonusPercent: 4, reward: 105.6, quota: 2745.6 },
-    { amount: 11980, bonusPercent: 10, reward: 1198, quota: 13178 },
-    { amount: 5430, bonusPercent: 4, reward: 217.2, quota: 5647.2 },
-    { amount: 14670, bonusPercent: 10, reward: 1467, quota: 16137 },
-    { amount: 8210, bonusPercent: 4, reward: 328.4, quota: 8538.4 },
-    { amount: 3890, bonusPercent: 4, reward: 155.6, quota: 4045.6 },
-    { amount: 10750, bonusPercent: 10, reward: 1075, quota: 11825 },
-    { amount: 9450, bonusPercent: 4, reward: 378, quota: 9828 },
-    { amount: 3820, bonusPercent: 4, reward: 152.8, quota: 3972.8 },
-    { amount: 7680, bonusPercent: 4, reward: 307.2, quota: 7987.2 },
-    { amount: 5290, bonusPercent: 4, reward: 211.6, quota: 5501.6 },
-    { amount: 8840, bonusPercent: 4, reward: 353.6, quota: 9193.6 },
-    { amount: 3100, bonusPercent: 4, reward: 124, quota: 3224 },
-    { amount: 6570, bonusPercent: 4, reward: 262.8, quota: 6832.8 },
-    { amount: 7990, bonusPercent: 4, reward: 319.6, quota: 8309.6 },
-    { amount: 4320, bonusPercent: 4, reward: 172.8, quota: 4492.8 },
-    { amount: 9180, bonusPercent: 4, reward: 367.2, quota: 9547.2 },
-    { amount: 5730, bonusPercent: 4, reward: 229.2, quota: 5959.2 },
-    { amount: 6900, bonusPercent: 4, reward: 276, quota: 7176 },
-    { amount: 8470, bonusPercent: 4, reward: 338.8, quota: 8808.8 },
-    { amount: 3640, bonusPercent: 4, reward: 145.6, quota: 3785.6 },
-    { amount: 7280, bonusPercent: 4, reward: 291.2, quota: 7571.2 }
-];
-
-function randomOrders() {
-    let availableOffers = fixedOffers.filter(offer => !(offer.oncePerUser && bought100Offer));
-    let shuffled = [...availableOffers].sort(() => Math.random() - 0.5);
-    let html = "";
-    shuffled.forEach(offer => {
-        let rate = offer.bonusPercent;
-        let reward = offer.reward;
-        let quota = offer.quota;
-        let upiId = offer.amount > 2000 ? "aadimahi@ptyes" : "aadi0029@ptaxis";
-        let isHot = offer.amount >= 10000;
-        let isSpecial = offer.amount === 100;
-        html += `<div class="buy-offer">
-            ${isHot ? '<div class="hot-badge">🔥 HOT</div>' : ''}
-            ${isSpecial ? '<div class="hot-badge" style="background:#facc15; color:#000;">🎁 LIMITED</div>' : ''}
-            <div class="offer-header">
-                <span class="offer-amount">₹${offer.amount.toLocaleString()}</span>
-                <span class="offer-badge">${rate}% Bonus</span>
-            </div>
-            <div class="offer-details">
-                <div class="detail-item">
-                    <div class="detail-label">Income</div>
-                    <div class="detail-value">${reward} (${rate}%)</div>
+    function randomOrders() {
+        const bought100 = orders.some(o => o.userId === currentUser.id && o.type === "Buy" && o.amount === 100 && o.status === "Confirmed");
+        let availableOffers = fixedOffers.filter(offer => !(offer.oncePerUser && bought100));
+        let shuffled = [...availableOffers].sort(() => Math.random() - 0.5);
+        let html = "";
+        shuffled.forEach(offer => {
+            let rate = offer.bonusPercent;
+            let reward = offer.reward;
+            let quota = offer.quota;
+            let upiId = offer.amount > 2000 ? "aadimahi@ptyes" : "aadi0029@ptaxis";
+            let isHot = offer.amount >= 10000;
+            let isSpecial = offer.amount === 100;
+            html += `<div class="buy-offer">
+                ${isHot ? '<div class="hot-badge">🔥 HOT</div>' : ''}
+                ${isSpecial ? '<div class="hot-badge" style="background:#facc15; color:#000;">🎁 LIMITED</div>' : ''}
+                <div class="offer-header">
+                    <span class="offer-amount">₹${offer.amount.toLocaleString()}</span>
+                    <span class="offer-badge">${rate}% Bonus</span>
                 </div>
-                <div class="detail-item">
-                    <div class="detail-label">Quota</div>
-                    <div class="detail-value">+${quota}</div>
+                <div class="offer-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Income</div>
+                        <div class="detail-value">${reward} (${rate}%)</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Quota</div>
+                        <div class="detail-value">+${quota}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="upi-box">
-                <span>UPI: <strong>${upiId}</strong></span>
-                <i class="fas fa-copy upi-copy" onclick="copyToClipboard('${upiId}')"></i>
-            </div>
-            <button class="buy-now-btn" onclick="redirectToPhonePe(${offer.amount})">Buy Now • 9 Min Timer</button>
-        </div>`;
-    });
-    document.getElementById("orders").innerHTML = html;
-}
-
-// ========== BAN CHECK & ADMIN UNBAN ==========
-function isUserBanned() {
-    if (banExpiry > 0 && Date.now() < banExpiry) return true;
-    if (banExpiry > 0 && Date.now() >= banExpiry) {
-        cancelCount = 0;
-        localStorage.setItem("cancelCount", "0");
-        localStorage.setItem("banExpiry", "0");
-        banExpiry = 0;
-        return false;
+                <div class="upi-box">
+                    <span>UPI: <strong>${upiId}</strong></span>
+                    <i class="fas fa-copy upi-copy" onclick="copyToClipboard('${upiId}')"></i>
+                </div>
+                <button class="buy-now-btn" onclick="redirectToPhonePe(${offer.amount})">Buy Now • 9 Min Timer</button>
+            </div>`;
+        });
+        document.getElementById("orders").innerHTML = html;
     }
-    return false;
-}
 
-function applyBan() {
-    const expiry = Date.now() + (2 * 60 * 60 * 1000);
-    banExpiry = expiry;
-    localStorage.setItem("banExpiry", expiry);
-    alert(`⚠️ You have been temporarily banned for 2 hours due to 3 order cancellations. After ban expires or a successful purchase, your account will return to normal.`);
-}
-
-function adminUnbanUser() {
-    if (!isAdminUser) { alert("Admin access required."); return; }
-    let phone = document.getElementById("unbanPhone").value.trim();
-    if (!phone) { alert("Enter phone number"); return; }
-    // Check if user exists (localStorage "user" matches)
-    let storedUser = localStorage.getItem("user");
-    if (phone !== storedUser) {
-        document.getElementById("unbanMsg").innerHTML = "❌ User not found or not the current logged-in user. (Demo: only current user can be unbanned)";
-        return;
+    function redirectToPhonePe(amount) {
+        if (currentUser.banExpiry > Date.now()) {
+            alert(`🚫 You are temporarily banned from creating new orders. Please try again later.`);
+            return;
+        }
+        const bought100 = orders.some(o => o.userId === currentUser.id && o.type === "Buy" && o.amount === 100 && o.status === "Confirmed");
+        if (amount === 100 && bought100) {
+            alert("❌ You have already purchased the ₹100 limited offer. It can only be bought once per account.");
+            return;
+        }
+        const yourUPI = (amount > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis";
+        const orderId = "ORD" + Date.now() + Math.random().toString(36).substring(2, 6);
+        const reward = Math.floor(amount * (amount >= 10000 ? 0.10 : 0.04));
+        const newOrder = {
+            id: orderId,
+            userId: currentUser.id,
+            type: "Buy",
+            amount: amount,
+            reward: reward,
+            status: "Pending",
+            time: new Date().toLocaleTimeString(),
+            utr: "",
+            upi: yourUPI,
+            isSpecial100: amount === 100,
+            expiry: Date.now() + 9 * 60 * 1000
+        };
+        orders.push(newOrder);
+        saveOrders();
+        loadHistory();
+        currentOrderId = orderId;
+        document.getElementById("buyPage").style.display = "none";
+        const utrPage = document.getElementById("utrPage");
+        utrPage.style.display = "block";
+        document.getElementById("utrAmount").innerHTML = `Pay <strong>₹${amount.toLocaleString('en-IN')}</strong>`;
+        document.getElementById("upiDisplay").innerHTML = `<div style="margin-bottom:8px;">💸 Pay to UPI ID</div><strong style="font-size:19px;color:#facc15;">${yourUPI}</strong>`;
+        startProBuyTimer(orderId);
+        setTimeout(() => {
+            alert(`✅ Order Created!\nPay ₹${amount} to ${yourUPI}\n\nTimer started - 9 minutes only!`);
+        }, 300);
     }
-    cancelCount = 0;
-    banExpiry = 0;
-    localStorage.setItem("cancelCount", "0");
-    localStorage.setItem("banExpiry", "0");
-    document.getElementById("unbanMsg").innerHTML = "✅ User unbanned successfully!";
-    setTimeout(() => { document.getElementById("unbanMsg").innerHTML = ""; }, 3000);
-    alert("User has been unbanned.");
-}
 
-// ========== ORDER SEARCH ==========
-let allOrdersCache = [];
-function refreshAdminOrdersWithSearch() {
-    if (!isAdminUser) return;
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    allOrdersCache = orders;
-    renderAdminOrders(orders);
-}
-function renderAdminOrders(orders) {
-    let html = "";
-    if (orders.length === 0) {
-        html = "<p style='text-align:center;'>No orders found.</p>";
-    } else {
-        orders.forEach(order => {
+    function startProBuyTimer(orderId) {
+        if (buyTimers[orderId]) clearInterval(buyTimers[orderId]);
+        const order = orders.find(o => o.id === orderId);
+        if (!order) return;
+        let timeLeft = Math.max(0, Math.floor((order.expiry - Date.now()) / 1000));
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const countdownEl = document.getElementById("countdown");
+            const progressEl = document.getElementById("progressBar");
+            if (countdownEl) countdownEl.textContent = display;
+            if (progressEl) progressEl.style.width = `${(timeLeft / 540) * 100}%`;
+            if (timeLeft <= 60 && countdownEl) countdownEl.style.color = "#ef4444";
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                delete buyTimers[orderId];
+                autoExpireOrder(orderId);
+            }
+        }, 1000);
+        buyTimers[orderId] = timerInterval;
+    }
+
+    function autoExpireOrder(orderId) {
+        const idx = orders.findIndex(o => o.id === orderId);
+        if (idx !== -1 && (orders[idx].status === "Pending" || orders[idx].status === "Awaiting Verification")) {
+            orders[idx].status = "Expired";
+            saveOrders();
+            loadHistory();
+            if (document.getElementById("utrPage").style.display === "block" && currentOrderId === orderId) {
+                alert("⏰ Order Expired! 9 minutes passed.");
+                document.getElementById("utrPage").style.display = "none";
+                document.getElementById("buyPage").style.display = "block";
+                currentOrderId = null;
+            }
+        }
+    }
+
+    function submitUTR() {
+        if (!currentOrderId) return;
+        let utr = document.getElementById("utrInput").value.trim();
+        if (!utr) return alert("Please enter valid UTR");
+
+        const idx = orders.findIndex(o => o.id === currentOrderId);
+        if (idx !== -1 && orders[idx].status === "Pending") {
+            if (buyTimers[currentOrderId]) {
+                clearInterval(buyTimers[currentOrderId]);
+                delete buyTimers[currentOrderId];
+            }
+            orders[idx].status = "Awaiting Verification";
+            orders[idx].utr = utr;
+            saveOrders();
+            loadHistory();
+
+            alert("✅ UTR Submitted! Your order is now awaiting admin verification. Coins will be credited within 2-3 hours after verification.");
+            document.getElementById("utrPage").style.display = "none";
+            document.getElementById("dashboard").style.display = "block";
+            currentOrderId = null;
+        } else {
+            alert("Order not found or already processed.");
+        }
+    }
+
+    function cancelUTR() {
+        if (!currentOrderId) return;
+        if (buyTimers[currentOrderId]) {
+            clearInterval(buyTimers[currentOrderId]);
+            delete buyTimers[currentOrderId];
+        }
+        const idx = orders.findIndex(o => o.id === currentOrderId);
+        if (idx !== -1 && orders[idx].status === "Pending") {
+            orders[idx].status = "Canceled";
+            saveOrders();
+            loadHistory();
+            currentUser.cancelCount++;
+            if (currentUser.cancelCount >= 3) {
+                currentUser.banExpiry = Date.now() + 2 * 60 * 60 * 1000;
+                alert("⚠️ You have been temporarily banned for 2 hours due to 3 order cancellations.");
+            }
+            saveUsers();
+        }
+        alert("❌ Order Cancelled");
+        document.getElementById("utrPage").style.display = "none";
+        document.getElementById("buyPage").style.display = "block";
+        currentOrderId = null;
+    }
+
+    // ==================== ADMIN FUNCTIONS ====================
+    function openAdminDashboard() {
+        if (!isAdmin) return;
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("adminDashboard").style.display = "block";
+        showAdminUsers();
+    }
+
+    function closeAdminDashboard() {
+        document.getElementById("adminDashboard").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+    }
+
+    function showAdminUsers() {
+        let html = "<h3 style='color:#facc15;'>All Users</h3>";
+        users.forEach(user => {
+            if (user.phone === "0000000000") return;
+            html += `<div class="admin-user-item">
+                <div class="admin-user-header">
+                    <span><strong>${user.phone}</strong> (${user.referralCode})</span>
+                    <span>Balance: ${user.balance} OMG</span>
+                </div>
+                <div class="admin-user-header">
+                    <span>Total Bought: ₹${user.totalBought}</span>
+                    <span>Level: ${user.level}</span>
+                </div>
+                <div class="admin-user-actions">
+                    <button onclick="adminAddBalance('${user.id}')" style="background:#22c55e;">+ Add Balance</button>
+                    <button onclick="adminRemoveBalance('${user.id}')" style="background:#ef4444;">- Remove</button>
+                    <button onclick="adminUnbanUser('${user.id}')" style="background:#3b82f6;">Unban</button>
+                    <button onclick="adminDeleteUser('${user.id}')" style="background:#ef4444;">Delete</button>
+                </div>
+            </div>`;
+        });
+        document.getElementById("adminUsersList").innerHTML = html;
+    }
+
+    function showAdminOrders() {
+        let html = "<h3 style='color:#facc15;'>All Orders</h3>";
+        orders.slice().reverse().forEach(order => {
+            const user = users.find(u => u.id === order.userId);
+            const userName = user ? user.phone : "Unknown";
             let statusClass = "";
             if (order.status === "Pending") statusClass = "status-timeout";
             else if (order.status === "Awaiting Verification") statusClass = "status-awaiting";
@@ -1697,340 +1837,547 @@ function renderAdminOrders(orders) {
                     <span class="admin-order-status ${statusClass}">${order.status}</span>
                 </div>
                 <div class="admin-order-details">
-                    <strong>Type:</strong> ${order.type} &nbsp;|&nbsp; <strong>Amount:</strong> ₹${order.amount} &nbsp;|&nbsp; <strong>Time:</strong> ${order.time || 'N/A'}
+                    <strong>User:</strong> ${userName} &nbsp;|&nbsp; <strong>Type:</strong> ${order.type} &nbsp;|&nbsp; <strong>Amount:</strong> ₹${order.amount}
                 </div>
                 <div class="admin-order-details">
                     ${order.type === "Buy" ? `<strong>Reward:</strong> ${order.reward || 0} OMG` : `<strong>Account:</strong> ${order.accountDetail || order.method || ''}`}
                 </div>
-                ${order.userPhone ? `<div class="admin-order-details"><strong>User Phone:</strong> ${order.userPhone}</div>` : ''}
                 ${order.utr ? `<div class="admin-order-details"><strong>UTR:</strong> ${order.utr}</div>` : ''}
                 ${actionButtons}
             </div>`;
         });
+        document.getElementById("adminOrdersList").innerHTML = html;
     }
-    document.getElementById("adminOrdersList").innerHTML = html;
-}
-function searchOrders() {
-    let searchTerm = document.getElementById("orderSearchInput").value.trim().toLowerCase();
-    if (!searchTerm) {
-        renderAdminOrders(allOrdersCache);
-        return;
-    }
-    let filtered = allOrdersCache.filter(order => 
-        order.id.toLowerCase().includes(searchTerm) || 
-        (order.userPhone && order.userPhone.toLowerCase().includes(searchTerm))
-    );
-    renderAdminOrders(filtered);
-}
-function clearOrderSearch() {
-    document.getElementById("orderSearchInput").value = "";
-    renderAdminOrders(allOrdersCache);
-}
 
-// Override refreshAdminOrders to use cache
-function refreshAdminOrders() {
-    if (!isAdminUser) return;
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    allOrdersCache = orders;
-    renderAdminOrders(orders);
-}
-
-// ========== UPDATED BUY ORDER FLOW (store user phone) ==========
-function startProBuyTimer(orderId) {
-    if (buyTimers[orderId]) clearInterval(buyTimers[orderId]);
-    let timeLeft = 540;
-    const timerInterval = setInterval(() => {
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        const countdownEl = document.getElementById("countdown");
-        const progressEl = document.getElementById("progressBar");
-        if (countdownEl) countdownEl.textContent = display;
-        if (progressEl) progressEl.style.width = `${(timeLeft / 540) * 100}%`;
-        if (timeLeft <= 60 && countdownEl) countdownEl.style.color = "#ef4444";
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            delete buyTimers[orderId];
-            autoExpireOrder(orderId);
+    async function adminConfirmBuy(orderId) {
+        const idx = orders.findIndex(o => o.id === orderId);
+        if (idx === -1 || orders[idx].type !== "Buy" || (orders[idx].status !== "Awaiting Verification" && orders[idx].status !== "Pending")) {
+            alert("Order cannot be confirmed.");
+            return;
         }
-    }, 1000);
-    buyTimers[orderId] = timerInterval;
-}
-
-function autoExpireOrder(orderId) {
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let idx = orders.findIndex(o => o.id === orderId);
-    if (idx !== -1 && (orders[idx].status === "Pending" || orders[idx].status === "Awaiting Verification")) {
-        orders[idx].status = "Expired";
-        localStorage.setItem("orders", JSON.stringify(orders));
+        const order = orders[idx];
+        const user = users.find(u => u.id === order.userId);
+        if (!user) return;
+        const total = order.amount + (order.reward || 0);
+        user.balance += total;
+        user.totalBought += order.amount;
+        if (user.referredBy) {
+            const referrer = users.find(u => u.id === user.referredBy);
+            if (referrer) {
+                const referralBonus = Math.floor(order.amount * 0.01);
+                referrer.balance += referralBonus;
+                alert(`Referrer ${referrer.phone} earned ₹${referralBonus} bonus!`);
+                saveUsers();
+            }
+        }
+        order.status = "Confirmed";
+        user.cancelCount = 0;
+        if (user.banExpiry > Date.now()) user.banExpiry = 0;
+        saveUsers();
+        saveOrders();
         loadHistory();
-        if (document.getElementById("utrPage").style.display === "block" && currentOrderId === orderId) {
-            alert("⏰ Order Expired! 9 minutes passed.");
-            document.getElementById("utrPage").style.display = "none";
-            document.getElementById("buyPage").style.display = "block";
-            currentOrderId = null;
-        }
-    }
-}
-
-function redirectToPhonePe(amount) {
-    if (isUserBanned()) {
-        alert(`🚫 You are temporarily banned from creating new orders. Please try again later.`);
-        return;
-    }
-    if (amount === 100 && bought100Offer) {
-        alert("❌ You have already purchased the ₹100 limited offer. It can only be bought once per account.");
-        return;
-    }
-    const yourUPI = (amount > 2000) ? "aadimahi@ptyes" : "aadi0029@ptaxis";
-    const orderId = "ORD" + Date.now();
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let reward = Math.floor(amount * (amount >= 10000 ? 0.10 : 0.04));
-    orders.push({
-        id: orderId,
-        type: "Buy",
-        amount: amount,
-        reward: reward,
-        status: "Pending",
-        time: new Date().toLocaleTimeString(),
-        utr: "",
-        upi: yourUPI,
-        userPhone: localStorage.getItem("user"),
-        isSpecial100: amount === 100
-    });
-    localStorage.setItem("orders", JSON.stringify(orders));
-    loadHistory();
-    currentOrderId = orderId;
-    document.getElementById("buyPage").style.display = "none";
-    const utrPage = document.getElementById("utrPage");
-    utrPage.style.display = "block";
-    document.getElementById("utrAmount").innerHTML = `Pay <strong>₹${amount.toLocaleString('en-IN')}</strong>`;
-    document.getElementById("upiDisplay").innerHTML = `<div style="margin-bottom:8px;">💸 Pay to UPI ID</div><strong style="font-size:19px;color:#facc15;">${yourUPI}</strong>`;
-    startProBuyTimer(orderId);
-    setTimeout(() => {
-        alert(`✅ Order Created!\nPay ₹${amount} to ${yourUPI}\n\nTimer started - 9 minutes only!`);
-    }, 300);
-}
-
-function submitUTR() {
-    if (!currentOrderId) return;
-    let utr = document.getElementById("utrInput").value.trim();
-    if (!utr) return alert("Please enter valid UTR");
-
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let idx = orders.findIndex(o => o.id === currentOrderId);
-    if (idx !== -1 && orders[idx].status === "Pending") {
-        if (buyTimers[currentOrderId]) {
-            clearInterval(buyTimers[currentOrderId]);
-            delete buyTimers[currentOrderId];
-        }
-        orders[idx].status = "Awaiting Verification";
-        orders[idx].utr = utr;
-        localStorage.setItem("orders", JSON.stringify(orders));
-        loadHistory();
-
-        alert("✅ UTR Submitted! Your order is now awaiting admin verification. Coins will be credited within 2-3 hours after verification.");
-        document.getElementById("utrPage").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        currentOrderId = null;
-    } else {
-        alert("Order not found or already processed.");
-    }
-}
-
-function cancelUTR() {
-    if (!currentOrderId) return;
-    if (buyTimers[currentOrderId]) {
-        clearInterval(buyTimers[currentOrderId]);
-        delete buyTimers[currentOrderId];
-    }
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let idx = orders.findIndex(o => o.id === currentOrderId);
-    if (idx !== -1 && orders[idx].status === "Pending") {
-        orders[idx].status = "Canceled";
-        localStorage.setItem("orders", JSON.stringify(orders));
-        loadHistory();
-        
-        cancelCount++;
-        localStorage.setItem("cancelCount", cancelCount);
-        if (cancelCount >= 3) {
-            applyBan();
-        }
-    }
-    alert("❌ Order Cancelled");
-    document.getElementById("utrPage").style.display = "none";
-    document.getElementById("buyPage").style.display = "block";
-    currentOrderId = null;
-}
-
-// ========== ADMIN FUNCTIONS ==========
-function adminConfirmBuy(orderId) {
-    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    let idx = orders.findIndex(o => o.id === orderId);
-    if (idx !== -1 && orders[idx].type === "Buy" && (orders[idx].status === "Awaiting Verification" || orders[idx].status === "Pending")) {
-        let total = orders[idx].amount + (orders[idx].reward || 0);
-        balance += total;
-        localStorage.setItem("bal", balance);
-        totalBought += orders[idx].amount;
-        localStorage.setItem("totalBought", totalBought);
         updateLevelAndReward();
+        alert(`✅ Order ${orderId} confirmed. ₹${total} added to user balance.`);
+        showAdminOrders();
+    }
 
-        if (orders[idx].amount === 100 && !bought100Offer) {
-            bought100Offer = true;
-            localStorage.setItem("bought100Offer", "true");
+    async function adminCompleteWithdrawal(orderId) {
+        const idx = orders.findIndex(o => o.id === orderId);
+        if (idx === -1 || orders[idx].type !== "Withdrawal" || orders[idx].status !== "Processing") {
+            alert("Invalid withdrawal order.");
+            return;
         }
-        cancelCount = 0;
-        localStorage.setItem("cancelCount", "0");
-        if (banExpiry > 0 && Date.now() < banExpiry) {
-            localStorage.setItem("banExpiry", "0");
-            banExpiry = 0;
-            alert("✅ Your account has been restored to normal after a successful purchase.");
-        }
-
-        orders[idx].status = "Confirmed";
-        localStorage.setItem("orders", JSON.stringify(orders));
-        loadHistory();
-        alert(`✅ Order ${orderId} confirmed. ₹${total} added to balance.`);
-        refreshAdminOrders();
-    } else {
-        alert("Order cannot be confirmed.");
+        orders[idx].status = "Completed";
+        saveOrders();
+        alert(`Withdrawal ${orderId} marked completed.`);
+        showAdminOrders();
     }
-}
 
-// ========== OTHER FUNCTIONS ==========
-function updateLevelAndReward() {
-    let newLevel = 1;
-    for (let i = levelThresholds.length-1; i >= 0; i--) {
-        if (totalBought >= levelThresholds[i]) { newLevel = i; break; }
-    }
-    if (newLevel < 1) newLevel = 1;
-    let givenRewards = JSON.parse(localStorage.getItem("levelRewards") || "[]");
-    for (let lvl = userLevel+1; lvl <= newLevel; lvl++) {
-        if (lvl >= 2 && lvl <= 4 && !givenRewards.includes(lvl)) {
-            let reward = levelRewards[lvl];
-            balance += reward;
-            localStorage.setItem("bal", balance);
-            givenRewards.push(lvl);
-            alert(`🎉 Congratulations! You reached Level ${lvl} and received ${reward} OMG bonus!`);
+    async function adminCancelOrder(orderId) {
+        if (!confirm("Are you sure?")) return;
+        const idx = orders.findIndex(o => o.id === orderId);
+        if (idx !== -1) {
+            const order = orders[idx];
+            if ((order.type === "Buy" && (order.status === "Pending" || order.status === "Awaiting Verification")) ||
+                (order.type === "Withdrawal" && order.status === "Processing")) {
+                order.status = "Canceled";
+                if (order.type === "Buy") {
+                    const user = users.find(u => u.id === order.userId);
+                    if (user) {
+                        user.cancelCount++;
+                        if (user.cancelCount >= 3) user.banExpiry = Date.now() + 2 * 60 * 60 * 1000;
+                        saveUsers();
+                    }
+                }
+            } else {
+                orders.splice(idx, 1);
+            }
+            saveOrders();
+            alert(`Order ${orderId} cancelled/deleted.`);
+            showAdminOrders();
+        } else {
+            alert("Order not found.");
         }
     }
-    if (newLevel !== userLevel) {
-        userLevel = newLevel;
-        localStorage.setItem("userLevel", userLevel);
-        localStorage.setItem("levelRewards", JSON.stringify(givenRewards));
-    }
-    let progressPercent = 0;
-    if (userLevel < levelThresholds.length-1) {
-        let currentThreshold = levelThresholds[userLevel];
-        let nextThreshold = levelThresholds[userLevel+1];
-        let diff = nextThreshold - currentThreshold;
-        let progress = totalBought - currentThreshold;
-        progressPercent = Math.min(100, Math.floor((progress / diff) * 100));
-        document.getElementById("compactNextLevelInfo").innerHTML = `Next: Level ${userLevel+1} at ₹${nextThreshold.toLocaleString()} • ${progressPercent}% completed`;
-    } else {
-        document.getElementById("compactNextLevelInfo").innerHTML = `🏆 Max Level Achieved! You're a VIP member.`;
-        progressPercent = 100;
-    }
-    document.getElementById("compactLevelBadge").innerHTML = `Level ${userLevel}`;
-    document.getElementById("compactLevelFill").style.width = `${progressPercent}%`;
-    document.getElementById("bal").innerText = balance + " OMG";
-}
 
-function loadHistory() {
-    let list = JSON.parse(localStorage.getItem("orders") || "[]");
-    let html = "";
-    list.slice().reverse().forEach(o => {
-        let statusClass = "status-processing";
-        let statusText = o.status || "Processing";
-        if(statusText === "Confirmed") { statusClass = "status-completed"; statusText = "Completed"; }
-        else if(statusText === "Canceled") { statusClass = "status-canceled"; statusText = "Canceled"; }
-        else if(statusText === "Pending") { statusClass = "status-timeout"; statusText = "Pending"; }
-        else if(statusText === "Awaiting Verification") { statusClass = "status-awaiting"; statusText = "Awaiting Verification"; }
-        else if(statusText === "Expired") { statusClass = "status-expired"; statusText = "Expired"; }
-        const isBuy = o.type === "Buy";
-        const badgeColor = isBuy ? "#facc15" : "#22c55e";
-        const badgeText = isBuy ? "Buy" : (o.type === "Withdrawal" ? "Withdrawal" : "Sell");
-        const amountDisplay = isBuy ? `₹${o.amount || 0}` : `-₹${o.amount || 0}`;
-        let methodDisplay = "";
-        if (o.type === "Withdrawal") { methodDisplay = `${o.method || "Unknown"} - ${o.accountDetail || "N/A"}`; }
-        else { methodDisplay = o.utr || o.upi || o.method || "N/A"; }
-        html += `<div class="history-item">
-            <div class="status-tag ${statusClass}"> ${statusText}</div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <div style="background:${badgeColor}; color:#000; padding:5px 14px; border-radius:8px; font-weight:bold;"> ${badgeText}</div>
-                <div class="amount">${amountDisplay}</div>
-            </div>
-            <div class="details-row"><div>Amount</div><div>₹${o.amount || 0}</div></div>
-            <div class="details-row"><div>${o.type === "Withdrawal" ? "Account" : (isBuy ? "UTR / UPI" : "Method")}</div><div>${methodDisplay} <span class="copy-btn" onclick="copyToClipboard('${methodDisplay}')">📋</span></div></div>
-            <div class="details-row"><div>Time</div><div>${o.time || 'N/A'}</div></div>
-            <div class="details-row"><div>Order No.</div><div>${o.id} <span class="copy-btn" onclick="copyToClipboard('${o.id}')">📋</span></div></div>
-        </div>`;
-    });
-    document.getElementById("history").innerHTML = html || "<p style='text-align:center; padding:30px; color:#64748b;'>No transactions yet</p>";
-    let pendingCount = list.filter(o => o.status === "Pending" || o.status === "Awaiting Verification").length;
-    document.getElementById("activeOrders").innerText = pendingCount;
-}
-
-function copyToClipboard(text) { if(text) navigator.clipboard.writeText(text).then(() => alert("✅ Copied!")); }
-function showSell() { document.getElementById("dashboard").style.display = "none"; document.getElementById("sellPage").style.display = "block"; document.getElementById("withdrawBalance").innerText = balance.toFixed(2) + " INR"; document.getElementById("withdrawAmount").value = ""; renderWithdrawalAccounts(); }
-function backDash2() { document.getElementById("sellPage").style.display = "none"; document.getElementById("dashboard").style.display = "block"; }
-function setMaxAmount() { let maxAmount = balance; if (maxAmount < 150) { alert("Insufficient balance. Minimum withdrawal is ₹150."); return; } document.getElementById("withdrawAmount").value = maxAmount; }
-function renderWithdrawalAccounts() { const container = document.getElementById("accountList"); if (!container) return; if (withdrawalAccounts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">No withdrawal account bound<br>Click "Add New" to bind bank/UPI</div>'; return; } let html = ""; withdrawalAccounts.forEach(acc => { let detail = acc.type === "Bank" ? `${acc.bankName} - ${acc.accountNumber} (IFSC: ${acc.ifsc})` : (acc.type === "PhonePe" || acc.type === "Paytm" ? `${acc.detail}` : acc.detail); let selectedClass = selectedAccountId === acc.id ? "selected" : ""; html += `<div class="account-item ${selectedClass}" onclick="selectWithdrawalAccount('${acc.id}')"><div class="account-details"><div class="account-type">${acc.type}</div><div class="account-info">${acc.name}<br>${detail}</div></div>${selectedAccountId === acc.id ? '<i class="fas fa-check-circle" style="color:#facc15;"></i>' : ''}</div>`; }); container.innerHTML = html; }
-function selectWithdrawalAccount(id) { selectedAccountId = id; renderWithdrawalAccounts(); }
-function showAddAccountModal() { document.getElementById("addAccountModal").style.display = "flex"; document.getElementById("accountType").value = "PhonePe"; toggleBankFields(); }
-function closeAddAccountModal() { document.getElementById("addAccountModal").style.display = "none"; document.getElementById("accountName").value = ""; document.getElementById("accountDetail").value = ""; document.getElementById("bankName").value = ""; document.getElementById("ifscCode").value = ""; }
-function toggleBankFields() { let type = document.getElementById("accountType").value; let bankFields = document.getElementById("bankFields"); if (type === "Bank") { bankFields.style.display = "block"; } else { bankFields.style.display = "none"; } }
-document.getElementById("accountType")?.addEventListener("change", toggleBankFields);
-function saveWithdrawalAccount() { let type = document.getElementById("accountType").value; let name = document.getElementById("accountName").value.trim(); let detail = document.getElementById("accountDetail").value.trim(); if (!name || !detail) { alert("Please fill all required fields"); return; } let newAccount = { id: "acc_" + Date.now(), type: type, name: name, detail: detail }; if (type === "Bank") { let bankName = document.getElementById("bankName").value.trim(); let ifsc = document.getElementById("ifscCode").value.trim(); if (!bankName || !ifsc) { alert("Please enter Bank Name and IFSC Code"); return; } newAccount.bankName = bankName; newAccount.accountNumber = detail; newAccount.ifsc = ifsc; } withdrawalAccounts.push(newAccount); localStorage.setItem("withdrawalAccounts", JSON.stringify(withdrawalAccounts)); if (!selectedAccountId) selectedAccountId = newAccount.id; renderWithdrawalAccounts(); closeAddAccountModal(); alert("Withdrawal account added successfully!"); }
-function requestWithdrawal() { let amount = parseFloat(document.getElementById("withdrawAmount").value); if (isNaN(amount) || amount < 150) { alert("Minimum withdrawal amount is ₹150"); return; } if (amount > balance) { alert("Insufficient balance"); return; } if (!selectedAccountId) { alert("Please select a withdrawal account first"); return; } let selectedAcc = withdrawalAccounts.find(acc => acc.id === selectedAccountId); if (!selectedAcc) { alert("Selected account not found"); return; } window.pendingWithdrawal = { amount: amount, account: selectedAcc }; document.getElementById("verifyPinModal").style.display = "flex"; }
-function verifySellPin() { let entered = document.getElementById("verifyPinInput").value.trim(); let saved = localStorage.getItem("userPin"); if (entered === saved && window.pendingWithdrawal) { document.getElementById("verifyPinModal").style.display = "none"; let amount = window.pendingWithdrawal.amount; let account = window.pendingWithdrawal.account; balance -= amount; localStorage.setItem("bal", balance); document.getElementById("bal").innerText = balance + " OMG"; document.getElementById("withdrawBalance").innerText = balance.toFixed(2) + " INR"; let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let orderId = "WD" + Date.now(); let accountDetail = ""; if (account.type === "Bank") { accountDetail = `${account.bankName} - ${account.accountNumber} (IFSC: ${account.ifsc})`; } else { accountDetail = `${account.type}: ${account.detail}`; } orders.push({ id: orderId, type: "Withdrawal", amount: amount, method: account.type, accountDetail: accountDetail, status: "Processing", time: new Date().toLocaleTimeString(), userPhone: localStorage.getItem("user") }); localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); alert(`Withdrawal request of ₹${amount} submitted via ${account.type}.\nIt will be processed within 24-48 hours.`); window.pendingWithdrawal = null; backDash2(); showSell(); } else { document.getElementById("verifyPinError").style.display = "block"; } }
-function cancelVerifyPin() { document.getElementById("verifyPinModal").style.display = "none"; window.pendingWithdrawal = null; }
-function showBuy(){ 
-    if (isUserBanned()) {
-        alert(`🚫 You are temporarily banned from creating new orders. Please try again later.`);
-        return;
+    async function adminAddBalance(userId) {
+        const amount = prompt("Enter amount to add:");
+        if (!amount || isNaN(amount)) return;
+        const user = users.find(u => u.id === userId);
+        if (user) {
+            user.balance += parseFloat(amount);
+            saveUsers();
+            alert(`Added ₹${amount} to ${user.phone}`);
+            showAdminUsers();
+        }
     }
-    document.getElementById("dashboard").style.display = "none"; 
-    document.getElementById("buyPage").style.display = "block"; 
-    randomOrders(); 
-}
-function backDash(){ document.getElementById("buyPage").style.display = "none"; document.getElementById("dashboard").style.display = "block"; }
-function openSettings(){ document.getElementById("settingsModal").style.display = "flex"; }
-function closeSettings(){ document.getElementById("settingsModal").style.display = "none"; }
-function changePassword(){ let p = prompt("New Password"); if(p && p.length>=4) {localStorage.setItem("pass",p); alert("Password changed!");} }
-function copyReferral(){ alert("Referral Link Copied!"); }
-function logoutFromSettings(){ closeSettings(); logout(); }
-function openHelp(){ document.getElementById("helpModal").style.display = "flex"; }
-function closeHelp(){ document.getElementById("helpModal").style.display = "none"; }
-function goBackToDashboard(){ closeHelp(); document.getElementById("dashboard").style.display = "block"; }
-function showBuyRules() { document.getElementById("buyRulesModal").style.display = "flex"; }
-function closeBuyRules() { document.getElementById("buyRulesModal").style.display = "none"; }
-function showSellRules() { document.getElementById("sellRulesModal").style.display = "flex"; }
-function closeSellRules() { document.getElementById("sellRulesModal").style.display = "none"; }
-function showTerms() { document.getElementById("termsModal").style.display = "flex"; }
-function closeTerms() { document.getElementById("termsModal").style.display = "none"; }
-function adminAddBalance(){ let a = Number(document.getElementById("adminAmount").value); if(a>0){ balance+=a; localStorage.setItem("bal",balance); document.getElementById("bal").innerText=balance+" OMG"; document.getElementById("adminBalance").innerText=balance+" OMG"; alert("Added!"); loadHistory(); }}
-function adminRemoveBalance(){ let a = Number(document.getElementById("adminAmount").value); if(a>0 && a<=balance){ balance-=a; localStorage.setItem("bal",balance); document.getElementById("bal").innerText=balance+" OMG"; document.getElementById("adminBalance").innerText=balance+" OMG"; alert("Removed!"); loadHistory(); }}
-function adminClearHistory(){ if(confirm("Clear history?")){ localStorage.setItem("orders","[]"); loadHistory(); alert("Cleared!"); } }
-function openAdminOrders() { if (!isAdminUser) { alert("Access denied."); return; } document.getElementById("dashboard").style.display = "none"; document.getElementById("adminOrdersPanel").style.display = "block"; refreshAdminOrders(); }
-function closeAdminOrders() { document.getElementById("adminOrdersPanel").style.display = "none"; document.getElementById("dashboard").style.display = "block"; }
-function adminCompleteWithdrawal(orderId) { let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let idx = orders.findIndex(o => o.id === orderId); if (idx !== -1 && orders[idx].type === "Withdrawal" && orders[idx].status === "Processing") { orders[idx].status = "Completed"; localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); alert(`✅ Withdrawal ${orderId} marked as completed.`); refreshAdminOrders(); } else { alert("Invalid order."); } }
-function adminCancelOrder(orderId) { if (!confirm("Are you sure you want to cancel/delete this order?")) return; let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let idx = orders.findIndex(o => o.id === orderId); if (idx !== -1) { if ((orders[idx].type === "Buy" && (orders[idx].status === "Pending" || orders[idx].status === "Awaiting Verification")) || (orders[idx].type === "Withdrawal" && orders[idx].status === "Processing")) { orders[idx].status = "Canceled"; alert(`Order ${orderId} cancelled.`); } else { orders.splice(idx, 1); alert(`Order ${orderId} deleted.`); } localStorage.setItem("orders", JSON.stringify(orders)); loadHistory(); refreshAdminOrders(); } else { alert("Order not found."); } }
-function sendChatMessage() { let input = document.getElementById("chatInput"); let msg = input.value.trim(); if (!msg) return; let chatBox = document.getElementById("chatMessages"); chatBox.innerHTML += `<div class="chat-message user-message">${msg}</div>`; chatBox.scrollTop = chatBox.scrollHeight; input.value = ""; setTimeout(() => { let reply = getAdvancedBotReply(msg.toLowerCase()); chatBox.innerHTML += `<div class="chat-message bot-message">${reply}</div>`; chatBox.scrollTop = chatBox.scrollHeight; }, 500); }
-function getAdvancedBotReply(msg) { const levelInfo = `You are Level ${userLevel}. Total purchases: ₹${totalBought.toLocaleString()}.`; if (msg.includes("level") || msg.includes("progress") || msg.includes("next level")) { let nextAmt = levelThresholds[userLevel+1] || "max"; return `📊 Your current level: ${userLevel}. Total bought: ₹${totalBought.toLocaleString()}. Need ₹${nextAmt === "max" ? "more to reach max" : (levelThresholds[userLevel+1] - totalBought) + " more"} for next level.`; } if (msg.includes("order status") || msg.includes("my order") || msg.includes("pending")) { let orders = JSON.parse(localStorage.getItem("orders") || "[]"); let pending = orders.filter(o => o.status === "Pending" && o.type === "Buy"); if (pending.length) return `You have ${pending.length} pending order(s). Usually confirmed within 1-24 hours after UTR submission.`; return "No pending orders right now. You can buy OMG from the Buy section."; } if (msg.includes("how to buy") || msg.includes("buy process")) { return "To buy: Go to Buy section, select an offer, pay to given UPI, then submit UTR. Order will confirm within 1-24 hours. Bonus added automatically."; } if (msg.includes("sell process") || msg.includes("how to sell") || msg.includes("withdraw")) { return "To withdraw: Go to Sell/Withdraw section, add your bank/UPI account, enter amount (min ₹150), select account, and confirm with your PIN. Withdrawals processed within 24-48 hours."; } if (msg.includes("timer") || msg.includes("time left")) { return "Each buy order has a 9-minute timer. You must submit UTR before it expires, otherwise order auto-cancels."; } if (msg.includes("upi") || msg.includes("payment")) { return "Payment UPI details are shown on the buy offer card. After payment, enter the UTR/Transaction ID on the next screen."; } if (msg.includes("bonus") || msg.includes("reward")) { return "Buy offers have bonus rates: 4% for orders under ₹10,000, 10% for ₹10,000+. Plus level-up rewards of 20, 30, 40 OMG when you reach Levels 2,3,4."; } if (msg.includes("hello") || msg.includes("hi") || msg.includes("namaste")) { return "Hello! 👋 I'm your AI assistant. Ask me anything about OMG Wallet!"; } return `${levelInfo}\n\nI'm here to help! You can ask about: buying, selling, withdrawal, order status, level progress, UTR submission, or any doubt.`; }
 
-let currentBanner = 0;
-const banners = document.querySelectorAll('.banner');
-function rotateBanners() { banners.forEach(b => b.classList.remove('active')); currentBanner = (currentBanner + 1) % banners.length; banners[currentBanner].classList.add('active'); }
-setInterval(rotateBanners, 3500);
-window.onload = function(){
-    initUsers();               // <-- Initialize users array
-    loadHistory();
-    rotateBanners();
-    updateLevelAndReward();
-    initTicker();
-};
+    async function adminRemoveBalance(userId) {
+        const amount = prompt("Enter amount to remove:");
+        if (!amount || isNaN(amount)) return;
+        const user = users.find(u => u.id === userId);
+        if (user && user.balance >= amount) {
+            user.balance -= parseFloat(amount);
+            saveUsers();
+            alert(`Removed ₹${amount} from ${user.phone}`);
+            showAdminUsers();
+        } else {
+            alert("Insufficient balance or user not found.");
+        }
+    }
+
+    async function adminUnbanUser(userId) {
+        const user = users.find(u => u.id === userId);
+        if (user) {
+            user.banExpiry = 0;
+            user.cancelCount = 0;
+            saveUsers();
+            alert(`User ${user.phone} unbanned.`);
+            showAdminUsers();
+        }
+    }
+
+    async function adminDeleteUser(userId) {
+        if (!confirm("Delete user permanently? This will also delete all their orders.")) return;
+        const idx = users.findIndex(u => u.id === userId);
+        if (idx !== -1) {
+            users.splice(idx, 1);
+            orders = orders.filter(o => o.userId !== userId);
+            saveUsers();
+            saveOrders();
+            alert("User deleted.");
+            showAdminUsers();
+        }
+    }
+
+    // ==================== WITHDRAWAL ====================
+    function renderWithdrawalAccounts() {
+        const container = document.getElementById("accountList");
+        if (!container) return;
+        const accounts = currentUser.withdrawalAccounts || [];
+        if (accounts.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">No withdrawal account bound<br>Click "Add New" to bind bank/UPI</div>';
+            return;
+        }
+        let html = "";
+        accounts.forEach(acc => {
+            let detail = acc.type === "Bank" ? `${acc.bankName} - ${acc.accountNumber} (IFSC: ${acc.ifsc})` : (acc.type === "PhonePe" || acc.type === "Paytm" ? `${acc.detail}` : acc.detail);
+            let selectedClass = currentUser.selectedAccountId === acc.id ? "selected" : "";
+            html += `<div class="account-item ${selectedClass}" onclick="selectWithdrawalAccount('${acc.id}')"><div class="account-details"><div class="account-type">${acc.type}</div><div class="account-info">${acc.name}<br>${detail}</div></div>${currentUser.selectedAccountId === acc.id ? '<i class="fas fa-check-circle" style="color:#facc15;"></i>' : ''}</div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function selectWithdrawalAccount(id) {
+        currentUser.selectedAccountId = id;
+        saveUsers();
+        renderWithdrawalAccounts();
+    }
+
+    function showAddAccountModal() {
+        document.getElementById("addAccountModal").style.display = "flex";
+        document.getElementById("accountType").value = "PhonePe";
+        toggleBankFields();
+    }
+
+    function closeAddAccountModal() {
+        document.getElementById("addAccountModal").style.display = "none";
+        document.getElementById("accountName").value = "";
+        document.getElementById("accountDetail").value = "";
+        document.getElementById("bankName").value = "";
+        document.getElementById("ifscCode").value = "";
+    }
+
+    function toggleBankFields() {
+        let type = document.getElementById("accountType").value;
+        let bankFields = document.getElementById("bankFields");
+        if (type === "Bank") {
+            bankFields.style.display = "block";
+        } else {
+            bankFields.style.display = "none";
+        }
+    }
+    document.getElementById("accountType")?.addEventListener("change", toggleBankFields);
+
+    function saveWithdrawalAccount() {
+        let type = document.getElementById("accountType").value;
+        let name = document.getElementById("accountName").value.trim();
+        let detail = document.getElementById("accountDetail").value.trim();
+        if (!name || !detail) {
+            alert("Please fill all required fields");
+            return;
+        }
+        let newAccount = { id: "acc_" + Date.now(), type: type, name: name, detail: detail };
+        if (type === "Bank") {
+            let bankName = document.getElementById("bankName").value.trim();
+            let ifsc = document.getElementById("ifscCode").value.trim();
+            if (!bankName || !ifsc) {
+                alert("Please enter Bank Name and IFSC Code");
+                return;
+            }
+            newAccount.bankName = bankName;
+            newAccount.accountNumber = detail;
+            newAccount.ifsc = ifsc;
+        }
+        if (!currentUser.withdrawalAccounts) currentUser.withdrawalAccounts = [];
+        currentUser.withdrawalAccounts.push(newAccount);
+        if (!currentUser.selectedAccountId) currentUser.selectedAccountId = newAccount.id;
+        saveUsers();
+        renderWithdrawalAccounts();
+        closeAddAccountModal();
+        alert("Withdrawal account added successfully!");
+    }
+
+    function setMaxAmount() {
+        let maxAmount = currentUser.balance;
+        if (maxAmount < 150) {
+            alert("Insufficient balance. Minimum withdrawal is ₹150.");
+            return;
+        }
+        document.getElementById("withdrawAmount").value = maxAmount;
+    }
+
+    function requestWithdrawal() {
+        let amount = parseFloat(document.getElementById("withdrawAmount").value);
+        if (isNaN(amount) || amount < 150) {
+            alert("Minimum withdrawal amount is ₹150");
+            return;
+        }
+        if (amount > currentUser.balance) {
+            alert("Insufficient balance");
+            return;
+        }
+        if (!currentUser.selectedAccountId) {
+            alert("Please select a withdrawal account first");
+            return;
+        }
+        let selectedAcc = currentUser.withdrawalAccounts.find(acc => acc.id === currentUser.selectedAccountId);
+        if (!selectedAcc) {
+            alert("Selected account not found");
+            return;
+        }
+        window.pendingWithdrawal = { amount: amount, account: selectedAcc };
+        document.getElementById("verifyPinModal").style.display = "flex";
+    }
+
+    async function verifySellPin() {
+        let entered = document.getElementById("verifyPinInput").value.trim();
+        let savedPin = currentUser.pinHash;
+        if (entered === savedPin && window.pendingWithdrawal) {
+            document.getElementById("verifyPinModal").style.display = "none";
+            let amount = window.pendingWithdrawal.amount;
+            let account = window.pendingWithdrawal.account;
+            let fee = Math.floor(amount * 0.01);
+            let netAmount = amount - fee;
+            currentUser.balance -= amount;
+            saveUsers();
+            updateDashboard();
+
+            let orderId = "WD" + Date.now() + Math.random().toString(36).substring(2, 6);
+            let accountDetail = "";
+            if (account.type === "Bank") {
+                accountDetail = `${account.bankName} - ${account.accountNumber} (IFSC: ${account.ifsc})`;
+            } else {
+                accountDetail = `${account.type}: ${account.detail}`;
+            }
+            orders.push({
+                id: orderId,
+                userId: currentUser.id,
+                type: "Withdrawal",
+                amount: amount,
+                netAmount: netAmount,
+                fee: fee,
+                method: account.type,
+                accountDetail: accountDetail,
+                status: "Processing",
+                time: new Date().toLocaleTimeString()
+            });
+            saveOrders();
+            loadHistory();
+            alert(`Withdrawal request of ₹${amount} submitted via ${account.type}. Fee ₹${fee} deducted. Net ₹${netAmount} will be processed within 24-48 hours.`);
+            window.pendingWithdrawal = null;
+            backDash2();
+            showSell();
+        } else {
+            document.getElementById("verifyPinError").style.display = "block";
+        }
+    }
+
+    function cancelVerifyPin() {
+        document.getElementById("verifyPinModal").style.display = "none";
+        window.pendingWithdrawal = null;
+    }
+
+    function changePassword() {
+        let newPass = prompt("New Password (min 4 characters)");
+        if (newPass && newPass.length >= 4) {
+            currentUser.passwordHash = newPass;
+            saveUsers();
+            alert("Password changed!");
+        } else {
+            alert("Password must be at least 4 characters.");
+        }
+    }
+
+    function changePin() {
+        let currentPin = currentUser.pinHash;
+        if (!currentPin) {
+            alert("You haven't set a PIN yet. Please set one first.");
+            document.getElementById("setPinModal").style.display = "flex";
+            return;
+        }
+        let entered = prompt("Enter your current 4-digit PIN:");
+        if (!entered) return;
+        if (entered !== currentPin) {
+            alert("Incorrect current PIN.");
+            return;
+        }
+        let newPin = prompt("Enter new 4-digit PIN:");
+        if (!newPin || newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
+            alert("New PIN must be exactly 4 digits.");
+            return;
+        }
+        let confirmNew = prompt("Confirm new PIN:");
+        if (newPin !== confirmNew) {
+            alert("New PINs do not match.");
+            return;
+        }
+        currentUser.pinHash = newPin;
+        saveUsers();
+        alert("PIN changed successfully!");
+    }
+
+    function forgotPin() {
+        alert("If you forgot your PIN, please contact support at @HelpcenterOMG on Telegram.");
+    }
+
+    function savePinWithConfirm() {
+        let pin = document.getElementById("setPinInput").value.trim();
+        let confirmPin = document.getElementById("confirmPinInput").value.trim();
+        const errorDiv = document.getElementById("setPinError");
+        if (pin.length === 4 && /^\d{4}$/.test(pin) && pin === confirmPin) {
+            currentUser.pinHash = pin;
+            saveUsers();
+            document.getElementById("setPinModal").style.display = "none";
+            alert("4-Digit PIN set successfully!");
+            document.getElementById("setPinInput").value = "";
+            document.getElementById("confirmPinInput").value = "";
+            errorDiv.style.display = "none";
+        } else {
+            errorDiv.style.display = "block";
+            if (pin !== confirmPin) errorDiv.innerText = "PINs do not match";
+            else errorDiv.innerText = "PIN must be exactly 4 digits";
+        }
+    }
+
+    // ==================== UTILITIES ====================
+    function copyToClipboard(text) {
+        if(text) navigator.clipboard.writeText(text).then(() => alert("✅ Copied!"));
+    }
+    function copyReferralCode() {
+        if(currentUser) copyToClipboard(currentUser.referralCode);
+    }
+    function showSell() {
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("sellPage").style.display = "block";
+        document.getElementById("withdrawBalance").innerText = currentUser.balance.toFixed(2) + " INR";
+        document.getElementById("withdrawAmount").value = "";
+        renderWithdrawalAccounts();
+    }
+    function backDash2() {
+        document.getElementById("sellPage").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        updateDashboard();
+    }
+    function showBuy() {
+        if (currentUser.banExpiry > Date.now()) {
+            alert(`🚫 You are temporarily banned from creating new orders. Please try again later.`);
+            return;
+        }
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("buyPage").style.display = "block";
+        randomOrders();
+    }
+    function backDash() {
+        document.getElementById("buyPage").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+    }
+    function openSettings() {
+        document.getElementById("settingsModal").style.display = "flex";
+        document.getElementById("profilePhone").innerHTML = `Phone: <strong>${currentUser.phone}</strong>`;
+        updateLevelAndReward();
+    }
+    function closeSettings() {
+        document.getElementById("settingsModal").style.display = "none";
+    }
+    function logoutFromSettings() {
+        closeSettings();
+        logout();
+    }
+    function openHelp() {
+        document.getElementById("helpModal").style.display = "flex";
+    }
+    function closeHelp() {
+        document.getElementById("helpModal").style.display = "none";
+    }
+    function goBackToDashboard() {
+        closeHelp();
+        document.getElementById("dashboard").style.display = "block";
+    }
+    function showBuyRules() {
+        document.getElementById("buyRulesModal").style.display = "flex";
+    }
+    function closeBuyRules() {
+        document.getElementById("buyRulesModal").style.display = "none";
+    }
+    function showSellRules() {
+        document.getElementById("sellRulesModal").style.display = "flex";
+    }
+    function closeSellRules() {
+        document.getElementById("sellRulesModal").style.display = "none";
+    }
+    function showTerms() {
+        document.getElementById("termsModal").style.display = "flex";
+    }
+    function closeTerms() {
+        document.getElementById("termsModal").style.display = "none";
+    }
+    function logout() {
+        isAdmin = false;
+        currentUser = null;
+        document.getElementById("dashboard").style.display = "none";
+        document.querySelector(".center").style.display = "flex";
+        document.getElementById("login").style.display = "block";
+        document.getElementById("adminDashboard").style.display = "none";
+        document.getElementById("buyPage").style.display = "none";
+        document.getElementById("sellPage").style.display = "none";
+        document.getElementById("utrPage").style.display = "none";
+    }
+
+    // ==================== CHAT & TICKER ====================
+    function sendChatMessage() {
+        let input = document.getElementById("chatInput");
+        let msg = input.value.trim();
+        if (!msg) return;
+        let chatBox = document.getElementById("chatMessages");
+        chatBox.innerHTML += `<div class="chat-message user-message">${msg}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        input.value = "";
+        setTimeout(() => {
+            let reply = getAdvancedBotReply(msg.toLowerCase());
+            chatBox.innerHTML += `<div class="chat-message bot-message">${reply}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 500);
+    }
+
+    function getAdvancedBotReply(msg) {
+        const levelInfo = `You are Level ${currentUser?.level || 1}. Total purchases: ₹${currentUser?.totalBought?.toLocaleString() || 0}.`;
+        if (msg.includes("level") || msg.includes("progress") || msg.includes("next level")) {
+            let nextAmt = levelThresholds[currentUser?.level+1] || "max";
+            return `📊 Your current level: ${currentUser?.level || 1}. Total bought: ₹${currentUser?.totalBought?.toLocaleString() || 0}. Need ₹${nextAmt === "max" ? "more to reach max" : (levelThresholds[currentUser?.level+1] - currentUser.totalBought) + " more"} for next level.`;
+        }
+        if (msg.includes("order status") || msg.includes("my order") || msg.includes("pending")) {
+            let userOrders = orders.filter(o => o.userId === currentUser?.id && o.status === "Pending" && o.type === "Buy");
+            if (userOrders.length) return `You have ${userOrders.length} pending order(s). Usually confirmed within 1-24 hours after UTR submission.`;
+            return "No pending orders right now. You can buy OMG from the Buy section.";
+        }
+        if (msg.includes("how to buy") || msg.includes("buy process")) {
+            return "To buy: Go to Buy section, select an offer, pay to given UPI, then submit UTR. Order will confirm within 1-24 hours. Bonus added automatically.";
+        }
+        if (msg.includes("sell process") || msg.includes("how to sell") || msg.includes("withdraw")) {
+            return "To withdraw: Go to Sell/Withdraw section, add your bank/UPI account, enter amount (min ₹150), select account, and confirm with your PIN. Withdrawals processed within 24-48 hours. 1% fee applies.";
+        }
+        if (msg.includes("timer") || msg.includes("time left")) {
+            return "Each buy order has a 9-minute timer. You must submit UTR before it expires, otherwise order auto-cancels.";
+        }
+        if (msg.includes("upi") || msg.includes("payment")) {
+            return "Payment UPI details are shown on the buy offer card. After payment, enter the UTR/Transaction ID on the next screen.";
+        }
+        if (msg.includes("bonus") || msg.includes("reward")) {
+            return "Buy offers have bonus rates: 4% for orders under ₹10,000, 10% for ₹10,000+. Plus level-up rewards of 20, 30, 40 OMG when you reach Levels 2,3,4.";
+        }
+        if (msg.includes("hello") || msg.includes("hi") || msg.includes("namaste")) {
+            return "Hello! 👋 I'm your AI assistant. Ask me anything about OMG Wallet!";
+        }
+        return `${levelInfo}\n\nI'm here to help! You can ask about: buying, selling, withdrawal, order status, level progress, UTR submission, or any doubt.`;
+    }
+
+    function initTicker() {
+        const messages = [
+            "🟢 UID 4821 purchased ₹1200",
+            "🟢 UID 7394 purchased ₹2500",
+            "🟢 UID 1956 purchased ₹1800",
+            "🟢 UID 8642 purchased ₹3000",
+            "🟢 UID 2719 purchased ₹1500",
+            "🟢 UID 9033 purchased ₹4200",
+            "🟢 UID 5561 purchased ₹2200",
+            "🟢 UID 7810 purchased ₹1700",
+            "🟢 UID 3428 purchased ₹5000",
+            "🟢 UID 6672 purchased ₹2800",
+            "🟢 UID 1195 purchased ₹1300",
+            "🟢 UID 9047 purchased ₹3500",
+            "🟢 UID 2386 purchased ₹2100",
+            "🟢 UID 7754 purchased ₹1600",
+            "🟢 UID 4902 purchased ₹4800",
+            "🟢 UID 6217 purchased ₹2400",
+            "🟢 UID 3509 purchased ₹1900",
+            "🟢 UID 8881 purchased ₹6000",
+            "🟢 UID 2745 purchased ₹2700",
+            "🟢 UID 9132 purchased ₹1400"
+        ];
+        const container = document.getElementById("tickerContent");
+        if (!container) return;
+        let html = '';
+        const fullList = [...messages, ...messages];
+        fullList.forEach(msg => {
+            html += `<span class="ticker-item"><i class="fas fa-circle" style="font-size: 10px; color: #2ecc71;"></i> ${msg}</span>`;
+        });
+        container.innerHTML = html;
+    }
+
+    let currentBanner = 0;
+    const banners = document.querySelectorAll('.banner');
+    function rotateBanners() {
+        if (!banners.length) return;
+        banners.forEach(b => b.classList.remove('active'));
+        currentBanner = (currentBanner + 1) % banners.length;
+        banners[currentBanner].classList.add('active');
+    }
+    setInterval(rotateBanners, 3500);
+
+    // ==================== INIT ====================
+    window.onload = async () => {
+        loadData();
+        initTicker();
+        rotateBanners();
+        const now = Date.now();
+        orders.forEach(order => {
+            if (order.type === "Buy" && order.expiry && order.expiry < now && (order.status === "Pending" || order.status === "Awaiting Verification")) {
+                order.status = "Expired";
+            }
+        });
+        saveOrders();
+    };
 </script>
 </body>
 </html>
